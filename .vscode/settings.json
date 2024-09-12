@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true
+  },
+  "python.formatting.autopep8Args": ["--select=E20,E11,E101,E121"]
+}
