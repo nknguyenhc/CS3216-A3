@@ -13,7 +13,7 @@ const steps: StepProps[] = [
     imageIcon:
       "https://cdn.builder.io/api/v1/image/assets/TEMP/c8162fb064a5c7ea661c828d5d7a7b886320fbaa1f272bb7462b0069114f7173?placeholderIfAbsent=true&apiKey=605ddb38b3184de6b494a658ff50786d",
     title: "2. Proceed with the payment",
-    description: "Pay for the services and continue to the next step",
+    description: "Pay for the services using your preferred card (AMEX, VISA, or MASTERCARD).",
   },
   {
     imageIcon:
