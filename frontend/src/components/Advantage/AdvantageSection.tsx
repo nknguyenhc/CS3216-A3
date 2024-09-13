@@ -28,7 +28,7 @@ const advantagesData = [
 
 const AdvantagesSection: React.FC = () => {
   return (
-    <section className="bg-custom-gradient flex overflow-hidden flex-col items-center px-16 pt-9 w-full max-md:px-5 max-md:max-w-full">
+    <section className="bg-custom-gradient flex overflow-hidden flex-col items-center px-16 pt-9 pb-9 w-full max-md:px-5 max-md:max-w-full">
       <div className="w-full max-w-[1186px] max-md:max-w-full">
         <h2 className="text-3xl font-extrabold text-black mb-5">Our advantages</h2>
         <div className="flex gap-5 max-md:flex-col">

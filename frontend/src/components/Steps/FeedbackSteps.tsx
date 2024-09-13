@@ -31,7 +31,7 @@ const steps: StepProps[] = [
 
 const FeedbackSteps = () => {
   return (
-    <section className="mt-10 mb-10">
+    <section className="mt-20 mb-20">
       <div className="flex ml-20 mr-20 w-full max-w-[1324px] max-md:ml-2.5 max-md:mr-2.5 max-md:max-w-full items-stretch">
         <div className="flex w-[45%] max-md:w-full items-stretch pr-4">
           <img
