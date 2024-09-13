@@ -5,7 +5,10 @@ const MainLayout = () => {
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <div className="bg-blue-custom">
+        <Outlet/>
+      </div>
+      
     </div>
   );
 };

@@ -1,6 +1,6 @@
 const Hero = () => {
   return (
-    <div className="bg-blue-custom">
+    <div>
       <header className="self-end ml-20 mr-20 w-full max-w-[1324px] max-md:mr-2.5 max-md:max-w-full">
         <div className="flex gap-5 max-md:flex-col">
           <div className="flex flex-col w-[45%] max-md:ml-0 max-md:w-full">
