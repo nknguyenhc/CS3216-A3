@@ -1,6 +1,6 @@
-import Logo from './Logo';
-import Navigation from './Navigations';
-import AuthButtons from './AuthButtons';
+import Logo from "./Logo";
+import Navigation from "./Navigations";
+import AuthButtons from "./AuthButtons";
 
 const Navbar = () => {
   return (
