@@ -5,7 +5,7 @@ import Accordion from "../components/Accordions/Accordion";
 import ScrollVideo from "../components/Features/ScrollVideo";
 import FeedbackSteps from "../components/Steps/FeedbackSteps";
 import AdvantagesSection from "../components/Advantage/AdvantageSection";
-import ScrollAnimation from "../components/Features/ScrollAnimation";
+import HorizontalScrollSections from "../components/Features/HorizontalScrollSections";
 
 const LandingPage = () => {
   return (
@@ -16,7 +16,7 @@ const LandingPage = () => {
       <FeedbackSteps />
       <Pricing />
       <Accordion />
-      <ScrollAnimation/>
+      <HorizontalScrollSections/>
 
       
       <Footer />
