@@ -1,44 +1,58 @@
-import React, { useRef } from "react";
-import "./styles.css";
-import { useInView } from "react-intersection-observer";
+import { useMotionValueEvent, useScroll, useTransform } from 'framer-motion';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-export default function AnimateOnScroll() {
-  const imageRef = useRef(null);
+function App() {
+	const ref = useRef<HTMLCanvasElement>(null);
 
-  const { ref: firstContainer, inView: firstInView } = useInView({
-    threshold: 0
-  });
+	const { scrollYProgress } = useScroll({
+		target: ref,
+		offset: ['center end', 'start start'],
+	});
 
-  const { ref: secondContainer, inView: secondInView } = useInView({
-    threshold: 0
-  });
+	const images = useMemo(() => {
+		const loadedImages: HTMLImageElement[] = [];
 
-  const { ref: thirdContainer, inView: thirdInView } = useInView({
-    threshold: 0
-  });
+    for (let i = 1; i <= 266; i++) {
+      const img = new Image();
+      const formattedIndex = i.toString().padStart(4, '0');
+      img.src = `./assets/cambridge/frame_${formattedIndex}.webp`;
+      loadedImages.push(img);
+    }
 
-  const getImage = () => {
-    if (firstInView)
-      return "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
-    if (secondInView)
-      return "https://images.ctfassets.net/hrltx12pl8hq/3MbF54EhWUhsXunc5Keueb/60774fbbff86e6bf6776f1e17a8016b4/04-nature_721703848.jpg?fit=fill&w=480&h=270";
-    //if (thirdInView)
-    return "https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png";
-  };
+    console.log('loaded images', loadedImages);
 
-  return (
-    <div className="App">
-      <div className="wrapper">
-        <div className="image-wrapper">
-          <img src={getImage()} alt="a" ref={imageRef} className="image" />
-        </div>
+		return loadedImages;
+	}, []);
 
-        <div className="first" ref={firstContainer}></div>
-        <div className="second" ref={secondContainer}></div>
-        <div className="third" ref={thirdContainer}></div>
-      </div>
+	const render = useCallback(
+		(index: number) => {
+			if (images[index - 1]) {
+				ref.current?.getContext('2d')?.drawImage(images[index - 1], 0, 0);
+			}
+		},
+		[images]
+	);
 
-      <div className="footer"></div>
+	const currentIndex = useTransform(scrollYProgress, [0, 1], [1, 266]);
+
+	useMotionValueEvent(currentIndex, 'change', (latest) => {
+		render(Number(latest.toFixed()));
+	});
+
+	useEffect(() => {
+		render(1);
+	}, [render]);
+
+	return (
+
+
+    <section className="bg-custom-gradient flex overflow-hidden flex-col items-center px-16 pt-9 pb-9 w-full max-md:px-5 max-md:max-w-full">
+    <div className="w-full max-w-[1186px] max-md:max-w-full">
+      <h2 className="text-3xl font-extrabold text-black mb-5">Our advantages</h2>
+      <canvas width={1000} height={1000} ref={ref} />
     </div>
-  );
+  </section>
+	);  
 }
+
+export default App;

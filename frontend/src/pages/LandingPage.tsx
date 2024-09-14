@@ -5,27 +5,22 @@ import Accordion from "../components/Accordions/Accordion";
 import AnimateOnScroll from "../components/Features/AnimateOnScroll";
 import FeedbackSteps from "../components/Steps/FeedbackSteps";
 import AdvantagesSection from "../components/Advantage/AdvantageSection";
+import ScrollAnimation from "../components/Features/ScrollAnimation";
 
 const LandingPage = () => {
   return (
-    /*
     <div>
       <Hero />
       <AdvantagesSection />
       <FeedbackSteps />
       <Pricing />
-      
-      <AnimateOnScroll />
-
       <Accordion />
+      <AnimateOnScroll />
+      <ScrollAnimation/>
+
+      
       <Footer />
     </div>
-    */
-
-    <div>    
-    <AnimateOnScroll />
-  </div>
-
   );
 };
 
