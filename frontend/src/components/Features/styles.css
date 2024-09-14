@@ -1,0 +1,50 @@
+.App {
+    font-family: sans-serif;
+  }
+  
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  .wrapper {
+    position: relative;
+  }
+  
+  .image-wrapper {
+    position: absolute;
+    height: 100%;
+  }
+  
+  .image {
+    position: sticky;
+    top: 0;
+    left: 30px;
+    width: 200px;
+  }
+  
+  .first,
+  .second,
+  .third {
+    height: 70vh;
+  }
+  
+  .first {
+    background-color: lightblue;
+  }
+  .second {
+    background-color: lightpink;
+  }
+  .third {
+    background-color: lightseagreen;
+  }
+  
+  .footer {
+    height: 120vh;
+  }
+  

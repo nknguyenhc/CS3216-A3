@@ -1,79 +1,44 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
+import "./styles.css";
+import { useInView } from "react-intersection-observer";
 
-type Props = {
-  children: React.ReactNode;
-  reappear?: boolean;
-  initialThreshold?: number;
-  fadeOutOffset?: number; // New prop for fade-out offset
-};
+export default function AnimateOnScroll() {
+  const imageRef = useRef(null);
 
-type Options = {
-  threshold: number;
-  reappear?: boolean;
-};
-
-const useElementOnScreen = (options: Options): [React.RefObject<HTMLDivElement>, boolean] => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-
-  const makeAppear = (entries: any) => {
-    const [entry] = entries;
-    setIsVisible(entry.isIntersecting);
-  };
-
-  const callBack = options.reappear ? makeAppear : makeAppear;
-
-  useEffect(() => {
-    const containerRefCurrent = containerRef.current;
-    const observer = new IntersectionObserver(callBack, options);
-    if (containerRefCurrent) observer.observe(containerRefCurrent);
-
-    return () => {
-      if (containerRefCurrent) {
-        observer.unobserve(containerRefCurrent);
-      }
-    };
-  }, [containerRef, options, callBack]);
-
-  return [containerRef, isVisible];
-};
-
-const AnimateOnScroll = ({ children, reappear, initialThreshold = 0.5, fadeOutOffset = 300 }: Props) => {
-  const [containerRef, isVisible] = useElementOnScreen({
-    threshold: initialThreshold,
-    reappear: reappear,
+  const { ref: firstContainer, inView: firstInView } = useInView({
+    threshold: 0
   });
 
-  const [scrollY, setScrollY] = useState<number>(0);
+  const { ref: secondContainer, inView: secondInView } = useInView({
+    threshold: 0
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+  const { ref: thirdContainer, inView: thirdInView } = useInView({
+    threshold: 0
+  });
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Dynamic fade-out thresholds for each element
-  const fadeOutThreshold = fadeOutOffset; // Dynamic threshold based on offset
-
-  // Calculate opacity and translate based on scroll position
-  const opacity = scrollY > fadeOutThreshold ? 0 : 1;
-  const translateY = isVisible ? "translateY(0)" : "translateY(50px)"; // Adjust translation
+  const getImage = () => {
+    if (firstInView)
+      return "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
+    if (secondInView)
+      return "https://images.ctfassets.net/hrltx12pl8hq/3MbF54EhWUhsXunc5Keueb/60774fbbff86e6bf6776f1e17a8016b4/04-nature_721703848.jpg?fit=fill&w=480&h=270";
+    //if (thirdInView)
+    return "https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png";
+  };
 
   return (
-    <div
-      ref={containerRef}
-      className={`sticky top-0 transition duration-1000 ease-in-out`}
-      style={{
-        opacity: opacity,
-        transform: translateY,
-      }}
-    >
-      {children}
+    <div className="App">
+      <div className="wrapper">
+        <div className="image-wrapper">
+          <img src={getImage()} alt="a" ref={imageRef} className="image" />
+        </div>
+
+        <div className="first" ref={firstContainer}></div>
+        <div className="second" ref={secondContainer}></div>
+        <div className="third" ref={thirdContainer}></div>
+      </div>
+
+      <div className="footer"></div>
     </div>
   );
-};
-
-export default AnimateOnScroll;
+}
