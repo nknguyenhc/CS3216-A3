@@ -8,7 +8,6 @@ const MainLayout = () => {
       <div className="bg-blue-custom">
         <Outlet/>
       </div>
-      
     </div>
   );
 };
