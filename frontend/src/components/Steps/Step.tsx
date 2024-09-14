@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 
 export interface StepProps {
-  imageIcon: ReactNode;
   title: string;
   description: string;
 }

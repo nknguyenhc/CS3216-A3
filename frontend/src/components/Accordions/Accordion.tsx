@@ -15,7 +15,7 @@ const accordionData = [
   {
     id: "element3",
     title: "How can I leave feedback?",
-    answer: "You can leave feedback in our 'Contact Us' section :-)",
+    answer: "You can leave feedback in our 'Contact Us' section.",
   },
 ];
 
@@ -27,7 +27,7 @@ const Accordion: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
+    <div className="max-w-4xl mx-auto px-4 mt-20 mb-20">
       <h2 className="text-3xl font-black uppercase text-slate-500 text-center mb-8">FAQ</h2>
       <section>
         <div className="border block bg-gray-100 dark:bg-neutral-700 rounded-xl">

@@ -11,6 +11,7 @@ module.exports = {
       colors: {
         'blue-custom': '#D8DCFC',
         'dark-blue-custom': '#7091E6',
+        'light-blue-custom': '#EDE8F5',
       },
       backgroundImage: {
         'custom-gradient': 'linear-gradient(to right, #1982C4 0%, #FF595E 100%)',
