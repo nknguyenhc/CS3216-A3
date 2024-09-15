@@ -1,6 +1,7 @@
 import Hero from "../components/Hero";
 import Pricing from "../components/Pricing/Pricing";
-import Footer from "../components/Footer";
+import Footer from "../Footer/Footer";
+import Banner from "../Footer/Banner";
 import Accordion from "../components/Accordions/Accordion";
 import ScrollVideo from "../components/Features/ScrollVideo";
 import FeedbackSteps from "../components/Steps/FeedbackSteps";
@@ -16,7 +17,8 @@ const LandingPage = () => {
       <FeedbackSteps />
       <Pricing />
       <Reviews />
-      <Accordion />   
+      <Accordion />  
+      <Banner /> 
       <Footer />
     </div>
   );
