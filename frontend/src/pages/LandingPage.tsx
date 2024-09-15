@@ -7,10 +7,15 @@ import ScrollVideo from "../components/Features/ScrollVideo";
 import FeedbackSteps from "../components/Steps/FeedbackSteps";
 import AdvantagesSection from "../components/Advantage/AdvantageSection";
 import Reviews from "../components/Reviews/Reviews";
+import { ParallaxProvider } from 'react-scroll-parallax';
 
 const LandingPage = () => {
   return (
     <div>
+      <ParallaxProvider>
+      <Banner /> 
+    </ParallaxProvider>
+
       <Hero />
       <AdvantagesSection />
       <ScrollVideo />
@@ -18,7 +23,9 @@ const LandingPage = () => {
       <Pricing />
       <Reviews />
       <Accordion />  
-      <Banner /> 
+
+      
+
       <Footer />
     </div>
   );

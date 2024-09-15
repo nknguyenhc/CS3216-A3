@@ -4,7 +4,7 @@ import { BannerLayer } from "react-scroll-parallax/dist/components/ParallaxBanne
 const Banner = () => {
   const background: BannerLayer = {
     image:
-      "https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-background.jpg",
+      "./assets/c3.jpeg",
     translateY: [0, 50],
     opacity: [1, 0.3],
     scale: [1.05, 1, "easeOutCubic"],
@@ -17,31 +17,23 @@ const Banner = () => {
     shouldAlwaysCompleteAnimation: true,
     expanded: false,
     children: (
-      <div className="inset center">
-        <h1 className="headline white">Hello World!</h1>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <h1 className="font-thin text-[10vw] text-white">App name</h1>
       </div>
     )
-  };
-
-  const foreground: BannerLayer = {
-    image:
-      "https://s3-us-west-2.amazonaws.com/s.cdpn.io/105988/banner-foreground.png",
-    translateY: [0, 15],
-    scale: [1, 1.1, "easeOutCubic"],
-    shouldAlwaysCompleteAnimation: true
   };
 
   const gradientOverlay: BannerLayer = {
     opacity: [0, 1, "easeOutCubic"],
     shouldAlwaysCompleteAnimation: true,
     expanded: false,
-    children: <div className="gradient inset" />
+    children: <div className="absolute inset-0 bg-gradient-to-t from-blue-custom via-blue-custom to-light-blue-custom" />
   };
 
   return (
     <ParallaxBanner
-      layers={[background, headline, foreground, gradientOverlay]}
-      className="full"
+      layers={[background, headline, gradientOverlay]}
+      className="h-screen"
     />
   );
 };
