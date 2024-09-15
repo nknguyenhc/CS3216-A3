@@ -27,6 +27,12 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+5. To run a test on any module, modify the code to test the correct module in `modules/modules/test.py`, and run:
+
+```bash
+python -m modules.modules.test
+```
+
 ### Frontend
 
 1. Under `frontend` folder, install dependencies.

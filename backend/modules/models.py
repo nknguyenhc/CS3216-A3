@@ -11,7 +11,7 @@ class Argument(models.Model):
     idea = models.TextField()
     evidence = models.TextField(null=True)
     explanation = models.TextField(null=True)
-    personal_state = models.ForeignKey(
+    personal_statement = models.ForeignKey(
         PersonalStatement, on_delete=models.CASCADE)
 
 
