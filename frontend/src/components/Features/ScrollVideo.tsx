@@ -39,7 +39,7 @@ function ScrollVideo() {
     [images]
   );
 
-  const currentIndex = useTransform(scrollYProgress, [0, 1], [1, 266]);
+  const currentIndex = useTransform(scrollYProgress, [0,1], [1, 266]);
 
   useMotionValueEvent(currentIndex, 'change', (latest) => {
     render(Number(latest.toFixed()));
