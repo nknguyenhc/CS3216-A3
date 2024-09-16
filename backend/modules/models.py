@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class PersonalStatement(models.Model):
     field_of_study = models.TextField()
     essay = models.TextField()

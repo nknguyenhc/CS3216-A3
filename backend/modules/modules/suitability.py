@@ -1,7 +1,6 @@
 from modules.models import Argument, Suitability
 from openai import OpenAI
 
-
 class SuitabilityIdentifier:
     def __init__(self,
                  interest_system_prompt_path: str = "modules/modules/prompts/system/suitability-interest.txt",

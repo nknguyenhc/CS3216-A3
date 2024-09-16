@@ -8,6 +8,7 @@ load_dotenv()
 
 if __name__ == '__main__':
     from .suitability import SuitabilityIdentifier
+    from .idea_extractor import IdeaExtractor
     from modules.models import Argument, PersonalStatement
     import json
 
@@ -51,6 +52,15 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
+    with open("modules/modules/tests/personal_statements/example1.txt") as f:
+        data = f.read()
+        personal_statement_example = PersonalStatement(
+            field_of_study="Economics",
+            essay=data,
+            reparagraphed_essay=data,
+        )
 
     result = SuitabilityIdentifier().identify_suitability(example4)
+    result1 = IdeaExtractor().extract(personal_statement_example)
     print(result)
+    print(result1)
