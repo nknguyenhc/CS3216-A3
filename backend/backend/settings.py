@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'modules',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +74,16 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
+
+STRIPE_SECRET_KEY = 'sk_test_51Pz9EL09qdif5frt3zey8048lZqdn0eQvneaAvwIIGMJ2L1A4cEy3G1fDidul7rqTUPcWLncI3NuHAcJmF1CHZdF004AoVkPGT'
+
+SITE_URL = 'http://localhost:3000/'
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 

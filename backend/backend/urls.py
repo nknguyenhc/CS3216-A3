@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from modules.views import StripeCheckoutView
 
 urlpatterns = [
+    path('api/stripe/create-checkout-session', StripeCheckoutView.as_view()),
     path('admin/', admin.site.urls),
 ]

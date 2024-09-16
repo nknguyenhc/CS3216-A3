@@ -1,0 +1,11 @@
+<idea>
+{idea}
+</idea>
+
+<evidence>
+{evidence}
+</evidence>
+
+<explanation>
+{explanation}
+</explanation>
