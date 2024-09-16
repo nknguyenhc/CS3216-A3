@@ -18,6 +18,6 @@ from django.urls import path
 from modules.views import StripeCheckoutView
 
 urlpatterns = [
-    path('api/stripe/create-checkout-session', StripeCheckoutView.as_view()),
+    path('api/stripe/<str:plan_type>/create-checkout-session', StripeCheckoutView.as_view()),
     path('admin/', admin.site.urls),
 ]

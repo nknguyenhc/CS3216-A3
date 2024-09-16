@@ -1,5 +1,6 @@
 import PricingCard from './PricingCard';
 import { FaCheckCircle, FaTimes } from 'react-icons/fa';
+import { API_URL } from '../../config';
 
 const Pricing: React.FC = () => {
   const pricingPlans = [
@@ -13,7 +14,8 @@ const Pricing: React.FC = () => {
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
         { icon: <FaTimes className="text-red-500" />, text: "Correct Grammar Errors" },
-      ]
+      ],
+      url: `${API_URL}/api/stripe/basic/create-checkout-session`,  // Add URL here
     },
     {
       title: "Plus",
@@ -25,7 +27,8 @@ const Pricing: React.FC = () => {
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
         { icon: <FaTimes className="text-red-500" />, text: "Correct Grammar Errors" },
-      ]
+      ],
+      url: `${API_URL}/api/stripe/plus/create-checkout-session`,  // Add URL here
     },
     {
       title: "Pro",
@@ -37,7 +40,8 @@ const Pricing: React.FC = () => {
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
         { icon: <FaCheckCircle className="text-blue-500" />, text: "Correct Grammar Errors" },
-      ]
+      ],
+      url: `${API_URL}/api/stripe/pro/create-checkout-session`,  // Add URL here
     }
   ];
 
@@ -56,11 +60,12 @@ const Pricing: React.FC = () => {
             price={plan.price}
             period={plan.period}
             features={plan.features}
+            url={plan.url}
           />
         ))}
       </div>
     </div>
-  );  
+  );
 };
 
 export default Pricing;

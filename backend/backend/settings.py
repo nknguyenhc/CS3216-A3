@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'modules',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -81,12 +83,14 @@ REST_FRAMEWORK = {
     ]
 }
 
-STRIPE_SECRET_KEY = 'sk_test_51Pz9EL09qdif5frt3zey8048lZqdn0eQvneaAvwIIGMJ2L1A4cEy3G1fDidul7rqTUPcWLncI3NuHAcJmF1CHZdF004AoVkPGT'
+# Change when converting to prod
+SITE_URL = 'http://localhost:8000/'
 
-SITE_URL = 'http://localhost:3000/'
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

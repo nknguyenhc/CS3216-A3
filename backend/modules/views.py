@@ -1,32 +1,46 @@
-from django.shortcuts import render, redirect
-from django.conf import settings
-from rest_framework.views import APIView
+import logging
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework.views import APIView
 import stripe
-# This is your test secret API key.
-stripe.api_key = settings.STRIPE_SECRET_KEY
+from django.shortcuts import redirect
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
+# Your Stripe API key (TODO: REMOVE THIS)
+stripe.api_key = ''
+
+from django.urls import path
+from django.http import JsonResponse
 
 class StripeCheckoutView(APIView):
-    def post(self, request):
+    PRICE_IDS = {
+        'basic': 'price_1PzgYw09qdif5frtyShpIhOb',
+        'plus': 'price_1PzgYF09qdif5frthtss0TgS',
+        'pro': 'price_1PzgYR09qdif5frtVBee9MYg'
+    }
+
+    def post(self, request, plan_type):
         try:
+            price_id = self.PRICE_IDS.get(plan_type)
+
+            if price_id is None:
+                return JsonResponse({'error': 'Invalid plan type'}, status=400)
+
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
-                        'price': 'price_1PzWnc09qdif5frtbPxIEzWS ',
+                        'price': price_id,
                         'quantity': 1,
                     },
                 ],
-                payment_method_types=['card',],
                 mode='payment',
-                success_url= settings.SITE_URL + '?success=true',
-                cancel_url= settings.SITE_URL + '?canceled=true',
+                success_url='http://localhost:8000/success',
+                cancel_url='http://localhost:8000/unsuccess',
             )
             return redirect(checkout_session.url, code=303)
-        
-        except:
-            return Response (
-                {'error': 'Something went wrong when creating Stripe checkout session'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+
+        except Exception as e:
+            logger.error(f"Stripe Checkout Error: {str(e)}", exc_info=True)
+            return JsonResponse({'error': str(e)}, status=500)
