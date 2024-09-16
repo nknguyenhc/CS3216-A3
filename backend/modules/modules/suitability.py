@@ -6,8 +6,8 @@ class SuitabilityIdentifier:
     def __init__(self,
                  interest_system_prompt_path: str = "modules/modules/prompts/system/suitability-interest.txt",
                  capability_system_prompt_path: str = "modules/modules/prompts/system/suitability-capability.txt",
-                 interest_user_prompt_path: str = "modules/modules/prompts/user/suitability-interest.txt",
-                 capability_user_prompt_path: str = "modules/modules/prompts/user/suitability-capability.txt",
+                 interest_user_prompt_path: str = "modules/modules/prompts/user/argument.txt",
+                 capability_user_prompt_path: str = "modules/modules/prompts/user/argument.txt",
                  ):
         with open(interest_system_prompt_path, "r") as f:
             self.interest_system_prompt = f.read()
