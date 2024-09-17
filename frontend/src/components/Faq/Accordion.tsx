@@ -1,25 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AccordionItem from "./AccordionItem";
+import { forwardRef } from "react";
+import accordionData from "./AccordionData";
 
-const accordionData = [
-  {
-    id: "element1",
-    title: "How many free attempts are provided?",
-    answer: "We provide the first 3 attempts free. Thereafter, it is $10 per attempt.",
-  },
-  {
-    id: "element2",
-    title: "What are the payment options?",
-    answer: "We accept Amex, Visa, and Mastercard. We do not accept cash or cheques.",
-  },
-  {
-    id: "element3",
-    title: "How can I leave feedback?",
-    answer: "You can leave feedback in our 'Contact Us' section.",
-  },
-];
-
-const Accordion: React.FC = () => {
+const Accordion = forwardRef<HTMLDivElement, any>((_, ref) => {
   const [activeElement, setActiveElement] = useState<string | null>(null);
 
   const handleClick = (value: string) => {
@@ -27,7 +11,7 @@ const Accordion: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 mt-20 mb-20">
+    <div ref={ref} className="max-w-4xl mx-auto px-4 mt-20 mb-20">
       <h2 className="text-3xl font-black uppercase text-slate-500 text-center mb-8">FAQ</h2>
       <section>
         <div className="border block bg-gray-100 dark:bg-neutral-700 rounded-xl">
@@ -46,6 +30,6 @@ const Accordion: React.FC = () => {
       </section>
     </div>
   );
-};
+});
 
 export default Accordion;

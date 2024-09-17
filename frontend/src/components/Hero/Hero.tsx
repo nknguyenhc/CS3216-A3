@@ -1,33 +1,39 @@
+import { ParallaxBanner } from "react-scroll-parallax";
+import { BannerLayer } from "react-scroll-parallax/dist/components/ParallaxBanner/types";
+
 const Hero = () => {
+  const background: BannerLayer = {
+    image:
+      "./assets/hero-image.jpeg",
+    opacity: [1, 0.3],
+    scale: [1, 1, "easeOutCubic"],
+    shouldAlwaysCompleteAnimation: true
+  };
+
+  const headline: BannerLayer = {
+    translateY: [0, 30],
+    scale: [1, 1.05, "easeOutCubic"],
+    shouldAlwaysCompleteAnimation: true,
+    expanded: false,
+    children: (
+      <div className="absolute inset-0 flex items-center justify-center">
+        <h1 className="font-thin text-[10vw] text-white">App name</h1>
+      </div>
+    )
+  };
+
+  const gradientOverlay: BannerLayer = {
+    opacity: [0, 1, "easeOutCubic"],
+    shouldAlwaysCompleteAnimation: true,
+    expanded: false,
+    children: <div className="absolute inset-0 bg-gradient-to-t from-blue-custom via-blue-custom to-light-blue-custom" />
+  };
+
   return (
-    <div>
-      <header className="self-end ml-20 mr-20 mb-20 w-full max-w-[1324px] max-md:mr-2.5 max-md:max-w-full">
-        <div className="flex gap-5 max-md:flex-col">
-          <div className="flex flex-col w-[45%] max-md:ml-0 max-md:w-full">
-            <div className="flex flex-col items-start self-stretch my-auto max-md:mt-10 max-md:max-w-full">
-              <h1 className="text-4xl font-black uppercase text-slate-500 max-md:max-w-full">
-                OXBRIDGE & JARDINE PERSONAL STATEMENTS
-              </h1>
-              <p className="self-stretch mt-8 text-base font-medium leading-6 text-black max-md:max-w-full">
-                A personal statement website powered by AI, providing tailored feedback specifically for Oxbridge and
-                Jardine personal statements.
-              </p>
-              <button className="px-7 py-4 mt-16 text-sm font-bold text-center text-white bg-dark-blue-custom rounded-xl max-md:px-5 max-md:mt-10">
-                Purchase a plan
-              </button>
-            </div>
-          </div>
-          <div className="flex flex-col pl-10 w-[55%] max-md:ml-0 max-md:w-full">
-            <img
-              loading="lazy"
-              src="/assets/oxbridge.jpeg"
-              alt="Oxbridge and Jardine personal statements illustration"
-              className="object-contain grow w-full rounded-xl aspect-[1.5] max-md:mt-5 max-md:max-w-full"
-            />
-          </div>
-        </div>
-      </header>
-    </div>
+    <ParallaxBanner
+      layers={[background, headline, gradientOverlay]}
+      className="h-screen"
+    />
   );
 };
 

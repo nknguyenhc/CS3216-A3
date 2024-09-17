@@ -1,28 +1,31 @@
-import Hero from "../components/Hero/Hero";
+import { useRefs } from "../context/RefsContext";
+import About from "../components/About/About";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
-import Banner from "../components/Hero/Banner";
+import Hero from "../components/Hero/Hero";
 import Accordion from "../components/Faq/Accordion";
 import ScrollVideo from "../components/Video/ScrollVideo";
-import FeedbackSteps from "../components/Steps/FeedbackSteps";
+import FeedbackSteps from "../components/HowItWorks/FeedbackSteps";
 import AdvantagesSection from "../components/Advantage/AdvantageSection";
 import Reviews from "../components/Reviews/Reviews";
 import { ParallaxProvider } from "react-scroll-parallax";
 
 const LandingPage = () => {
+  const { aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef } = useRefs();
+
   return (
     <div>
       <ParallaxProvider>
-        <Banner />
+        <Hero />
       </ParallaxProvider>
 
-      <Hero />
+      <About ref={aboutRef} />
       <AdvantagesSection />
       <ScrollVideo />
-      <FeedbackSteps />
-      <Pricing />
-      <Reviews />
-      <Accordion />
+      <FeedbackSteps ref={howItWorksRef} />
+      <Pricing ref={pricingRef} />
+      <Reviews ref={reviewsRef} />
+      <Accordion ref={faqRef} />
 
       <Footer />
     </div>

@@ -1,17 +1,40 @@
-const navigationItems = ["About Us", "How it works", "Pricing", "FAQ", "Samples"];
+import { RefObject } from "react";
 
-const Navigations = () => {
+type NavigationProps = {
+  aboutRef: RefObject<HTMLElement>;
+  howItWorksRef: RefObject<HTMLElement>;
+  pricingRef: RefObject<HTMLElement>;
+  reviewsRef: RefObject<HTMLElement>;
+  faqRef: RefObject<HTMLElement>;
+};
+
+const Navigations = ({ aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavigationProps) => {
+  const scrollToSection = (ref: RefObject<HTMLElement>) => {
+    if (ref && ref.current) {
+      console.log("clicked true")
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    } else {
+      console.log("clicked false")
+    }
+  };
+
   return (
     <nav className="flex gap-8 items-center self-stretch px-px my-auto font-medium text-gray-800 max-md:max-w-full">
-      {navigationItems.map((item, index) => (
-        <a
-          key={index}
-          href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
-          className="self-stretch my-auto text-center"
-        >
-          {item}
-        </a>
-      ))}
+      <button onClick={() => scrollToSection(aboutRef)} className="self-stretch my-auto text-center">
+        About Us
+      </button>
+      <button onClick={() => scrollToSection(howItWorksRef)} className="self-stretch my-auto text-center">
+        How it works
+      </button>
+      <button onClick={() => scrollToSection(pricingRef)} className="self-stretch my-auto text-center">
+        Pricing
+      </button>
+      <button onClick={() => scrollToSection(reviewsRef)} className="self-stretch my-auto text-center">
+        Reviews
+      </button>
+      <button onClick={() => scrollToSection(faqRef)} className="self-stretch my-auto text-center">
+        FAQ
+      </button>
     </nav>
   );
 };
