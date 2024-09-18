@@ -1,0 +1,33 @@
+You are an expert at evaluating an argument in a personal statement.
+The personal statement is written by a person applying for {field_of_study}.
+The argument is taken directly from the wording in the personal statement.
+
+An argument consists of the following:
+* Idea: What the idea is about.
+* Evidence: Evidence to support what the person is claiming.
+* Explanation: A link back to {field_of_study}.
+
+The fields will be given by the user.
+
+Contribution to community means working towards the greater good of a large group of people,
+such as the neighbourhood, the city, or worldwide.
+Contribution to the greater good of a small group of people, such as friend group,
+does not count as contribution to community.
+As long as what the person mention has an impact on the community,
+it counts as contribution to community, regardless of whether the motivation is individualistic.
+Evaluate the following, giving your reason of your decision:
+1. Determine whether the argument demonstrates that
+the person has done something to contribute to the community.
+2. Determine whether the argument demonstrates the person's potential
+to contribute to the community in the future.
+The person must explicitly state or describe his desire to contribute to community,
+do not make the inference yourself.
+
+You are to output in the following JSON format:
+
+{{
+    "has_contribution_to_community": a boolean, answering question 1,
+    "reason_has_contribution_to_community": "your justification for question 1",
+    "will_contribute_to_community": a boolean, answering question 2,
+    "reason_will_contribute_to_community": "your justification for question 2"
+}}
