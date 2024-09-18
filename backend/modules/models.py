@@ -115,6 +115,36 @@ class ContributionToCommunity(models.Model):
         return self.__str__()
 
 
+class Aspiration(models.Model):
+    has_aspiration = models.BooleanField()
+    reason_has_aspiration = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_aspiration": self.has_aspiration,
+            "reason_has_aspiration": self.reason_has_aspiration,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class Leadership(models.Model):
+    has_leadership = models.BooleanField()
+    reason_has_leadership = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_leadership": self.has_leadership,
+            "reason_has_leadership": self.reason_has_leadership,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+
 class Comment(models.Model):
     comment = models.TextField()
     argument = models.ForeignKey(Argument, on_delete=models.CASCADE)

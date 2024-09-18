@@ -12,6 +12,7 @@ if __name__ == '__main__':
     from .reparagraph import ReParagrapher
     from .community import ContributionToCommunityIdentifier
     from .relevance import RelevanceIdentifier
+    from .aspiration import AspirationIdentifier
     from modules.models import Argument, PersonalStatement
     import json
 
@@ -73,10 +74,10 @@ if __name__ == '__main__':
             ),
         )
 
-    #suitability_result = CapabilityIdentifier().identify_capability(example2)
-    #print(suitability_result)
-    #interest_result = InterestIdentifier().identify_interest(example2)
-    #print(interest_result)
+    # suitability_result = CapabilityIdentifier().identify_capability(example2)
+    # print(suitability_result)
+    # interest_result = InterestIdentifier().identify_interest(example2)
+    # print(interest_result)
 
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
@@ -129,6 +130,9 @@ if __name__ == '__main__':
             ),
         )
 
-    community_result = ContributionToCommunityIdentifier(
-    ).identify_contribution_to_community(example4)
-    print(community_result)
+    # community_result = ContributionToCommunityIdentifier(
+    # ).identify_contribution_to_community(example1)
+    # print(community_result)
+
+    aspiration_result = AspirationIdentifier().identify_aspiration(example2)
+    print(aspiration_result)
