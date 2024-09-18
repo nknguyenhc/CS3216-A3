@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 import dotenv
+from datetime import timedelta
 
 # Load environment variables from .env file
 dotenv.load_dotenv()
@@ -79,16 +80,23 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 # Change when converting to prod
 SITE_URL = 'http://localhost:8000/'
 
+ALLOWED_HOSTS = ['*']
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost',
+    'http://127.0.0.1',
+    'http://0.0.0.0',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
