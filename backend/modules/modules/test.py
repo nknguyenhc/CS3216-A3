@@ -85,39 +85,39 @@ if __name__ == '__main__':
             ),
         )
 
-    # with open("modules/data/example2.json") as f:
-    #     data = json.load(f)
-    #     example2 = Argument(
-    #         idea=data["idea"],
-    #         evidence=data["evidence"],
-    #         explanation=data["explanation"],
-    #         personal_statement=PersonalStatement(
-    #             field_of_study=data["field_of_study"],
-    #         ),
-    #     )
+    with open("modules/data/example2.json") as f:
+        data = json.load(f)
+        example2 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
 
-    # with open("modules/data/example3.json") as f:
-    #     data = json.load(f)
-    #     example3 = Argument(
-    #         idea=data["idea"],
-    #         evidence=data["evidence"],
-    #         explanation=data["explanation"],
-    #         personal_statement=PersonalStatement(
-    #             field_of_study=data["field_of_study"],
-    #         ),
-    #     )
+    with open("modules/data/example3.json") as f:
+        data = json.load(f)
+        example3 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
 
-    # with open("modules/data/example4.json") as f:
-    #     data = json.load(f)
-    #     example4 = Argument(
-    #         idea=data["idea"],
-    #         evidence=data["evidence"],
-    #         explanation=data["explanation"],
-    #         personal_statement=PersonalStatement(
-    #             field_of_study=data["field_of_study"],
-    #         ),
-    #     )
+    with open("modules/data/example4.json") as f:
+        data = json.load(f)
+        example4 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
 
     community_result = ContributionToCommunityIdentifier(
-    ).identify_contribution_to_community(example1)
+    ).identify_contribution_to_community(example4)
     print(community_result)
