@@ -13,6 +13,7 @@ if __name__ == '__main__':
     from .community import ContributionToCommunityIdentifier
     from .relevance import RelevanceIdentifier
     from .aspiration import AspirationIdentifier
+    from .leadership import LeadershipIdentifier
     from modules.models import Argument, PersonalStatement
     import json
 
@@ -130,9 +131,23 @@ if __name__ == '__main__':
             ),
         )
 
+    with open("modules/data/example5.json") as f:
+        data = json.load(f)
+        example4 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
     # community_result = ContributionToCommunityIdentifier(
     # ).identify_contribution_to_community(example1)
     # print(community_result)
 
-    aspiration_result = AspirationIdentifier().identify_aspiration(example2)
-    print(aspiration_result)
+    # aspiration_result = AspirationIdentifier().identify_aspiration(example2)
+    # print(aspiration_result)
+
+    leadership_result = LeadershipIdentifier().identify_leadership(example3)
+    print(leadership_result)
