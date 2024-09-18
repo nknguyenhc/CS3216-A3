@@ -7,7 +7,8 @@ django.setup()
 load_dotenv()
 
 if __name__ == '__main__':
-    from .suitability import SuitabilityIdentifier
+    from .interest import InterestIdentifier
+    from .capability import CapabilityIdentifier
     from .reparagraph import ReParagrapher
     from modules.models import Argument, PersonalStatement
     import json
@@ -60,9 +61,11 @@ if __name__ == '__main__':
             reparagraphed_essay=data["reparagraphed_essay"]
         )
 
-    suitability_result = SuitabilityIdentifier().identify_suitability(example4)
+    suitability_result = CapabilityIdentifier().identify_capability(example2)
     print(suitability_result)
+    interest_result = InterestIdentifier().identify_interest(example2)
+    print(interest_result)
 
-    has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
-    print(has_conclusion)
-    print(reparagraph_result)
+    # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
+    # print(has_conclusion)
+    # print(reparagraph_result)
