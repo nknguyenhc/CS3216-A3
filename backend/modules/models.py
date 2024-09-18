@@ -96,6 +96,25 @@ class Capability(models.Model):
         return self.__str__()
 
 
+class ContributionToCommunity(models.Model):
+    has_contribution_to_community = models.BooleanField()
+    reason_has_contribution_to_community = models.TextField()
+    will_contribute_to_community = models.BooleanField()
+    reason_will_contribute_to_community = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_contribution_to_community": self.has_contribution_to_community,
+            "reason_has_contribution_to_community": self.reason_has_contribution_to_community,
+            "will_contribute_to_community": self.will_contribute_to_community,
+            "reason_will_contribute_to_community": self.reason_will_contribute_to_community,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+
 class Comment(models.Model):
     comment = models.TextField()
     argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
