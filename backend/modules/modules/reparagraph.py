@@ -6,7 +6,8 @@ import logging
 class ReParagrapher:
     def __init__(self,
                  reparagraph_system_prompt_path: str = "modules/modules/prompts/system/reparagraph.txt",
-                 reparagraph_user_prompt_path: str = "modules/modules/prompts/user/personal-statement.txt")
+                 reparagraph_user_prompt_path: str = "modules/modules/prompts/user/personal-statement.txt"
+                 ):
         with open(reparagraph_system_prompt_path, "r") as f:
             self.reparagraph_system_prompt_path = f.read()
 
@@ -15,7 +16,7 @@ class ReParagrapher:
 
         self.logger = logging.getLogger("ReParagrapher")
 
-    def reparagraph(self, personal_statement: PersonalStatement) -> PersonalStatement:
+    def reparagraph(self, personal_statement: PersonalStatement) -> tuple[bool, PersonalStatement]:
         """
         Reparagraph the essay in the personal statement.
         Write to database once finished.
@@ -29,11 +30,9 @@ class ReParagrapher:
             return None
         
         try:
-            reparagraphed_personal_statement = PersonalStatement.objects.create(
-                field_of_study=personal_statement.field_of_study,
-                essay=personal_statement.essay,
-                reparagraphed_essay=reparagraph_result
-            )
+            personal_statement.reparagraphed_essay = reparagraphed_essay
+            personal_statement.save()
+            return has_conclusion, personal_statement
         except Exception as e:
             self.logger.exception("Failed to return reparagraph personal statement")
             return None
@@ -52,11 +51,12 @@ class ReParagrapher:
         return completion.choices[0].message.content
 
     def _parse_result(self, result: str) -> tuple[bool, str]:
-        letter = result[0]
-        if letter == "T":
-            return True, result[2:]
-        elif letter == "F":
-            return False, result[2:]
+        lines = result.split("\n", 1)
+
+        if lines[0] == "T":
+            return True, lines[1]
+        elif lines[0] == "F":
+            return False, lines[1]
         else:
             return ValueError(f"Invalid result: {result}")
 
