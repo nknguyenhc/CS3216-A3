@@ -4,14 +4,23 @@ import { gapi } from 'gapi-script';
 import AuthForm from './AuthForm';
 import NavBar from './Navbar';
 
+// Extract CSRF token from cookies
+const getCSRFToken = () => {
+  const csrfCookie = document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='));
+  return csrfCookie ? csrfCookie.split('=')[1] : null;
+};
+
+// Axios setup
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-    baseURL: "http://localhost:8000",
-    withCredentials: true
-  });
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 
 const Authentication: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<boolean | null>(null);
@@ -32,6 +41,7 @@ const Authentication: React.FC = () => {
 
     gapi.load("client:auth2", start);
 
+    // Fetch current user data to check if logged in
     client.get("/api/user")
       .then((res: AxiosResponse) => {
         setCurrentUser(true);
@@ -45,21 +55,47 @@ const Authentication: React.FC = () => {
     setRegistrationToggle((prev) => !prev);
   };
 
-
+  // Registration handler
   const submitRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    client.post("/api/register", { email, username, password })
-      //.then(() => client.post("/api/login", { email, password }))
-      .then(() => setCurrentUser(true));
+    const csrfToken = getCSRFToken(); // Fetch CSRF token
+
+    client.post(
+      "/api/register",
+      { email, username, password },
+      { headers: { 'X-CSRFToken': csrfToken } } // Include CSRF token in request
+    )
+    .then(() => setCurrentUser(true))
+    .catch((error) => {
+      console.error("Registration failed:", error);
+    });
   };
 
+  // Login handler
   const submitLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    client.post("/api/login", { email, password }).then(() => setCurrentUser(true));
+    const csrfToken = getCSRFToken(); // Fetch CSRF token
+
+    client.post(
+      "/api/login",
+      { email, username, password },
+      { headers: { 'X-CSRFToken': csrfToken } } // Include CSRF token in request
+    )
+    .then(() => setCurrentUser(true))
+    .catch((error) => {
+      console.error("Login failed:", error);
+    });
   };
 
+  // Logout handler
   const submitLogout = () => {
-    client.post("/api/logout").then(() => setCurrentUser(false));
+    const csrfToken = getCSRFToken(); // Fetch CSRF token
+
+    client.post("/api/logout", {}, { headers: { 'X-CSRFToken': csrfToken } })
+    .then(() => setCurrentUser(false))
+    .catch((error) => {
+      console.error("Logout failed:", error);
+    });
   };
 
   return (
@@ -84,7 +120,7 @@ const Authentication: React.FC = () => {
             username={username}
             password={password}
             onEmailChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            onUsernameChange={() => {}}
+            onUsernameChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
             onPasswordChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             onSubmit={submitLogin}
           />

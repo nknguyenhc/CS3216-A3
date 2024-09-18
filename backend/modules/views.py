@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 import stripe
 from django.shortcuts import redirect
-from django.contrib.auth import get_user_model, login, logout
+from django.contrib.auth import get_user_model, login, logout, authenticate
+
 
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from .validations import custom_validation, validate_email, validate_password
@@ -63,20 +64,27 @@ class UserRegister(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
 
     def post(self, request):
         data = request.data
-        assert validate_email(data)
-        assert validate_password(data)
-        serializer = UserLoginSerializer(data=data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.check_user(data)
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+
+        if not email or not password or not username:
+            return Response({"error": "Email, username, and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = authenticate(request, email=email, username=username, password=password)
+
+        if user is not None:
             login(request, user)
+            serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class UserLogout(APIView):

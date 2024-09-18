@@ -34,7 +34,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       />
       <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
     </Form.Group>
-    {isRegistration && (
+    {/*isRegistration &&*/ (
       <Form.Group className="mb-4">
         <Form.Label>Username</Form.Label>
         <Form.Control
