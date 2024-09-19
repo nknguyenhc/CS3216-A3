@@ -1,5 +1,5 @@
-import React, { FormEvent, ChangeEvent } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, { FormEvent, ChangeEvent } from "react";
+import { Form, Button } from "react-bootstrap";
 
 interface AuthFormProps {
   isRegistration: boolean;
@@ -22,42 +22,45 @@ const AuthForm: React.FC<AuthFormProps> = ({
   onPasswordChange,
   onSubmit,
 }) => (
-  <Form onSubmit={onSubmit} className="w-full max-w-sm bg-white p-6 rounded-lg shadow-lg">
+  <Form onSubmit={onSubmit} className="w-full px-10">
     <Form.Group className="mb-4">
-      <Form.Label>Email address</Form.Label>
+      <Form.Label className="block">Email</Form.Label>
       <Form.Control
         type="email"
         placeholder="Enter email"
         value={email}
         onChange={onEmailChange}
-        className="border rounded-md"
+        className="w-full py-2 px-3 border rounded-md bg-gray-100"
       />
-      <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
     </Form.Group>
-    {/*isRegistration &&*/ (
+    {
       <Form.Group className="mb-4">
-        <Form.Label>Username</Form.Label>
+        <Form.Label className="block">Username</Form.Label>
         <Form.Control
           type="text"
           placeholder="Enter username"
           value={username}
           onChange={onUsernameChange}
-          className="border rounded-md"
+          className="w-full py-2 px-3 border rounded-md bg-gray-100"
         />
       </Form.Group>
-    )}
+    }
     <Form.Group className="mb-4">
-      <Form.Label>Password</Form.Label>
+      <Form.Label className="block">Password</Form.Label>
       <Form.Control
         type="password"
         placeholder="Password"
         value={password}
         onChange={onPasswordChange}
-        className="border rounded-md"
+        className="w-full py-2 px-3 border rounded-md bg-gray-100"
       />
     </Form.Group>
-    <Button variant="primary" type="submit">
-      Submit
+    <Button
+      className="w-full py-2 px-3 border rounded-md bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      variant="primary"
+      type="submit"
+    >
+      {isRegistration ? "Register" : "Sign In"}
     </Button>
   </Form>
 );

@@ -2,7 +2,7 @@ import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 're
 
 const clientId: string = '577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com';
 
-const LoginButton: React.FC = () => {
+const GoogleLoginButton: React.FC = () => {
 
     const onSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
         if ('profileObj' in response) {
@@ -28,4 +28,4 @@ const LoginButton: React.FC = () => {
     )
 }
 
-export default LoginButton;
+export default GoogleLoginButton;
