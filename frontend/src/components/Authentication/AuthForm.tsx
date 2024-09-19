@@ -60,7 +60,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
       variant="primary"
       type="submit"
     >
-      {isRegistration ? "Register" : "Sign In"}
+      {isRegistration ? "Sign Up" : "Sign In"}
     </Button>
   </Form>
 );

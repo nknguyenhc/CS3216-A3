@@ -8,18 +8,19 @@ interface PricingCardProps {
   period: string;
   features: Array<{ icon: React.ReactNode; text: string }>;
   url: string;
+  logo: string;
 }
 
-const PricingCard: React.FC<PricingCardProps> = ({ title, subtitle, description, price, period, features, url }) => {
+const PricingCard: React.FC<PricingCardProps> = ({ title, subtitle, description, price, period, features, url, logo }) => {
   return (
-    <section className="flex flex-col rounded-3xl max-w-[394px]">
+    <section className="flex flex-col rounded-3xl max-w-[500px]">
       <div className="flex items-end px-1 py-14 bg-white rounded-3xl border border-gray-100 border-solid shadow-sm">
         <div className="flex shrink-0 mt-44 w-10 bg-white bg-opacity-0 h-[352px]" />
         <div className="flex flex-col items-start self-stretch">
           <div className="flex gap-5">
             <img
               loading="lazy"
-              src="/assets/price-icon.png"
+              src={logo}
               className="object-contain shrink-0 rounded-2xl aspect-square w-[72px]"
               alt=""
             />

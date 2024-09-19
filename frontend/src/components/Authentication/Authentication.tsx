@@ -1,10 +1,11 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import axios, { AxiosResponse } from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
 import GoogleLogoutButton from "./GoogleLogoutButton";
+import { useAuth } from "./AuthenticationContext";
 
 // Extract CSRF token from cookies
 const getCSRFToken = () => {
@@ -23,7 +24,8 @@ const client = axios.create({
 });
 
 const Authentication: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<boolean | null>(null);
+  // const [currentUser, setCurrentUser] = useState<boolean | null>(null);
+  const { currentUser, setCurrentUser } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -66,7 +68,7 @@ const Authentication: React.FC = () => {
       .post("/api/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
-        navigate('/');
+        navigate("/");
       })
       .catch((error) => {
         console.error("Registration failed:", error);
@@ -82,7 +84,7 @@ const Authentication: React.FC = () => {
       .post("/api/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
-        navigate('/');
+        navigate("/");
       })
       .catch((error) => {
         console.error("Login failed:", error);
@@ -97,7 +99,7 @@ const Authentication: React.FC = () => {
       .post("/api/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
-        navigate('/');
+        navigate("/");
       })
       .catch((error) => {
         console.error("Logout failed:", error);
@@ -163,7 +165,7 @@ const Authentication: React.FC = () => {
                 <p>
                   Don't have an account?{" "}
                   <button onClick={updateFormBtn} className="text-blue-500 underline">
-                    Register now
+                    Sign Up
                   </button>
                 </p>
               )}

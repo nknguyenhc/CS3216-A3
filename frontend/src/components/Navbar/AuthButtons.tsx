@@ -1,21 +1,56 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Authentication/AuthenticationContext';
+import axios from 'axios';
+
+// Extract CSRF token from cookies
+const getCSRFToken = () => {
+  const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
+  return csrfCookie ? csrfCookie.split("=")[1] : null;
+};
+
+// Axios setup
+const client = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 
 const AuthButtons = () => {
+  const { currentUser, setCurrentUser } = useAuth();
   const navigate = useNavigate();
 
   const handleAuthentication = () => {
     navigate('/authentication');
   };
 
+  const handleLogout = async () => {
+    const csrfToken = getCSRFToken();
+
+    try {
+      await client.post("/api/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
+      setCurrentUser(false);
+      navigate('/');
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="flex gap-4 self-stretch font-bold whitespace-nowrap">
-      <button
-        className="gap-2.5 self-start px-4 py-3.5 text-sky-600 rounded-xl border border-sky-600 border-solid min-h-[50px]"
-        onClick={handleAuthentication}
-      >
-        Login
-      </button>
+      {currentUser ? (
+        <button
+          className="gap-2.5 self-start px-4 py-3.5 text-red-600 rounded-xl border border-red-600 border-solid min-h-[50px]"
+          onClick={handleLogout}
+        >
+          Log Out
+        </button>
+      ) : (
+        <button
+          className="gap-2.5 self-start px-4 py-3.5 text-sky-600 rounded-xl border border-sky-600 border-solid min-h-[50px]"
+          onClick={handleAuthentication}
+        >
+          Login / Sign Up
+        </button>
+      )}
     </div>
   );
 };

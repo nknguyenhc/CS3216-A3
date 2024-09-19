@@ -3,11 +3,10 @@ import { BannerLayer } from "react-scroll-parallax/dist/components/ParallaxBanne
 
 const Hero = () => {
   const background: BannerLayer = {
-    image:
-      "./assets/hero-image.jpeg",
+    image: "./assets/hero-image.jpeg",
     opacity: [1, 0.3],
     scale: [1, 1, "easeOutCubic"],
-    shouldAlwaysCompleteAnimation: true
+    shouldAlwaysCompleteAnimation: true,
   };
 
   const headline: BannerLayer = {
@@ -17,24 +16,21 @@ const Hero = () => {
     expanded: false,
     children: (
       <div className="absolute inset-0 flex items-center justify-center">
-        <h1 className="font-thin text-[10vw] text-white">App name</h1>
+        <h1 className="font-thin text-5xl text-white">Transform Your Future</h1>
       </div>
-    )
+    ),
   };
 
   const gradientOverlay: BannerLayer = {
     opacity: [0, 1, "easeOutCubic"],
     shouldAlwaysCompleteAnimation: true,
     expanded: false,
-    children: <div className="absolute inset-0 bg-gradient-to-t from-blue-custom via-blue-custom to-light-blue-custom" />
+    children: (
+      <div className="absolute inset-0 bg-gradient-to-t from-blue-custom via-blue-custom to-light-blue-custom" />
+    ),
   };
 
-  return (
-    <ParallaxBanner
-      layers={[background, headline, gradientOverlay]}
-      className="h-screen"
-    />
-  );
+  return <ParallaxBanner layers={[background, headline, gradientOverlay]} className="h-screen" />;
 };
 
 export default Hero;
