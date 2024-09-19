@@ -9,8 +9,8 @@ import Authentication from "./components/Authentication/Authentication";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
-      <Route index element={<Authentication />} />
-      { /* <Route index element={<LandingPage />} /> */ }
+      <Route index element={<LandingPage />} />
+      <Route path="/authentication" element={<Authentication />} />
       <Route path="/success" element={<SuccessPage />} />
       <Route path="/unsuccess" element={<FailedPage />} />
     </Route>

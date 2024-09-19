@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useNavigate } from 'react-router-dom';
 import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
@@ -45,6 +46,7 @@ const Authentication: React.FC = () => {
       .get("/api/user")
       .then((res: AxiosResponse) => {
         setCurrentUser(true);
+        navigate('/');
       })
       .catch(() => {
         setCurrentUser(false);
@@ -62,7 +64,10 @@ const Authentication: React.FC = () => {
 
     client
       .post("/api/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => setCurrentUser(true))
+      .then(() => {
+        setCurrentUser(true);
+        navigate('/');
+      })
       .catch((error) => {
         console.error("Registration failed:", error);
       });
@@ -75,7 +80,10 @@ const Authentication: React.FC = () => {
 
     client
       .post("/api/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => setCurrentUser(true))
+      .then(() => {
+        setCurrentUser(true);
+        navigate('/');
+      })
       .catch((error) => {
         console.error("Login failed:", error);
       });
@@ -87,25 +95,36 @@ const Authentication: React.FC = () => {
 
     client
       .post("/api/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => setCurrentUser(false))
+      .then(() => {
+        setCurrentUser(true);
+        navigate('/');
+      })
       .catch((error) => {
         console.error("Logout failed:", error);
       });
   };
 
+  const navigate = useNavigate();
+
   return (
-    <div className="flex flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-row min-h-screen bg-gray-100 overflow-hidden">
       {/* Left Column with Image */}
       <div
-        className="flex-1 flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url('/path-to-your-image.jpg')` }}
-      >
-        {/* Optional content inside the image section (if needed) */}
-      </div>
+        className="flex-1 justify-center bg-cover bg-center"
+        style={{ backgroundImage: `url('./assets/cover.jpeg')` }}
+      ></div>
 
       {/* Right Column with Auth Form */}
       <div className="flex-1 flex items-center justify-center bg-white">
         <div className="w-full px-8">
+          <div className="flex flex-col items-center justify-center mb-5">
+            <img
+              src="./assets/logo-no-background.png"
+              alt="Description of image"
+              className="w-1/2 md:w-1/3 lg:w-1/4 h-auto object-cover"
+            />
+          </div>
+
           <div className="flex flex-col items-center justify-center space-y-6">
             {registrationToggle ? (
               <AuthForm
@@ -148,12 +167,12 @@ const Authentication: React.FC = () => {
                   </button>
                 </p>
               )}
-            </div>
 
-            {/* Google Auth buttons */}
-            <div className="w-full space-y-4">
-              <GoogleLoginButton />
-              <GoogleLogoutButton />
+              {/* Google Auth buttons */}
+              <div className="mt-5">
+                <GoogleLoginButton />
+                <GoogleLogoutButton />
+              </div>
             </div>
 
             {/* Logout button only shown if the user is logged in */}
