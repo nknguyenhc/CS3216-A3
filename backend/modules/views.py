@@ -64,6 +64,7 @@ class UserRegister(APIView):
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
@@ -77,7 +78,8 @@ class UserLogin(APIView):
         if not email or not password or not username:
             return Response({"error": "Email, username, and password are required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = authenticate(request, email=email, username=username, password=password)
+        user = authenticate(request, email=email,
+                            username=username, password=password)
 
         if user is not None:
             login(request, user)

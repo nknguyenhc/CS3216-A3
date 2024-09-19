@@ -1,7 +1,6 @@
 from modules.models import PersonalStatement, Argument
 from openai import OpenAI
 
-
 class IdeaExtractor:
     def __init__(self,
                  idea_system_prompt_path: str = "modules/modules/prompts/system/idea.txt",
@@ -10,13 +9,8 @@ class IdeaExtractor:
             self.idea_system_prompt_path = f.read()
 
     def extract(self, personal_statement: PersonalStatement) -> list[Argument]:
-        #client = OpenAI()
-
-        openai.api_key = "" 
-        client = OpenAI(api_key=openai.api_key)
-
-
-        paragraphs = personal_statement.reparagraphed_essay.split("\n\n")
+        client = OpenAI()
+        paragraphs = personal_statement.reparagraphed_essay.split("\n")
         arguments = []
 
         for paragraph in paragraphs:
