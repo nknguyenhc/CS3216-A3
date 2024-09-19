@@ -1,20 +1,29 @@
-import logo from "./logo.svg";
-import "./App.scss";
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
+import { AuthProvider } from "./components/Authentication/AuthenticationContext";
 
-function App() {
+import LandingPage from "./pages/LandingPage";
+import MainLayout from "./layouts/MainLayout";
+import SuccessPage from "./pages/SuccessPage";
+import FailedPage from "./pages/UnsuccessPage";
+import Authentication from "./components/Authentication/Authentication";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<MainLayout />}>
+      <Route index element={<LandingPage />} />
+      <Route path="/authentication" element={<Authentication />} />
+      <Route path="/success" element={<SuccessPage />} />
+      <Route path="/unsuccess" element={<FailedPage />} />
+    </Route>
+  )
+);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
-}
+};
 
 export default App;
