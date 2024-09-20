@@ -11,47 +11,37 @@ interface PricingPlan {
   period: string;
   features: { icon: React.ReactNode; text: string }[];
   url: string;
+  logo: string;
 }
 
 const pricingPlans: PricingPlan[] = [
   {
-    title: "Basic",
-    subtitle: "3 revisions",
-    description: "Perfect for users who need feedback on a few personal statement drafts.",
+    title: "Oxbridge",
+    subtitle: "Personal Statement Review",
+    description: "Provides feedback on their Oxbridge personal statement.",
     price: "$10",
     period: "/upload",
     features: [
-      { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
+      { icon: <FaCheckCircle className="text-blue-500" />, text: "Constructive feedback on key sentences." },
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
-      { icon: <FaTimes className="text-red-500" />, text: "Correct Grammar Errors" },
+      { icon: <FaCheckCircle className="text-blue-500" />, text: "Feedback within 5 minutes" },
     ],
-    url: `${API_URL}/api/stripe/basic/create-checkout-session`,
+    url: `${API_URL}/api/stripe/oxbridge/create-checkout-session`,
+    logo: '/assets/oxbridge-logo.png',
   },
   {
-    title: "Plus",
-    subtitle: "5 revisions",
-    description: "Ideal for users who need feedback on several drafts.",
-    price: "$8",
+    title: "Jardine",
+    subtitle: "Personal Statement Review",
+    description: "Provides feedback on their Jardine personal statement.",
+    price: "$15",
     period: "/upload",
     features: [
-      { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
+      { icon: <FaCheckCircle className="text-blue-500" />, text: "Constructive feedback on key sentences." },
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
-      { icon: <FaTimes className="text-red-500" />, text: "Correct Grammar Errors" },
+      { icon: <FaCheckCircle className="text-blue-500" />, text: "Feedback within 5 minutes" },
     ],
-    url: `${API_URL}/api/stripe/plus/create-checkout-session`,
-  },
-  {
-    title: "Pro",
-    subtitle: "10 revisions",
-    description: "Best for users who want to perfect their personal statement.",
-    price: "$5",
-    period: "/upload",
-    features: [
-      { icon: <FaCheckCircle className="text-blue-500" />, text: "Customised Feedback" },
-      { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
-      { icon: <FaCheckCircle className="text-blue-500" />, text: "Correct Grammar Errors" },
-    ],
-    url: `${API_URL}/api/stripe/pro/create-checkout-session`,
+    url: `${API_URL}/api/stripe/jardine/create-checkout-session`,
+    logo: '/assets/jardine-logo.png',
   }
 ];
 
@@ -72,6 +62,7 @@ const Pricing = forwardRef<HTMLDivElement, {}>((_, ref) => {
             period={plan.period}
             features={plan.features}
             url={plan.url}
+            logo={plan.logo}
           />
         ))}
       </div>

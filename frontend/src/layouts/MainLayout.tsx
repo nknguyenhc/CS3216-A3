@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import { useRef } from "react";
 import { RefsProvider } from "../context/RefsContext";
@@ -18,15 +18,22 @@ const MainLayout = () => {
     faqRef,
   };
 
+  const location = useLocation();
+  const showNavBarPaths = ["/", "/upload"];
+
+  const shouldShowNavBar = showNavBarPaths.includes(location.pathname);
+
   return (
     <div>
-      <Navbar
-        aboutRef={aboutRef}
-        howItWorksRef={howItWorksRef}
-        pricingRef={pricingRef}
-        reviewsRef={reviewsRef}
-        faqRef={faqRef}
-      />
+      {shouldShowNavBar && (
+        <Navbar
+          aboutRef={aboutRef}
+          howItWorksRef={howItWorksRef}
+          pricingRef={pricingRef}
+          reviewsRef={reviewsRef}
+          faqRef={faqRef}
+        />
+      )}
       <div className="bg-blue-custom">
         <RefsProvider value={refs}>
           <Outlet />
