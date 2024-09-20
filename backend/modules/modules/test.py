@@ -10,13 +10,14 @@ if __name__ == '__main__':
     from .interest import InterestIdentifier
     from .capability import CapabilityIdentifier
     from .reparagraph import ReParagrapher
+    from .idea_extractor import IdeaExtractor
     from .community import ContributionToCommunityIdentifier
     from .relevance import RelevanceIdentifier
     from .aspiration import AspirationIdentifier
     from .leadership import LeadershipIdentifier
     from modules.models import Argument, PersonalStatement
     import json
-
+    '''
     with open("modules/modules/tests/example1.json") as f:
         data = json.load(f)
         example1 = Argument(
@@ -57,6 +58,7 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
+    '''
     with open("modules/modules/tests/example_personal_statement/example1.json") as f:
         data = json.load(f)
         example_ps = PersonalStatement(
@@ -64,6 +66,7 @@ if __name__ == '__main__':
             essay=data["essay"],
             reparagraphed_essay=data["reparagraphed_essay"]
         )
+    '''
     with open("modules/modules/tests/example_relevance/example5.json") as f:
         data = json.load(f)
         example5 = Argument(
@@ -74,6 +77,10 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
+    '''
+
+    extractor_result = IdeaExtractor().extract(example_ps)
+    print(extractor_result)
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
@@ -87,6 +94,7 @@ if __name__ == '__main__':
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
 
+    '''
     with open("modules/data/example1.json", encoding="utf-8") as f:
         data = json.load(f)
         example1 = Argument(
@@ -151,3 +159,4 @@ if __name__ == '__main__':
 
     leadership_result = LeadershipIdentifier().identify_leadership(example3)
     print(leadership_result)
+    '''
