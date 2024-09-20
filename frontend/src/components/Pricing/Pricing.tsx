@@ -26,7 +26,7 @@ const pricingPlans: PricingPlan[] = [
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Feedback within 5 minutes" },
     ],
-    url: `${API_URL}/api/stripe/basic/create-checkout-session`,
+    url: `${API_URL}/api/stripe/oxbridge/create-checkout-session`,
     logo: '/assets/oxbridge-logo.png',
   },
   {
@@ -40,7 +40,7 @@ const pricingPlans: PricingPlan[] = [
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Overall Feedback" },
       { icon: <FaCheckCircle className="text-blue-500" />, text: "Feedback within 5 minutes" },
     ],
-    url: `${API_URL}/api/stripe/plus/create-checkout-session`,
+    url: `${API_URL}/api/stripe/jardine/create-checkout-session`,
     logo: '/assets/jardine-logo.png',
   }
 ];

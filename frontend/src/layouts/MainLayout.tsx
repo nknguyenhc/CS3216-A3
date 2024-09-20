@@ -19,13 +19,13 @@ const MainLayout = () => {
   };
 
   const location = useLocation();
-  const hideNavBarPaths = ["/authentication"];
+  const showNavBarPaths = ["/", "/upload"];
 
-  const shouldHideNavBar = hideNavBarPaths.includes(location.pathname);
+  const shouldShowNavBar = showNavBarPaths.includes(location.pathname);
 
   return (
     <div>
-      {!shouldHideNavBar && (
+      {shouldShowNavBar && (
         <Navbar
           aboutRef={aboutRef}
           howItWorksRef={howItWorksRef}

@@ -17,14 +17,13 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # Your Stripe API key (TODO: REMOVE THIS)
-stripe.api_key = ''
+stripe.api_key = 'sk_test_51Pz9EL09qdif5frt3zey8048lZqdn0eQvneaAvwIIGMJ2L1A4cEy3G1fDidul7rqTUPcWLncI3NuHAcJmF1CHZdF004AoVkPGT'
 
 
 class StripeCheckoutView(APIView):
     PRICE_IDS = {
-        'basic': 'price_1PzgYw09qdif5frtyShpIhOb',
-        'plus': 'price_1PzgYF09qdif5frthtss0TgS',
-        'pro': 'price_1PzgYR09qdif5frtVBee9MYg'
+        'oxbridge': 'price_1Q0vbs09qdif5frtIQGhV2wZ',
+        'jardine': 'price_1Q0vcc09qdif5frtwu0u9UWg'
     }
 
     def post(self, request, plan_type):
