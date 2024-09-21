@@ -246,3 +246,18 @@ class GeneralComment(models.Model):
 
     def __repr__(self):
         return self.__str__()
+
+
+class UnwantedLanguage(models.Model):
+    has_unwanted_language = models.BooleanField()
+    has_unwanted_language_reason = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_unwanted_language": self.has_unwanted_language,
+            "has_unwanted_language_reason": self.has_unwanted_language_reason,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()

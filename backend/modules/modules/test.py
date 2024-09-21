@@ -17,6 +17,7 @@ if __name__ == '__main__':
     from .leadership import LeadershipIdentifier
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
+    from .unwanted_language import UnwantedLanguageIdentifier
     from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
     import json
 
@@ -119,6 +120,7 @@ if __name__ == '__main__':
     print(specificity_result)
     '''
 
+    '''
     with open("modules/modules/tests/comments/argument_evaluator.json") as f:
         data = json.load(f)
 
@@ -164,7 +166,22 @@ if __name__ == '__main__':
         )
 
     relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
-    print(relevance_comment)        
+    print(relevance_comment) 
+    '''
+
+    with open("modules/modules/tests/language/example2.json") as f:
+        data = json.load(f)
+        example1 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    unwanted_language_result = UnwantedLanguageIdentifier().identify_unwanted_language(example1)
+    print(unwanted_language_result)
 
     #specificity_result = SpecificityIdentifier().identify_specificity(example3)
     #print(specificity_result)

@@ -120,9 +120,7 @@ class CommentCrafter:
 
         if interest_or_capable and not argument.specificity.is_specific:
             output += create_completion(
-                self.specificity_good_system_prompt.format(
-                    field_of_study=argument.argument.personal_statement.field_of_study
-                ),
+                self.specificity_good_system_prompt,
                 self.specificity_user_prompt.format(
                     is_specific=argument.specificity.is_specific,
                     is_capable_reason=argument.specificity.reason,
@@ -134,9 +132,7 @@ class CommentCrafter:
 
         elif not interest_or_capable:
             output += create_completion(
-                self.specificity_good_system_prompt.format(
-                    field_of_study=argument.argument.personal_statement.field_of_study
-                ),
+                self.specificity_good_system_prompt,
                 self.specificity_user_prompt.format(
                     is_specific=argument.specificity.is_specific,
                     is_capable_reason=argument.specificity.reason,
