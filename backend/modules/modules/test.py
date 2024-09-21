@@ -16,8 +16,10 @@ if __name__ == '__main__':
     from .aspiration import AspirationIdentifier
     from .leadership import LeadershipIdentifier
     from .specificity import SpecificityIdentifier
-    from modules.models import Argument, PersonalStatement
+    from .comment import CommentCrafter
+    from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
     import json
+
     '''
     with open("modules/modules/tests/example1.json") as f:
         data = json.load(f)
@@ -101,7 +103,7 @@ if __name__ == '__main__':
     extractor_result = IdeaExtractor().extract(example_ps)
     print(extractor_result)
     '''
-    
+    '''
     with open("modules/modules/tests/example3.json") as f:
         data = json.load(f)
         example3 = Argument(
@@ -115,6 +117,40 @@ if __name__ == '__main__':
 
     specificity_result = SpecificityIdentifier().identify_specificity(example3)
     print(specificity_result)
+    '''
+
+    with open("modules/modules/tests/comments/relevance.json") as f:
+        data = json.load(f)
+
+        argument = Argument(
+            idea=data["argument"]["idea"],
+            evidence=data["argument"]["evidence"],
+            explanation=data["argument"]["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+        relevance = Relevance(
+            is_relevant=data["is_relevant"],
+            reason=data["reason"],
+            argument=argument
+        )        
+
+        argument_evaluations = ArgumentEvaluations(
+            argument=argument,
+            specificity=None,
+            relevance=relevance,
+            interest=None,
+            capability=None
+        )
+
+    relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
+    print(relevance_comment)        
+
+    #specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    #print(specificity_result)
+
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
