@@ -15,6 +15,7 @@ if __name__ == '__main__':
     from .relevance import RelevanceIdentifier
     from .aspiration import AspirationIdentifier
     from .leadership import LeadershipIdentifier
+    from .specificity import SpecificityIdentifier
     from modules.models import Argument, PersonalStatement
     import json
     '''
@@ -58,7 +59,7 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
-    '''
+
     with open("modules/modules/tests/example_personal_statement/example1.json") as f:
         data = json.load(f)
         example_ps = PersonalStatement(
@@ -66,7 +67,18 @@ if __name__ == '__main__':
             essay=data["essay"],
             reparagraphed_essay=data["reparagraphed_essay"]
         )
-    '''
+    
+    with open("modules/modules/tests/example3.json") as f:
+        data = json.load(f)
+        example3 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
     with open("modules/modules/tests/example_relevance/example5.json") as f:
         data = json.load(f)
         example5 = Argument(
@@ -77,13 +89,36 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
-    '''
+
+    with open("modules/modules/tests/example_personal_statement/example1.json") as f:
+        data = json.load(f)
+        example_ps = PersonalStatement(
+            field_of_study=data["field_of_study"],
+            essay=data["essay"],
+            reparagraphed_essay=data["reparagraphed_essay"]
+        )
 
     extractor_result = IdeaExtractor().extract(example_ps)
     print(extractor_result)
+    '''
+    
+    with open("modules/modules/tests/example3.json") as f:
+        data = json.load(f)
+        example3 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    print(specificity_result)
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
+
     # interest_result = InterestIdentifier().identify_interest(example2)
     # print(interest_result)
 

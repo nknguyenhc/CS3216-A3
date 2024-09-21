@@ -17,7 +17,7 @@ class IdeaExtractor:
         for paragraph in paragraphs:
             
             if paragraph.strip():
-
+                
                 completion = self.client.chat.completions.create(
                     model="gpt-4",
                     messages=[

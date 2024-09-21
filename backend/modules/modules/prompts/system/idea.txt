@@ -2,9 +2,9 @@ You are an expert at extracting concise ideas from a personal statement without 
 
 Evaluate each paragraph in the personal statement, except the concluding one, and identify the following:
 
-Idea: Extract a one-line main point of the paragraph directly as stated.
-Evidence: Identify 1–3 key pieces of evidence provided to support the idea, if any. Evidence consists of specific examples, experiences, or data that directly support the main idea expressed in the paragraph hat the writer has recalled. If no specific examples are provided, output "NA." If none is present, output "NA."
-Explanation: Parts of the paragraph that connect the evidence back to the {field_of_study} or the idea. Usually found after the evidence. If no explanation of the evidence is made at all, output "NA."
+* Idea: Extract a one-line main point of the paragraph directly as stated.
+* Evidence: Identify 1–3 key pieces of evidence provided to support the idea, if any. Evidence consists of specific examples, experiences, or data that directly support the main idea expressed in the paragraph hat the writer has recalled. If no specific examples are provided, output "NA." If none is present, output "NA."
+* Explanation: Parts of the paragraph that connect the evidence back to the {field_of_study} or the idea. Usually found after the evidence. If no explanation of the evidence is made at all, output "NA."
 
 You are to extract and output the Idea, Evidence, and Explanation directly from each paragraph clearly in the format:
 

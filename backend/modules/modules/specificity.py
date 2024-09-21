@@ -1,28 +1,27 @@
 from modules.models import Argument, Specificity
+from openai import OpenAI
+import openai
+import re
+
 
 class SpecificityIdentifier:
     def __init__(self,
-                 specificity_terms_system_prompt: str = "modules/modules/prompts/system/specificity-terms.txt",
-                 specificity_experience_system_prompt: str = "modules/modules/prompts/system/specificity-experience.txt",
-                 argument_user_prompt: str = "modules/modules/prompts/user/argument.txt",
+                 specificity_system_prompt_path: str = "modules/modules/prompts/system/specificity.txt",
+                 argument_user_prompt_path: str = "modules/modules/prompts/user/argument.txt",
                  ):
-        with open(specificity_terms_system_prompt, "r") as f:
-            self.specificity_terms_system_prompt = f.read()
+        with open(specificity_system_prompt_path, "r") as f:
+            self.specificity_system_prompt = f.read()
 
-        with open(specificity_experience_system_prompt, "r") as f:
-            self.specificity_experience_system_prompt = f.read()
+        with open(argument_user_prompt_path, "r") as f:
+            self.argument_user_prompt = f.read()
 
-        with open(argument_user_prompt, "r") as f:
-            self.argument_user_prompt_path = f.read()
+        self.client = openai.OpenAI(api_key="")
 
-    def identify_specificity_experience(self, argument: Argument) -> Specificity:
-        client = OpenAI()
-        completion = client.chat.completions.create(
+    def identify_specificity(self, argument: Argument) -> str:
+        completion = self.client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": self.specificity_terms_system_prompt.format(
-                    field_of_study=argument.personal_statement.field_of_study
-                )},
+                {"role": "system", "content": self.specificity_system_prompt},
                 {"role": "user", "content": self.argument_user_prompt.format(
                     idea=argument.idea,
                     evidence=argument.evidence,
@@ -31,44 +30,33 @@ class SpecificityIdentifier:
             ]
         )
 
-        content = completion.choices[0].message.content
-        
-        is_specific = content.get("isSpecific") == "T"
-        reason = content.get("reason", "")
+        response_data = completion.choices[0].message.content
 
-        specificity = Specificity.objects.create(
-            is_specific=is_specific,
-            reason=reason,
-            argument=argument
+        print(response_data)
+
+        is_specific = re.search(
+            r'Specific:\s*(.*?)(?=\s*Reason:)', response_data).group(1).strip()
+        reason = re.search(r'Reason:\s*(.*)', response_data).group(1).strip()
+
+        self.save_specificity_to_db(
+            is_specific, reason, argument
         )
 
-        return specificity
-    
-    def identify_specificity_terms(self, argument: Argument) -> Specificity:
-        client = OpenAI()
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": self.specificity_terms_system_prompt.format(
-                    field_of_study=argument.personal_statement.field_of_study
-                )},
-                {"role": "user", "content": self.argument_user_prompt.format(
-                    idea=argument.idea,
-                    evidence=argument.evidence,
-                    explanation=argument.explanation,
-                )},
-            ]
-        )
+        return is_specific
 
-        content = completion.choices[0].message.content
-        
-        is_specific = content.get("isSpecific") == "T"
-        reason = content.get("reason", "")
+    def save_specificity_to_db(self, is_specific: str, reason: str, argument: Argument):
+        if not is_specific or not reason or not argument:
+            raise ValueError("All fields must be provided")
 
-        specificity = Specificity.objects.create(
-            is_specific=is_specific,
-            reason=reason,
-            argument=argument
-        )
+        try:
+            argument.personal_statement.save()
+            argument.save()
 
-        return specificity
+            Specificity.objects.create(
+                is_specific=True if is_specific == "T" else False,
+                reason=reason,
+                argument=argument
+            )
+
+        except Exception as e:
+            raise Exception("Failed to save specificity") from e
