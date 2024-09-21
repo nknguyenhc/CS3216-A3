@@ -104,22 +104,25 @@ class JardineCommentCrafter:
     def _craft_good_comment(self, argument: JardineArgumentEvaluations) -> Comment:
         self.logger.info("Crafting good comment")
         client = OpenAI()
-        system_message = self.good_comment_prompt
+        reasons = f"\n<specificity_reason>{argument.specificity.reason}</specificity_reason>\n"
         if argument.capability.is_capable:
-            system_message += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
+            reasons += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
         if argument.aspiration.has_aspiration:
-            system_message += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
+            reasons += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
         if argument.leadership.has_leadership:
-            system_message += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
+            reasons += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
         if argument.contribution_to_community.has_contribution_to_community:
-            system_message += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
+            reasons += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
         if argument.contribution_to_community.will_contribute_to_community:
-            system_message += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
+            reasons += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
 
         completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": system_message},
+                {"role": "system", "content": self.good_comment_prompt.format(
+                    field_of_study=argument.argument.personal_statement.field_of_study,
+                    reasons=reasons,
+                )},
                 {"role": "user", "content": self.argument_prompt.format(
                     idea=argument.argument.idea,
                     evidence=argument.argument.evidence,

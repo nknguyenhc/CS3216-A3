@@ -424,22 +424,58 @@ if __name__ == '__main__':
             ),
         )
 
-    # specificity_result = SpecificityIdentifier().identify_specificity(oxbridge_example2)
+    with open("modules/data/evaluations/example1.json", encoding="utf-8") as f:
+        data = json.load(f)
+        example1_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=Specificity(
+                is_specific=True,
+                reason=data["specificity"]
+            ),
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason="",
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=True,
+                reason_has_contribution_to_community=data["contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community="",
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration="",
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership="",
+            ),
+        )
+
+    # specificity_result = SpecificityIdentifier().identify_specificity(example1)
     # print(specificity_result)
 
-    # capability_result = CapabilityIdentifier().identify_capability(oxbridge_example2)
+    # capability_result = CapabilityIdentifier().identify_capability(example1)
     # print(capability_result)
 
     # community_result = ContributionToCommunityIdentifier(
-    # ).identify_contribution_to_community(oxbridge_example2)
+    # ).identify_contribution_to_community(example1)
     # print(community_result)
 
-    # aspiration_result = AspirationIdentifier().identify_aspiration(oxbridge_example2)
+    # aspiration_result = AspirationIdentifier().identify_aspiration(example1)
     # print(aspiration_result)
 
-    # leadership_result = LeadershipIdentifier().identify_leadership(oxbridge_example2)
+    # leadership_result = LeadershipIdentifier().identify_leadership(example1)
     # print(leadership_result)
 
     jardine_comment = JardineCommentCrafter().craft_comment(
-        oxbridge_example2_evaluations)
+        example1_evaluations)
     print(jardine_comment)
