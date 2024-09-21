@@ -200,7 +200,7 @@ if __name__ == '__main__':
     unwanted_language_result = UnwantedLanguageIdentifier().identify_unwanted_language(example1)
     print(unwanted_language_result)
     '''
-
+    '''
     with open("modules/modules/tests/fact_check/example2.json") as f:
         data = json.load(f)
         example1 = Argument(
@@ -211,6 +211,7 @@ if __name__ == '__main__':
                 field_of_study=data["field_of_study"],
             ),
         )
+    '''
 
     # fact_check_result = FactCheckIdentifier().identify_fact_check(example1)
     # print(fact_check_result)
@@ -227,6 +228,8 @@ if __name__ == '__main__':
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
     # print(reparagraph_result)
+
+    exit(0)
 
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
