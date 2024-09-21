@@ -30,8 +30,6 @@ class SpecificityIdentifier:
 
         response_data = completion.choices[0].message.content
 
-        print(response_data)
-
         is_specific = re.search(
             r'Specific:\s*(.*?)(?=\s*Reason:)', response_data).group(1).strip()
         reason = re.search(r'Reason:\s*(.*)', response_data).group(1).strip()

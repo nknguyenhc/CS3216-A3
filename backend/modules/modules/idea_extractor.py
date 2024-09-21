@@ -34,10 +34,6 @@ class IdeaExtractor:
 
                 response_data = completion.choices[0].message.content
 
-                #response_data = "Idea: testing. Evidence: testing. Explanation: testing."
-
-                print(response_data)
-
                 idea = re.search(r'Idea:\s*(.*?)(?=\s*Evidence:)', response_data).group(1).strip()
                 evidence = re.search(r'Evidence:\s*(.*?)(?=\s*Explanation:)', response_data).group(1).strip()
                 explanation = re.search(r'Explanation:\s*(.*)', response_data).group(1).strip()
