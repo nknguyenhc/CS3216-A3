@@ -11,6 +11,10 @@ The fields will be given by the user.
 Determine whether the argument is specific.
 Specificity means either involving details that are personal to the person,
 or details of technical knowledge that layman cannot give. The link between sub-points must be clear.
+Name-dropping events is not sufficient, the argument must show
+the involvement of the person in the events.
+Name-dropping technical terms is not sufficient, the argument must show
+the person's understanding of the relevant technical concepts.
 
 You are to first output a letter, either "T" or "F",
 where "T" means the argument is specific,
