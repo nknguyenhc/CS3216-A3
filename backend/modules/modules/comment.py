@@ -8,11 +8,11 @@ class CommentCrafter:
                  relevance_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/relevance_good.txt",
                  relevance_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/relevance_lack.txt",
                  interest_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/interest_good.txt",
-                 interest_bad_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/interest_bad.txt",
+                 interest_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/interest_lack.txt",
                  capability_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/capability_good.txt",
-                 capability_bad_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/capability_bad.txt",
+                 capability_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/capability_lack.txt",
                  specificity_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_good.txt",
-                 specificity_bad_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_bad.txt",
+                 specificity_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_lack.txt",
                  relevance_user_prompt_path: str = "modules/modules/prompts/user/relevance.txt",
                  interest_user_prompt_path: str = "modules/modules/prompts/user/interest.txt",
                  specificity_user_prompt_path: str = "modules/modules/prompts/user/specificity.txt",
@@ -25,16 +25,16 @@ class CommentCrafter:
             relevance_lack_system_prompt_path)
         self.interest_good_system_prompt = self.load_prompt(
             interest_good_system_prompt_path)
-        self.interest_bad_system_prompt = self.load_prompt(
-            interest_bad_system_prompt_path)
+        self.interest_lack_system_prompt = self.load_prompt(
+            interest_lack_system_prompt_path)
         self.capability_good_system_prompt = self.load_prompt(
             capability_good_system_prompt_path)
-        self.capability_bad_system_prompt = self.load_prompt(
-            capability_bad_system_prompt_path)
+        self.capability_lack_system_prompt = self.load_prompt(
+            capability_lack_system_prompt_path)
         self.specificity_good_system_prompt = self.load_prompt(
             specificity_good_system_prompt_path)
-        self.specificity_bad_system_prompt = self.load_prompt(
-            specificity_bad_system_prompt_path)
+        self.specificity_lack_system_prompt = self.load_prompt(
+            specificity_lack_system_prompt_path)
         self.relevance_user_prompt = self.load_prompt(
             relevance_user_prompt_path)
         self.interest_user_prompt = self.load_prompt(interest_user_prompt_path)
@@ -78,7 +78,7 @@ class CommentCrafter:
 
         else:
 
-            output = None
+            output = ""
 
             completion = client.chat.completions.create(
                 model="gpt-4o",
