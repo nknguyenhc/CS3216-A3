@@ -19,7 +19,22 @@ if __name__ == '__main__':
     from .comment import CommentCrafter
     from .unwanted_language import UnwantedLanguageIdentifier
     from .fact_check import FactCheckIdentifier
-    from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement, FactCheck, UnwantedLanguage
+    from .comment_jardine import JardineCommentCrafter
+    from modules.models import (
+        Argument,
+        Specificity,
+        Relevance,
+        Interest,
+        Capability,
+        ArgumentEvaluations,
+        PersonalStatement,
+        FactCheck,
+        UnwantedLanguage,
+        ContributionToCommunity,
+        Aspiration,
+        Leadership,
+        JardineArgumentEvaluations,
+    )
     import json
 
     '''
@@ -197,12 +212,11 @@ if __name__ == '__main__':
             ),
         )
 
-    fact_check_result = FactCheckIdentifier().identify_fact_check(example1)
-    print(fact_check_result)
+    # fact_check_result = FactCheckIdentifier().identify_fact_check(example1)
+    # print(fact_check_result)
 
-    #specificity_result = SpecificityIdentifier().identify_specificity(example3)
-    #print(specificity_result)
-
+    # specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    # print(specificity_result)
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
@@ -217,7 +231,6 @@ if __name__ == '__main__':
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
 
-    '''
     with open("modules/data/example1.json", encoding="utf-8") as f:
         data = json.load(f)
         example1 = Argument(
@@ -264,7 +277,7 @@ if __name__ == '__main__':
 
     with open("modules/data/example5.json") as f:
         data = json.load(f)
-        example4 = Argument(
+        example5 = Argument(
             idea=data["idea"],
             evidence=data["evidence"],
             explanation=data["explanation"],
@@ -273,13 +286,106 @@ if __name__ == '__main__':
             ),
         )
 
+    with open("modules/data/poor_example.json") as f:
+        data = json.load(f)
+        poor_example = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    with open("modules/data/poor_example2.json") as f:
+        data = json.load(f)
+        poor_example2 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    with open("modules/data/evaluations/poor_example.json") as f:
+        data = json.load(f)
+        poor_example_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=None,
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason=data["no_capability"],
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community=data["no_contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community=data["no_potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration=data["no_aspiration"],
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership=data["no_leadership"],
+            ),
+        )
+
+    with open("modules/data/evaluations/poor_example2.json") as f:
+        data = json.load(f)
+        poor_example_evaluations2 = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=None,
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason=data["no_capability"],
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community=data["no_contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community=data["no_potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration=data["no_aspiration"],
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership=data["no_leadership"],
+            ),
+        )
+
+    # capability_result = CapabilityIdentifier().identify_capability(poor_example2)
+    # print(capability_result)
+
     # community_result = ContributionToCommunityIdentifier(
-    # ).identify_contribution_to_community(example1)
+    # ).identify_contribution_to_community(poor_example)
     # print(community_result)
 
-    # aspiration_result = AspirationIdentifier().identify_aspiration(example2)
+    # aspiration_result = AspirationIdentifier().identify_aspiration(poor_example2)
     # print(aspiration_result)
 
-    leadership_result = LeadershipIdentifier().identify_leadership(example3)
-    print(leadership_result)
-    '''
+    # leadership_result = LeadershipIdentifier().identify_leadership(poor_example2)
+    # print(leadership_result)
+
+    jardine_comment = JardineCommentCrafter().craft_comment(poor_example_evaluations2)
+    print(jardine_comment)
