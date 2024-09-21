@@ -46,7 +46,7 @@ class RelevanceIdentifier:
                 {"role": "system", "content": self.relevance_system_prompt_path.format(
                     field_of_study=argument.personal_statement.field_of_study
                 )},
-                {"role": "system", "content": self.relevance_user_prompt_path.format(
+                {"role": "user", "content": self.relevance_user_prompt_path.format(
                     idea=argument.idea,
                     evidence=argument.evidence,
                     explanation=argument.explanation
