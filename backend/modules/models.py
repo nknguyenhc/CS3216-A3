@@ -202,11 +202,13 @@ class Leadership(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
+    is_good = models.BooleanField()
     argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
 
     def __str__(self):
         return json.dumps({
             "comment": self.comment,
+            "is_good": self.is_good,
         }, indent=4)
 
     def __repr__(self):
@@ -225,6 +227,33 @@ class ArgumentEvaluations(models.Model):
             "specificity": self.specificity,
             "relevance": self.relevance,
             "suitability": self.suitability,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+    class Meta:
+        managed = False
+
+
+class JardineArgumentEvaluations(models.Model):
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+    specificity = models.ForeignKey(Specificity, on_delete=models.CASCADE)
+    relevance = models.ForeignKey(Relevance, on_delete=models.CASCADE)
+    capability = models.ForeignKey(Capability, on_delete=models.CASCADE)
+    contribution_to_community = models.ForeignKey(
+        ContributionToCommunity, on_delete=models.CASCADE)
+    aspiration = models.ForeignKey(Aspiration, on_delete=models.CASCADE)
+    leadership = models.ForeignKey(Leadership, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "specificity": self.specificity,
+            "relevance": self.relevance,
+            "capability": self.capability,
+            "contribution_to_community": self.contribution_to_community,
+            "aspiration": self.aspiration,
+            "leadership": self.leadership,
         }, indent=4)
 
     def __repr__(self):
@@ -261,7 +290,8 @@ class UnwantedLanguage(models.Model):
 
     def __repr__(self):
         return self.__str__()
-    
+
+
 class FactCheck(models.Model):
     has_fake_fact = models.BooleanField()
     has_fake_fact_reason = models.TextField()
