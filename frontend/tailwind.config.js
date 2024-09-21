@@ -15,6 +15,9 @@ module.exports = {
         'grey-blue-custom': '#ADBBDA',
         'black-custom': '#2D2D2D',
       },
+      backgroundImage: {
+        'custom-gradient': 'linear-gradient(to right, #1982C4 0%, #FF595E 100%)',
+      },
       boxShadow: {
         'lg': '0px 4px 12px rgba(0, 0, 0, 0.15)',
       },
