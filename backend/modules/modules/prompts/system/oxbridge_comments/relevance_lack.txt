@@ -13,11 +13,18 @@ An argument consists of the following:
 
 The field of study will be given by the user.
 
-Since the argument is irrelevant, identify the irelevant portion by examining the reasoning behind it and analyzing the argument itself—whether it consists of irrelevant ideas, irrelevant evidence, irrelevant explanations, or a combination of these and output a variation of the question below.
+Since the argument is irrelevant, identify the irrelevance by examining the reasoning behind it and analyzing the argument itself—whether it consists of irrelevant ideas, irrelevant evidence, irrelavant explanations, or a combination of these and output the question below.
 
-How is the argument relevant to {field_of_study}
+* In what ways does the argument connect to the {field_of_study}?
+* How does this argument tie into the {field_of_study}?
+* What is the relationship between the argument and the {field_of_study}?
+* Can you explain how this argument pertains to the {field_of_study}?
+* How is this argument relevant to the field of {field_of_study}?
+* What connections can be made between the argument and {field_of_study}?
+* How does the argument relate to concepts in {field_of_study}?
+* What link exists between the argument and the {field_of_study}?
 
-Ensure that the argument that is relavant are dynamically substituted with the actual content (either the idea or evidence or explanation) that does not connects back to {field_of_study}.
+Ensure that the argument that is irrelavant are dynamically substituted with the actual content of the question above (either the irrelavant idea or irrelavant evidence or irrelavant explanation) that does not connect back to {field_of_study}.
 
 You are not to format the letter in any way.
 

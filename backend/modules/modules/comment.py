@@ -5,7 +5,7 @@ import re
 class CommentCrafter:
     def __init__(self,
                  relevance_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/relevance_good.txt",
-                 #relevance_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/relevance_lack.txt",
+                 relevance_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/relevance_lack.txt",
                  #interest_capability_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/interest_capability_good.txt",
                  #interest_capability_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/interest_capability_lack.txt",
                  #specificity_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_good.txt",
@@ -14,7 +14,7 @@ class CommentCrafter:
                  ):
         
         self.relevance_good_system_prompt = self.load_prompt(relevance_good_system_prompt_path)
-        #self.relevance_lack_system_prompt = self.load_prompt(relevance_lack_system_prompt_path)
+        self.relevance_lack_system_prompt = self.load_prompt(relevance_lack_system_prompt_path)
         self.relevance_user_prompt = self.load_prompt(relevance_user_prompt_path)
         #self.interest_capability_good_system_prompt = self.load_prompt(interest_capability_good_system_prompt_path)
         #self.interest_capability_lack_system_prompt = self.load_prompt(interest_capability_lack_system_prompt_path)
@@ -32,7 +32,6 @@ class CommentCrafter:
         comment = None
 
         if argument.relevance.is_relevant:
-
             completion = client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
@@ -48,6 +47,23 @@ class CommentCrafter:
                     )},
                 ]
             )
+        else:
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": self.relevance_lack_system_prompt.format(
+                        field_of_study=argument.argument.personal_statement.field_of_study
+                    )},
+                    {"role": "user", "content": self.relevance_user_prompt.format(
+                        is_relevant=argument.relevance.is_relevant,
+                        reason=argument.relevance.reason,
+                        idea=argument.argument.idea,
+                        evidence=argument.argument.evidence,
+                        explanation=argument.argument.explanation
+                    )},
+                ]
+            )
+
 
         if completion:
             response_data = completion.choices[0].message.content

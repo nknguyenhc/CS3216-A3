@@ -1,10 +1,10 @@
-<is_relevant>
-{is_relevant}
-</is_relevant>
+<is_capable>
+{is_capable}
+</is_capable>
 
-<reason>
-{reason}
-</reason>
+<is_capable_reason>
+{is_capable_reason}
+</is_capable_reason>
 
 <idea>
 {idea}
