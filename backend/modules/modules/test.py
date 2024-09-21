@@ -477,5 +477,5 @@ if __name__ == '__main__':
     # print(leadership_result)
 
     jardine_comment = JardineCommentCrafter().craft_comment(
-        example1_evaluations)
+        poor_example_evaluations2)
     print(jardine_comment)
