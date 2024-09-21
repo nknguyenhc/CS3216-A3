@@ -7,6 +7,7 @@ import SuccessPage from "./pages/SuccessPage";
 import UnsuccessPage from "./pages/UnsuccessPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Authentication from "./components/Authentication/Authentication";
+import UploadEssayPage from "./pages/UploadEssayPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +16,7 @@ const router = createBrowserRouter(
       <Route path="/authentication" element={<Authentication />} />
       <Route path="/success" element={<SuccessPage />} />
       <Route path="/unsuccess" element={<UnsuccessPage />} />
+      <Route path="/essay/upload" element={<UploadEssayPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
