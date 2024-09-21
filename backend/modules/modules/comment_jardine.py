@@ -28,7 +28,7 @@ class JardineCommentCrafter:
         try:
             if self._is_bad_argument(argument):
                 return self._craft_bad_comment(argument)
-            elif self._is_argument_specific(argument):
+            elif not self._is_argument_specific(argument):
                 return self._craft_comment_improve_specificity(argument)
             else:
                 return self._craft_good_comment(argument)
@@ -67,7 +67,7 @@ class JardineCommentCrafter:
                 )},
             ],
         )
-        return Comment(comment=completion.choices[0].message.content, is_good=False)
+        return Comment.objects.create(comment=completion.choices[0].message.content, is_good=False)
 
     def _craft_comment_improve_specificity(self, argument: JardineArgumentEvaluations) -> Comment:
         self.logger.info("Crafting comment to improve specificity")
@@ -82,7 +82,7 @@ class JardineCommentCrafter:
         if argument.contribution_to_community.has_contribution_to_community:
             system_message += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
         if argument.contribution_to_community.will_contribute_to_community:
-            system_message += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</contribution_to_community_reason>\n"
+            system_message += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
 
         completion = client.chat.completions.create(
             model="gpt-4o",

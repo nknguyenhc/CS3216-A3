@@ -229,7 +229,7 @@ if __name__ == '__main__':
     # print(has_conclusion)
     # print(reparagraph_result)
 
-    exit(0)
+    # exit(0)
 
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
@@ -311,6 +311,17 @@ if __name__ == '__main__':
             ),
         )
 
+    with open("modules/modules/tests/example2.json") as f:
+        data = json.load(f)
+        oxbridge_example2 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
     with open("modules/data/evaluations/poor_example.json") as f:
         data = json.load(f)
         poor_example_evaluations = JardineArgumentEvaluations(
@@ -377,18 +388,58 @@ if __name__ == '__main__':
             ),
         )
 
-    # capability_result = CapabilityIdentifier().identify_capability(poor_example2)
+    with open("modules/data/evaluations/oxbridge_example2.json") as f:
+        data = json.load(f)
+        oxbridge_example2_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=Specificity(
+                is_specific=False,
+                reason=data["no_specificity"]
+            ),
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason="",
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community="",
+                will_contribute_to_community=True,
+                reason_will_contribute_to_community=data["potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration="",
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership="",
+            ),
+        )
+
+    # specificity_result = SpecificityIdentifier().identify_specificity(oxbridge_example2)
+    # print(specificity_result)
+
+    # capability_result = CapabilityIdentifier().identify_capability(oxbridge_example2)
     # print(capability_result)
 
     # community_result = ContributionToCommunityIdentifier(
-    # ).identify_contribution_to_community(poor_example)
+    # ).identify_contribution_to_community(oxbridge_example2)
     # print(community_result)
 
-    # aspiration_result = AspirationIdentifier().identify_aspiration(poor_example2)
+    # aspiration_result = AspirationIdentifier().identify_aspiration(oxbridge_example2)
     # print(aspiration_result)
 
-    # leadership_result = LeadershipIdentifier().identify_leadership(poor_example2)
+    # leadership_result = LeadershipIdentifier().identify_leadership(oxbridge_example2)
     # print(leadership_result)
 
-    jardine_comment = JardineCommentCrafter().craft_comment(poor_example_evaluations2)
+    jardine_comment = JardineCommentCrafter().craft_comment(
+        oxbridge_example2_evaluations)
     print(jardine_comment)
