@@ -119,7 +119,7 @@ if __name__ == '__main__':
     print(specificity_result)
     '''
 
-    with open("modules/modules/tests/comments/relevance.json") as f:
+    with open("modules/modules/tests/comments/argument_evaluator.json") as f:
         data = json.load(f)
 
         argument = Argument(
@@ -133,16 +133,34 @@ if __name__ == '__main__':
 
         relevance = Relevance(
             is_relevant=data["is_relevant"],
-            reason=data["reason"],
+            reason=data["is_relevant_reason"],
             argument=argument
-        )        
+        )
+
+        specificity = Specificity(
+            is_specific=data["is_specific"],
+            reason=data["is_specific_reason"],
+            argument=argument
+        )
+
+        interest = Interest(
+            has_interest=data["has_interest"],
+            has_interest_reason=data["has_interest_reason"],
+            argument=argument
+        )
+
+        capability = Capability(
+            is_capable=data["is_capable"],
+            is_capable_reason=data["is_capable_reason"],
+            argument=argument
+        )  
 
         argument_evaluations = ArgumentEvaluations(
             argument=argument,
-            specificity=None,
+            specificity=specificity,
             relevance=relevance,
-            interest=None,
-            capability=None
+            interest=interest,
+            capability=capability
         )
 
     relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
