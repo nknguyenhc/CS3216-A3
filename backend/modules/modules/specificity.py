@@ -1,6 +1,5 @@
 from modules.models import Argument, Specificity
 from openai import OpenAI
-import openai
 import re
 
 
@@ -15,10 +14,9 @@ class SpecificityIdentifier:
         with open(argument_user_prompt_path, "r") as f:
             self.argument_user_prompt = f.read()
 
-        self.client = openai.OpenAI(api_key="")
-
     def identify_specificity(self, argument: Argument) -> str:
-        completion = self.client.chat.completions.create(
+        client = OpenAI()
+        completion = client.chat.completions.create(
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": self.specificity_system_prompt},

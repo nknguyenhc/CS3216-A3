@@ -1,6 +1,5 @@
 from modules.models import PersonalStatement, Argument
 from openai import OpenAI
-import openai
 import re
 
 class IdeaExtractor:
@@ -8,9 +7,8 @@ class IdeaExtractor:
         with open(idea_system_prompt_path, "r") as f:
             self.idea_system_prompt = f.read()
 
-        self.client = openai.OpenAI(api_key="")
-
     def extract(self, personal_statement: PersonalStatement) -> list[Argument]:
+        client = OpenAI()
         paragraphs = personal_statement.reparagraphed_essay.split("\n")
         arguments = []
 
@@ -18,7 +16,7 @@ class IdeaExtractor:
             
             if paragraph.strip():
                 
-                completion = self.client.chat.completions.create(
+                completion = client.chat.completions.create(
                     model="gpt-4",
                     messages=[
                         {
