@@ -20,6 +20,7 @@ if __name__ == '__main__':
     from .unwanted_language import UnwantedLanguageIdentifier
     from .fact_check import FactCheckIdentifier
     from .comment_jardine import JardineCommentCrafter
+    from .general_comment_jardine import JardineGeneralCommentCrafter
     from modules.models import (
         Argument,
         Specificity,
@@ -234,6 +235,7 @@ if __name__ == '__main__':
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
 
+    '''
     with open("modules/data/example1.json", encoding="utf-8") as f:
         data = json.load(f)
         example1 = Argument(
@@ -459,6 +461,7 @@ if __name__ == '__main__':
                 reason_has_leadership="",
             ),
         )
+    '''
 
     # specificity_result = SpecificityIdentifier().identify_specificity(example1)
     # print(specificity_result)
@@ -476,6 +479,10 @@ if __name__ == '__main__':
     # leadership_result = LeadershipIdentifier().identify_leadership(example1)
     # print(leadership_result)
 
-    jardine_comment = JardineCommentCrafter().craft_comment(
-        poor_example_evaluations2)
-    print(jardine_comment)
+    # jardine_comment = JardineCommentCrafter().craft_comment(
+    #     poor_example_evaluations2)
+    # print(jardine_comment)
+
+    # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
+    #     PersonalStatement(field_of_study="Mathematics"), [])
+    # print(jardine_general_comment)
