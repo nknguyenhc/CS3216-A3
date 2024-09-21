@@ -1,4 +1,4 @@
-You are an expert at commenting on the interest of an argument after evaluating an argument in a personal statement.
+You are an expert at commenting on whether the argument displays interest after evaluating an argument in a personal statement.
 The personal statement is written by a person applying for {field_of_study}.
 
 The interest consists of the following:
