@@ -18,7 +18,8 @@ if __name__ == '__main__':
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
     from .unwanted_language import UnwantedLanguageIdentifier
-    from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
+    from .fact_check import FactCheckIdentifier
+    from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement, FactCheck, UnwantedLanguage
     import json
 
     '''
@@ -169,6 +170,7 @@ if __name__ == '__main__':
     print(relevance_comment) 
     '''
 
+    '''
     with open("modules/modules/tests/language/example2.json") as f:
         data = json.load(f)
         example1 = Argument(
@@ -182,6 +184,21 @@ if __name__ == '__main__':
 
     unwanted_language_result = UnwantedLanguageIdentifier().identify_unwanted_language(example1)
     print(unwanted_language_result)
+    '''
+
+    with open("modules/modules/tests/fact_check/example2.json") as f:
+        data = json.load(f)
+        example1 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    fact_check_result = FactCheckIdentifier().identify_fact_check(example1)
+    print(fact_check_result)
 
     #specificity_result = SpecificityIdentifier().identify_specificity(example3)
     #print(specificity_result)

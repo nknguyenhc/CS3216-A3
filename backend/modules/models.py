@@ -261,3 +261,17 @@ class UnwantedLanguage(models.Model):
 
     def __repr__(self):
         return self.__str__()
+    
+class FactCheck(models.Model):
+    has_fake_fact = models.BooleanField()
+    has_fake_fact_reason = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_fake_facts": self.has_fake_fact,
+            "has_fake_facts_reason": self.has_fake_fact_reason,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()

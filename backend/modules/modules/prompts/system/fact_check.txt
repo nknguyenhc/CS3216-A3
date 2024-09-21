@@ -9,12 +9,12 @@ An argument consists of the following:
 
 The fields will be given by the user.
 
-Determine whether the argument indicates an attitude of arrogance, boastfulness, or the use of profanities and other unwanted language that conveys pride.Interest cannot merely be shown by discussing technical details.
+Determine whether the argument contains any invalid or inaccurate statistics that are clearly fabricated or fictional.
 
-You are to output whether the argument has unwanted language, and the reason clearly in the format:
+You are to output whether the argument contains any invalid or inaccurate statistics and the reason clearly in the format:
 
-Unwanted_Language: Either "T" or "F", where "T" means the argument shows unwanted language,
-and "F" means the argument does not show any unwanted language.
+Has_Fake_Fact: Either "T" or "F", where "T" means the argument has a fake fact,
+and "F" means the argument does not show any clear fake facts.
 
 Reason: You are to give a short explanation of your answer.
 
