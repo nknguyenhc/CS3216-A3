@@ -8,7 +8,7 @@ django.setup()
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG,
                     handlers=[
-                        logging.FileHandler("debug.log"),
+                        logging.FileHandler("Jardine - debug.log"),
                     ],
                     )
 
@@ -44,9 +44,9 @@ if __name__ == '__main__':
         JardineArgumentEvaluations,
     )
     import json
-    from modules.orchestrator import Orchestrator
+    from modules.orchestrator import Orchestrator, JardineOrchestrator
 
-    
+    '''
     with open("modules/modules/tests/example1.json") as f:
         data = json.load(f)
         example1 = Argument(
@@ -157,25 +157,25 @@ if __name__ == '__main__':
         )
 
         relevance = Relevance(
-            is_relevant=data["is_relevant"],
+            is_relevant = False if data["is_relevant"] == "F" else True,
             reason=data["is_relevant_reason"],
             argument=argument
         )
 
         specificity = Specificity(
-            is_specific=data["is_specific"],
+            is_specific = False if data["is_specific"] == "F" else True,
             reason=data["is_specific_reason"],
             argument=argument
         )
 
         interest = Interest(
-            has_interest=data["has_interest"],
+            has_interest = False if data["has_interest"] == "F" else True,
             has_interest_reason=data["has_interest_reason"],
             argument=argument
         )
 
         capability = Capability(
-            is_capable=data["is_capable"],
+            is_capable = False if data["is_capable"] == "F" else True,
             is_capable_reason=data["is_capable_reason"],
             argument=argument
         )  
@@ -205,6 +205,17 @@ if __name__ == '__main__':
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
     # print(reparagraph_result)
+
+    # with open("modules/modules/tests/personal_statements/example1.txt") as f:
+    #     personal_statement = PersonalStatement.objects.create(
+    #         field_of_study="Mathematics",
+    #         essay=f.read(),
+    #     )
+    # orchestrator = Orchestrator()
+    # result = orchestrator.run(personal_statement)
+    # print(result.to_dict())
+
+    # exit(0)
 
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
@@ -460,3 +471,12 @@ if __name__ == '__main__':
     # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
     #     PersonalStatement(field_of_study="Mathematics"), [])
     # print(jardine_general_comment)
+
+    with open("modules/data/Nguyen - Jardine.txt") as f:
+        personal_statement = PersonalStatement.objects.create(
+            field_of_study="Physics",
+            essay=f.read(),
+        )
+    orchestrator = JardineOrchestrator()
+    result = orchestrator.run(personal_statement)
+    print(result.to_dict())

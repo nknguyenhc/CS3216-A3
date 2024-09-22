@@ -194,12 +194,13 @@ class JardineArgumentEvaluations(models.Model):
 
     def __str__(self):
         return json.dumps({
-            "specificity": self.specificity,
-            "relevance": self.relevance,
-            "capability": self.capability,
-            "contribution_to_community": self.contribution_to_community,
-            "aspiration": self.aspiration,
-            "leadership": self.leadership,
+            "specificity": self.specificity.is_specific,
+            "relevance": self.relevance.is_relevant,
+            "capability": self.capability.is_capable,
+            "contribution_to_community": self.contribution_to_community.has_contribution_to_community,
+            "potential_to_contribute_to_community": self.contribution_to_community.will_contribute_to_community,
+            "aspiration": self.aspiration.has_aspiration,
+            "leadership": self.leadership.has_leadership,
         }, indent=4)
 
     def __repr__(self):

@@ -49,6 +49,7 @@ class CommentCrafter:
 
     def craft_comment(self, argument: ArgumentEvaluations) -> Comment | None:
         client = OpenAI()
+        is_good = True
 
         def create_completion(system_prompt, user_prompt):
             completion = client.chat.completions.create(
@@ -73,7 +74,8 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            return self.save_comment_to_db(response, argument.argument)
+            is_good = False
+            return self.save_comment_to_db(response, argument.argument, is_good)
 
         output = create_completion(
             self.relevance_good_system_prompt.format(
@@ -89,7 +91,7 @@ class CommentCrafter:
         )
 
         interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
-
+        
         if argument.interest.has_interest:
             output += create_completion(
                 self.interest_good_system_prompt.format(
@@ -123,29 +125,44 @@ class CommentCrafter:
                 self.specificity_good_system_prompt,
                 self.specificity_user_prompt.format(
                     is_specific=argument.specificity.is_specific,
-                    is_capable_reason=argument.specificity.reason,
+                    reason=argument.specificity.reason,
                     idea=argument.argument.idea,
                     evidence=argument.argument.evidence,
                     explanation=argument.argument.explanation
                 )
             )
+            is_good = False
 
         elif not interest_or_capable:
+
             output += create_completion(
-                self.specificity_good_system_prompt,
-                self.specificity_user_prompt.format(
-                    is_specific=argument.specificity.is_specific,
-                    is_capable_reason=argument.specificity.reason,
+                self.interest_lack_system_prompt,
+                self.interest_user_prompt.format(
+                    has_interest=argument.interest.has_interest,
+                    has_interest_reason=argument.interest.has_interest_reason,
                     idea=argument.argument.idea,
                     evidence=argument.argument.evidence,
                     explanation=argument.argument.explanation
                 )
             )
 
-        if output:
-            return self.save_comment_to_db(output, argument.argument)
+            output += create_completion(
+                self.capability_lack_system_prompt,
+                self.capability_user_prompt.format(
+                    is_capable=argument.capability.is_capable,
+                    is_capable_reason=argument.capability.is_capable_reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
+                )
+            )
 
-    def save_comment_to_db(self, comment: str, argument: Argument) -> Comment:
+            is_good = False
+
+        if output:
+            return self.save_comment_to_db(output, argument.argument, is_good)
+
+    def save_comment_to_db(self, comment: str, argument: Argument, is_good: bool) -> Comment:
         if not comment or not argument:
             raise ValueError("All fields must be provided")
 
@@ -155,47 +172,9 @@ class CommentCrafter:
 
             return Comment.objects.create(
                 comment=comment,
-                is_good=True,  # ???
+                is_good=is_good,
                 argument=argument
             )
 
         except Exception as e:
             raise Exception("Failed to save comment") from e
-
-
-class SpecificityIdentifier:
-    def __init__(self,
-                 specificity_system_prompt_path: str = "modules/modules/prompts/system/specificity.txt",
-                 argument_user_prompt_path: str = "modules/modules/prompts/user/argument.txt",
-                 ):
-        with open(specificity_system_prompt_path, "r") as f:
-            self.specificity_system_prompt = f.read()
-
-        with open(argument_user_prompt_path, "r") as f:
-            self.argument_user_prompt = f.read()
-
-    def identify_specificity(self, argument: Argument) -> str:
-        client = OpenAI()
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": self.specificity_system_prompt},
-                {"role": "user", "content": self.argument_user_prompt.format(
-                    idea=argument.idea,
-                    evidence=argument.evidence,
-                    explanation=argument.explanation,
-                )},
-            ]
-        )
-
-        response_data = completion.choices[0].message.content
-
-        is_specific = re.search(
-            r'Specific:\s*(.*?)(?=\s*Reason:)', response_data).group(1).strip()
-        reason = re.search(r'Reason:\s*(.*)', response_data).group(1).strip()
-
-        self.save_specificity_to_db(
-            is_specific, reason, argument
-        )
-
-        return is_specific
