@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/AuthenticationContext";
 import axios from "axios";
+import { gapi } from "gapi-script";
 
 // Extract CSRF token from cookies
 const getCSRFToken = () => {
@@ -16,8 +17,10 @@ const client = axios.create({
 
 const AuthButtons = () => {
   const { currentUser, setCurrentUser } = useAuth();
+  const { loggedInWithGoogle, setLoggedInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
+  /*
   const handleAuthentication = () => {
     navigate("/authentication");
   };
@@ -33,6 +36,41 @@ const AuthButtons = () => {
       console.error("Logout failed:", error);
     }
   };
+  */
+
+  ///*
+  const handleAuthentication = () => {
+    navigate("/authentication");
+  };
+
+  const handleLogout = async () => {
+    if (loggedInWithGoogle) {
+      // Handle Google logout
+      const authInstance = gapi.auth2.getAuthInstance();
+      
+      try {
+        await authInstance.signOut();
+        console.log("Google logout successful!");
+        setCurrentUser(false);
+        setLoggedInWithGoogle(false); // Reset state
+        navigate("/");
+      } catch (error) {
+        console.error("Google logout failed:", error);
+      }
+    } else {
+      // Handle normal logout
+      const csrfToken = getCSRFToken();
+  
+      try {
+        await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
+        setCurrentUser(false);
+        navigate("/");
+      } catch (error) {
+        console.error("Logout failed:", error);
+      }
+    }
+  };
+  //*/
 
   return (
     <div className="flex gap-4 self-stretch font-bold whitespace-nowrap">

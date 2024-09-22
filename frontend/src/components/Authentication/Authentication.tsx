@@ -24,7 +24,6 @@ const client = axios.create({
 });
 
 const Authentication: React.FC = () => {
-  // const [currentUser, setCurrentUser] = useState<boolean | null>(null);
   const { currentUser, setCurrentUser } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
@@ -32,6 +31,8 @@ const Authentication: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   // Gapi setup
+  const navigate = useNavigate();
+
   useEffect(() => {
     const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 
@@ -48,7 +49,6 @@ const Authentication: React.FC = () => {
       .get("/api/auth/user")
       .then((res: AxiosResponse) => {
         setCurrentUser(true);
-        navigate("/");
       })
       .catch(() => {
         setCurrentUser(false);
@@ -105,8 +105,6 @@ const Authentication: React.FC = () => {
         console.error("Logout failed:", error);
       });
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-row min-h-screen bg-gray-100 overflow-hidden">
