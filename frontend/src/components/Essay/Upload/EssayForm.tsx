@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import TitleInput from './TitleInput';
 import PersonalStatementInput from './PersonalStatementInput';
+import FieldOfStudyInput from './FieldOfStudyInput';
 import SubmitButton from './SubmitButton';
 import FormFooter from './FormFooter';
 
@@ -9,6 +10,9 @@ interface EssayFormProps {
   setTitle: React.Dispatch<React.SetStateAction<string>>;
   statement: string;
   setStatement: React.Dispatch<React.SetStateAction<string>>;
+  fieldOfStudy: string;
+  setFieldOfStudy: React.Dispatch<React.SetStateAction<string>>;
+  submitEssay: () => void;
 }
 
 const EssayForm: React.FC<EssayFormProps> = ({
@@ -16,6 +20,9 @@ const EssayForm: React.FC<EssayFormProps> = ({
   setTitle,
   statement,
   setStatement,
+  fieldOfStudy,
+  setFieldOfStudy,
+  submitEssay
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,11 +32,14 @@ const EssayForm: React.FC<EssayFormProps> = ({
         Upload your personal statement
       </div>
       <div className="p-10 bg-white border border-[#B0B0B0] border-custom-thin shadow-lg rounded-[20px] h-[800px] flex flex-col justify-between">
-        <TitleInput title={title} setTitle={setTitle} />
+        <div className="flex space-x-8">
+          <TitleInput title={title} setTitle={setTitle} />
+          <FieldOfStudyInput fieldOfStudy={fieldOfStudy} setFieldOfStudy={setFieldOfStudy} />
+        </div>
         <PersonalStatementInput statement={statement} setStatement={setStatement} textAreaRef={textAreaRef} />
-        <FormFooter statement={statement} setStatement={setStatement} textAreaRef={textAreaRef} /> {/* Pass the ref */}
+        <FormFooter statement={statement} setStatement={setStatement} textAreaRef={textAreaRef} />
         <div className="flex justify-center">
-          <SubmitButton />
+          <SubmitButton submitEssay={submitEssay} />
         </div>
       </div>
     </div>

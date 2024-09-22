@@ -7,7 +7,7 @@ interface TitleInputProps {
 
 const TitleInput: React.FC<TitleInputProps> = ({ title, setTitle }) => {
   return (
-    <div className="">
+    <div>
       <input
         type="text"
         value={title}
