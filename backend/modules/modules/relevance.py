@@ -2,20 +2,21 @@ from modules.models import Argument, Relevance
 from openai import OpenAI
 import logging
 
+
 class RelevanceIdentifier:
     def __init__(self,
                  relevance_system_prompt_path: str = "modules/modules/prompts/system/relevance.txt",
                  relevance_user_prompt_path: str = "modules/modules/prompts/user/argument.txt"
-                ):
+                 ):
         with open(relevance_system_prompt_path, "r") as f:
             self.relevance_system_prompt_path = f.read()
-        
+
         with open(relevance_user_prompt_path, "r") as f:
             self.relevance_user_prompt_path = f.read()
-        
+
         self.logger = logging.getLogger("RelevanceIdentifier")
 
-    def identify_relevance(self, argument: Argument) -> Relevance:
+    def identify_relevance(self, argument: Argument) -> Relevance | None:
         """
         Identifies the relevance of an argument.
         Writes the result to database.
@@ -26,7 +27,7 @@ class RelevanceIdentifier:
         except Exception as e:
             self.logger.exception("Failed to identify relevance")
             return None
-        
+
         try:
             relevance = Relevance.objects.create(
                 is_relevant=is_relevant,

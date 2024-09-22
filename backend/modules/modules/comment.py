@@ -47,7 +47,7 @@ class CommentCrafter:
         with open(path, "r") as f:
             return f.read()
 
-    def craft_comment(self, argument: ArgumentEvaluations) -> Comment:
+    def craft_comment(self, argument: ArgumentEvaluations) -> Comment | None:
         client = OpenAI()
 
         def create_completion(system_prompt, user_prompt):

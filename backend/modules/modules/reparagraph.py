@@ -16,7 +16,7 @@ class ReParagrapher:
 
         self.logger = logging.getLogger("ReParagrapher")
 
-    def reparagraph(self, personal_statement: PersonalStatement) -> tuple[bool, PersonalStatement]:
+    def reparagraph(self, personal_statement: PersonalStatement) -> tuple[bool, PersonalStatement] | None:
         """
         Reparagraph the essay in the personal statement.
         Write to database once finished.
@@ -24,17 +24,19 @@ class ReParagrapher:
         """
         try:
             reparagraph_result = self._reparagraph(personal_statement)
-            has_conclusion, reparagraphed_essay = self._parse_result(reparagraph_result)
+            has_conclusion, reparagraphed_essay = self._parse_result(
+                reparagraph_result)
         except Exception as e:
             self.logger.exception("Failed to reparagraph essay")
             return None
-        
+
         try:
             personal_statement.reparagraphed_essay = reparagraphed_essay
             personal_statement.save()
             return has_conclusion, personal_statement
         except Exception as e:
-            self.logger.exception("Failed to return reparagraph personal statement")
+            self.logger.exception(
+                "Failed to return reparagraph personal statement")
             return None
 
     def _reparagraph(self, personal_statement: PersonalStatement) -> str:
@@ -59,4 +61,3 @@ class ReParagrapher:
             return False, lines[1]
         else:
             return ValueError(f"Invalid result: {result}")
-
