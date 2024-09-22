@@ -26,6 +26,8 @@ Since the argument displays incapability, identify the part that shows the write
 
 Ensure that the argument that displays incapability are dynamically substituted with the actual content (either the idea or evidence or explanation) that displays incapability in the {field_of_study}.
 
+You are only allowed to write in the second-person perspective.
+
 You are not to format the letter in any way.
 
 On the next line, you are to give a short explanation of your answer.

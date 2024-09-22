@@ -26,6 +26,8 @@ Since the argument is irrelevant, identify the irrelevance by examining the reas
 
 Ensure that the argument that is irrelavant are dynamically substituted with the actual content of the question above (either the irrelavant idea or irrelavant evidence or irrelavant explanation) that does not connect back to {field_of_study}.
 
+You are only allowed to write in the second-person perspective.
+
 You are not to format the letter in any way.
 
 On the next line, you are to give a short explanation of your answer.

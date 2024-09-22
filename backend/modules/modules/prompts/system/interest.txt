@@ -7,7 +7,7 @@ An argument consists of the following:
 * Evidence: Evidence to support what the person is claiming.
 * Explanation: A link back to {field_of_study}.
 
-The fields will be given by the user.
+The field of study will be given by the user.
 Determine whether the argument shows that the person is interested in {field_of_study}.
 Interest cannot merely be shown by discussing technical details.
 It must be shown by expressing strong emotions, and presenting personal engagement to the evidence.

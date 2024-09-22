@@ -49,7 +49,8 @@ class CommentCrafter:
 
     def craft_comment(self, argument: ArgumentEvaluations) -> Comment | None:
         client = OpenAI()
-        is_good = True
+        bad_comment = ""
+        good_comment = ""
 
         def create_completion(system_prompt, user_prompt):
             completion = client.chat.completions.create(
@@ -74,8 +75,8 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            is_good = False
-            return self.save_comment_to_db(response, argument.argument, is_good)
+            bad_comment += "Relevance: " + response + "\n"
+            return self.save_comment_to_db(response, argument.argument, bad_comment, good_comment)
 
         output = create_completion(
             self.relevance_good_system_prompt.format(
@@ -90,10 +91,12 @@ class CommentCrafter:
             )
         )
 
+        good_comment += "Relevance: " + output + "\n"
+
         interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
         
         if argument.interest.has_interest:
-            output += create_completion(
+            output = create_completion(
                 self.interest_good_system_prompt.format(
                     field_of_study=argument.argument.personal_statement.field_of_study
                 ),
@@ -106,8 +109,10 @@ class CommentCrafter:
                 )
             )
 
+            good_comment += "Interest: " + output + "\n"
+
         if argument.capability.is_capable:
-            output += create_completion(
+            output = create_completion(
                 self.capability_good_system_prompt.format(
                     field_of_study=argument.argument.personal_statement.field_of_study
                 ),
@@ -120,8 +125,10 @@ class CommentCrafter:
                 )
             )
 
+            good_comment += "Capability: " + output + "\n"
+
         if interest_or_capable and not argument.specificity.is_specific:
-            output += create_completion(
+            output = create_completion(
                 self.specificity_good_system_prompt,
                 self.specificity_user_prompt.format(
                     is_specific=argument.specificity.is_specific,
@@ -131,12 +138,15 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            is_good = False
+
+            bad_comment += "Specificity: " + output + "\n"
 
         elif not interest_or_capable:
 
-            output += create_completion(
-                self.interest_lack_system_prompt,
+            output = create_completion(
+                self.interest_lack_system_prompt.format(
+                    field_of_study=argument.argument.personal_statement.field_of_study
+                ),
                 self.interest_user_prompt.format(
                     has_interest=argument.interest.has_interest,
                     has_interest_reason=argument.interest.has_interest_reason,
@@ -146,7 +156,9 @@ class CommentCrafter:
                 )
             )
 
-            output += create_completion(
+            bad_comment += "Interest: " + output + "\n"
+
+            output = create_completion(
                 self.capability_lack_system_prompt,
                 self.capability_user_prompt.format(
                     is_capable=argument.capability.is_capable,
@@ -157,13 +169,15 @@ class CommentCrafter:
                 )
             )
 
-            is_good = False
+            bad_comment += "Capability: " + output + "\n"
 
         if output:
-            return self.save_comment_to_db(output, argument.argument, is_good)
+            print(bad_comment + "\n")
+            print(good_comment + "\n")
+            return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
 
-    def save_comment_to_db(self, comment: str, argument: Argument, is_good: bool) -> Comment:
-        if not comment or not argument:
+    def save_comment_to_db(self, comment: str, argument: Argument, bad_comment: str, good_comment: str) -> Comment:
+        if not comment or not argument or not bad_comment or not good_comment:
             raise ValueError("All fields must be provided")
 
         try:
