@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
     };
 
     emailjs
-      .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", templateParams, "YOUR_USER_ID")
+      .send("service_kcou7ol", "template_2mf0q8v", templateParams, "TtNGDN7OZ11CCvt63")
       .then((response: EmailJSResponseStatus) => {
         console.log("Success!", response.status, response.text);
         setName("");
@@ -74,7 +74,6 @@ const Footer: React.FC = () => {
           <li>
             <a
               className="flex flex-col items-center hover:text-blue-500 transition duration-300"
-              href="#"
               aria-label="Facebook"
             >
               <FaFacebook size={30} />
@@ -84,7 +83,6 @@ const Footer: React.FC = () => {
           <li>
             <a
               className="flex flex-col items-center hover:text-blue-400 transition duration-300"
-              href="#"
               aria-label="Twitter"
             >
               <FaTwitter size={30} />
@@ -94,7 +92,6 @@ const Footer: React.FC = () => {
           <li>
             <a
               className="flex flex-col items-center hover:text-pink-500 transition duration-300"
-              href="#"
               aria-label="Instagram"
             >
               <FaInstagram size={30} />
@@ -104,7 +101,6 @@ const Footer: React.FC = () => {
           <li>
             <a
               className="flex flex-col items-center hover:text-red-600 transition duration-300"
-              href="#"
               aria-label="Google Plus"
             >
               <FaGooglePlusG size={30} />
