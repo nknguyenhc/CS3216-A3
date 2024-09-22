@@ -43,13 +43,16 @@ class Orchestrator:
             re_personal_statement = personal_statement
         else:
             re_personal_statement = re_personal_statement[1]
+        self.logger.debug(f"{re_personal_statement=}")
 
         arguments = self.idea_extractor.extract(re_personal_statement)
         if arguments is None:
             # Fail if idea extractor fails
             return OrchestratorResult(success=False)
+        self.logger.debug(f"{arguments=}")
 
         evaluations = [self._evaluate(argument) for argument in arguments]
+        self.logger.debug(f"{evaluations=}")
         filtered_evaluations = [
             evaluation for evaluation in evaluations if evaluation is not None]
         if len(filtered_evaluations) == 0 and len(evaluations) > 0:
@@ -58,6 +61,7 @@ class Orchestrator:
 
         comments = [self.comment_crafter.craft_comment(
             evaluation) for evaluation in filtered_evaluations]
+        self.logger.debug(f"{comments=}")
         comments = [comment for comment in comments if comment is not None]
         if len(comments) == 0 and len(filtered_evaluations) > 0:
             # Fail if all comments fail
@@ -65,6 +69,7 @@ class Orchestrator:
 
         general_comment = self.general_comment_crafter.craft_general_comment(
             filtered_evaluations)
+        self.logger.debug(f"{general_comment=}")
         return OrchestratorResult(
             success=True,
             essay=re_personal_statement.reparagraphed_essay

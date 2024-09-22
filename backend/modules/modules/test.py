@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 import django
 import os
+import logging
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
 django.setup()
 load_dotenv()
+logging.basicConfig(level=logging.DEBUG)
 
 if __name__ == '__main__':
     from .interest import InterestIdentifier
@@ -37,6 +39,7 @@ if __name__ == '__main__':
         JardineArgumentEvaluations,
     )
     import json
+    from modules.orchestrator import Orchestrator
 
     '''
     with open("modules/modules/tests/example1.json") as f:
@@ -229,6 +232,15 @@ if __name__ == '__main__':
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
     # print(reparagraph_result)
+
+    with open("modules/modules/tests/personal_statements/geography.txt") as f:
+        personal_statement = PersonalStatement.objects.create(
+            field_of_study="Mathematics",
+            essay=f.read(),
+        )
+    orchestrator = Orchestrator()
+    result = orchestrator.run(personal_statement)
+    print(result)
 
     # exit(0)
 

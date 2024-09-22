@@ -171,7 +171,8 @@ class ArgumentEvaluations(models.Model):
         return json.dumps({
             "specificity": self.specificity,
             "relevance": self.relevance,
-            "suitability": self.suitability,
+            "interest": self.interest,
+            "capability": self.capability,
         }, indent=4)
 
     def __repr__(self):

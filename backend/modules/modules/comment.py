@@ -155,6 +155,7 @@ class CommentCrafter:
 
             return Comment.objects.create(
                 comment=comment,
+                is_good=True,  # ???
                 argument=argument
             )
 
