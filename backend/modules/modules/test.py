@@ -17,7 +17,7 @@ if __name__ == '__main__':
     from .leadership import LeadershipIdentifier
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
-    from .general_comments import GeneralCommentCrafter
+    from .general_comment import GeneralCommentCrafter
     from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
     import json
 
