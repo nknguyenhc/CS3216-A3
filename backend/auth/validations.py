@@ -1,27 +1,34 @@
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+
 UserModel = get_user_model()
 
-def custom_validation(data):
-    email = data['email'].strip()
-    password = data['password'].strip()
-
-    if not email or UserModel.objects.filter(email=email).exists():
-        raise ValidationError('choose another email')
-
-    if not password or len(password) < 8:
-        raise ValidationError('choose another password, min 8 characters')
-    return data
-
-
-def validate_email(data):
-    email = data['email'].strip()
+def validate_email(email):
+    email = email.strip()
     if not email:
-        raise ValidationError('an email is needed')
-    return True
+        raise ValidationError('An email is needed.')
+    
+    if UserModel.objects.filter(email=email).exists():
+        raise ValidationError('Email is already in use, choose another one.')
 
-def validate_password(data):
-    password = data['password'].strip()
+    return email
+
+def validate_username(username):
+    username = username.strip()
+    if not username:
+        raise ValidationError('A username is needed.')
+    
+    if UserModel.objects.filter(username=username).exists():
+        raise ValidationError('Username is already taken, choose another one.')
+
+    return username
+
+def validate_password(password):
+    password = password.strip()
     if not password:
-        raise ValidationError('a password is needed')
-    return True
+        raise ValidationError('A password is needed.')
+    
+    if len(password) < 8:
+        raise ValidationError('Password must be at least 8 characters long.')
+
+    return password

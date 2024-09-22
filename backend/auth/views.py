@@ -9,13 +9,14 @@ from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
 import os
 from .serializers import UserRegisterSerializer, UserSerializer
-from .validations import custom_validation
+from .validations import validate_email, validate_username, validate_password
+from django.core.exceptions import ValidationError
+
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
-
 
 class StripeCheckoutView(APIView):
     PRICE_IDS = {
@@ -52,14 +53,39 @@ class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        clean_data = custom_validation(request.data)
+        data = request.data
+
+        # Validate email
+        try:
+            email = validate_email(data.get('email', ''))
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate username
+        try:
+            username = validate_username(data.get('username', ''))
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate password
+        try:
+            password = validate_password(data.get('password', ''))
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Prepare clean data for the serializer
+        clean_data = {
+            'email': email,
+            'username': username,
+            'password': password,
+        }
+
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.create(clean_data)
-            if user:
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+            user = serializer.save()  # Use save instead of create
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+        return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
@@ -67,22 +93,47 @@ class UserLogin(APIView):
 
     def post(self, request):
         data = request.data
-        email = data.get('email')
-        username = data.get('username')
-        password = data.get('password')
 
-        if not email or not password or not username:
-            return Response({"error": "Email, username, and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+        email = data.get('email', '').strip()
+        username = data.get('username', '').strip()
+        password = data.get('password', '').strip()
 
-        user = authenticate(request, email=email,
-                            username=username, password=password)
+        # Validate email
+        try:
+            validate_email(email)
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        if user is not None:
-            login(request, user)
-            serializer = UserSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        # Validate username
+        try:
+            validate_username(username)
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validate password
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Authenticate user
+        user = authenticate(request, email=email, username=username, password=password)
+
+        # Check if user exists
+        if user is None:
+            # Check if the email or username is valid
+            if not UserModel.objects.filter(email=email).exists():
+                return Response({"error": "Email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+            elif not UserModel.objects.filter(username=username).exists():
+                return Response({"error": "Username does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                return Response({"error": "Invalid password."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        # Log the user in
+        login(request, user)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 
 class UserLogout(APIView):

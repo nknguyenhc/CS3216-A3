@@ -28,12 +28,13 @@ const Authentication: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message state
 
   // Gapi setup
   const navigate = useNavigate();
 
   useEffect(() => {
-    const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+    const clientId: string = "YOUR_CLIENT_ID";
 
     function start() {
       gapi.client.init({
@@ -56,6 +57,7 @@ const Authentication: React.FC = () => {
 
   const updateFormBtn = () => {
     setRegistrationToggle((prev) => !prev);
+    setErrorMessage(null);
   };
 
   // Registration handler
@@ -70,6 +72,8 @@ const Authentication: React.FC = () => {
         navigate("/");
       })
       .catch((error) => {
+        const errorMsg = error.response.data.error.replace(/[\[\]']/g, "");
+        setErrorMessage(errorMsg);
         console.error("Registration failed:", error);
       });
   };
@@ -86,22 +90,11 @@ const Authentication: React.FC = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.error("Login failed:", error);
-      });
-  };
-
-  // Logout handler
-  const submitLogout = () => {
-    const csrfToken = getCSRFToken();
-
-    client
-      .post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => {
-        setCurrentUser(true);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
+        let errorMsg = error.response?.data?.error
+          ? error.response.data.error.replace(/[\[\]']/g, "")
+          : "Invalid username, email, or password.";
+        setErrorMessage(errorMsg);
+        console.error("Login failed:", error.response?.data?.error || "Unknown error");
       });
   };
 
@@ -149,6 +142,9 @@ const Authentication: React.FC = () => {
               />
             )}
 
+            {/* Display error message */}
+            {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
+
             {/* Toggle between login and registration */}
             <div className="text-center w-full">
               {registrationToggle ? (
@@ -172,15 +168,6 @@ const Authentication: React.FC = () => {
                 <GoogleLoginButton />
               </div>
             </div>
-
-            {/* Logout button only shown if the user is logged in */}
-            {currentUser && (
-              <div className="w-full mt-4">
-                <button className="w-full py-2 bg-gray-600 text-white rounded hover:bg-gray-700" onClick={submitLogout}>
-                  Log out
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
