@@ -144,7 +144,6 @@ if __name__ == '__main__':
     print(specificity_result)
     '''
 
-    '''
     with open("modules/modules/tests/comments/argument_evaluator.json") as f:
         data = json.load(f)
 
@@ -191,7 +190,6 @@ if __name__ == '__main__':
 
     relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
     print(relevance_comment) 
-    '''
 
     '''
     with open("modules/modules/tests/language/example2.json") as f:
