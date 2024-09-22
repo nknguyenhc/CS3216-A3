@@ -45,10 +45,10 @@ const Authentication: React.FC = () => {
     gapi.load("client:auth2", start);
 
     client
-      .get("/api/user")
+      .get("/api/auth/user")
       .then((res: AxiosResponse) => {
         setCurrentUser(true);
-        navigate('/');
+        navigate("/");
       })
       .catch(() => {
         setCurrentUser(false);
@@ -65,7 +65,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");
@@ -81,7 +81,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");
@@ -96,7 +96,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");

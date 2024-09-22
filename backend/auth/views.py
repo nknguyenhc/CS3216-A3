@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.urls import path
 import logging
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -7,21 +6,16 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 import stripe
 from django.shortcuts import redirect
-from django.contrib.auth import get_user_model, login, logout, authenticate
-from dotenv import load_dotenv
-import django
+from django.contrib.auth import login, logout, authenticate
 import os
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
-from .validations import custom_validation, validate_email, validate_password
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
-django.setup()
-load_dotenv()
+from .serializers import UserRegisterSerializer, UserSerializer
+from .validations import custom_validation
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
+
 
 class StripeCheckoutView(APIView):
     PRICE_IDS = {
