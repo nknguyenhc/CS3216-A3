@@ -17,6 +17,7 @@ if __name__ == '__main__':
     from .leadership import LeadershipIdentifier
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
+    from .general_comments import GeneralCommentCrafter
     from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
     import json
 
@@ -163,8 +164,8 @@ if __name__ == '__main__':
             capability=capability
         )
 
-    relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
-    print(relevance_comment)        
+    #relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
+    #print(relevance_comment)        
 
     #specificity_result = SpecificityIdentifier().identify_specificity(example3)
     #print(specificity_result)
@@ -179,6 +180,9 @@ if __name__ == '__main__':
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
     # print(reparagraph_result)
+
+    general_comments = GeneralCommentCrafter().craft_general_comment(argument_evaluations)
+    print(general_comments) 
 
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
