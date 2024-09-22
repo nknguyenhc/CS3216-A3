@@ -171,7 +171,6 @@ const Authentication: React.FC = () => {
               {/* Google Auth buttons */}
               <div className="mt-5">
                 <GoogleLoginButton />
-                <GoogleLogoutButton />
               </div>
             </div>
 

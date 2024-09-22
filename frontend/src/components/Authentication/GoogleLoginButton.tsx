@@ -14,7 +14,7 @@ const GoogleLoginButton: React.FC = () => {
             setCurrentUser(true);
             setLoggedInWithGoogle(true);
             navigate("/");
-            // console.log("Login success! Current user: ", response.profileObj);
+            console.log("Login success! Current user: ", response.profileObj);
         }
     }
 

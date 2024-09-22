@@ -20,45 +20,24 @@ const AuthButtons = () => {
   const { loggedInWithGoogle, setLoggedInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
-  /*
-  const handleAuthentication = () => {
-    navigate("/authentication");
-  };
-
-  const handleLogout = async () => {
-    const csrfToken = getCSRFToken();
-
-    try {
-      await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
-      setCurrentUser(false);
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
-  */
-
-  ///*
   const handleAuthentication = () => {
     navigate("/authentication");
   };
 
   const handleLogout = async () => {
     if (loggedInWithGoogle) {
-      // Handle Google logout
       const authInstance = gapi.auth2.getAuthInstance();
       
       try {
         await authInstance.signOut();
         console.log("Google logout successful!");
         setCurrentUser(false);
-        setLoggedInWithGoogle(false); // Reset state
+        setLoggedInWithGoogle(false);
         navigate("/");
       } catch (error) {
         console.error("Google logout failed:", error);
       }
     } else {
-      // Handle normal logout
       const csrfToken = getCSRFToken();
   
       try {
@@ -70,8 +49,7 @@ const AuthButtons = () => {
       }
     }
   };
-  //*/
-
+  
   return (
     <div className="flex gap-4 self-stretch font-bold whitespace-nowrap">
       {currentUser ? (
