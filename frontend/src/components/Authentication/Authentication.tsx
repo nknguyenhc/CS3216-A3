@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
@@ -46,7 +46,7 @@ const Authentication: React.FC = () => {
 
     client
       .get("/api/auth/user")
-      .then((res: AxiosResponse) => {
+      .then(() => {
         setCurrentUser(true);
       })
       .catch(() => {

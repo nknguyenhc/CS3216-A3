@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import PricingCard from "./PricingCard";
-import { FaCheckCircle, FaTimes } from "react-icons/fa";
+import { FaCheckCircle } from "react-icons/fa";
 import { API_URL } from "../../config";
 
 interface PricingPlan {

@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./frontend/package.json .
 
 # Install dependencies
-RUN npm install
+RUN npm install --force
 
 # Copy source code
 COPY ./frontend .
@@ -29,10 +29,16 @@ COPY ./backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy compiled files from build image
-COPY --from=frontend-build /app/build /app/static
+COPY --from=frontend-build /app/dist /app/static
 
 # Copy source code
 COPY ./backend .
+
+# Apply migrations
+RUN python manage.py migrate
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 80
