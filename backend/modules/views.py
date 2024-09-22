@@ -26,15 +26,4 @@ class Essay(APIView):
         if not result.success:
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
 
-        return JsonResponse({
-            'essay': result.essay,
-            'comments': [self._comment_to_dict(comment) for comment in result.comments],
-            'general_comment': result.general_comment.comment
-        })
-
-    def _comment_to_dict(self, comment: Comment):
-        return {
-            'comment': comment.comment,
-            'is_positive': comment.is_good,
-            'text': comment.argument.idea,
-        }
+        return JsonResponse(result.to_dict())

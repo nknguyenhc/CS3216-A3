@@ -22,6 +22,21 @@ class OrchestratorResult:
         self.comments = comments
         self.general_comment = general_comment
 
+    def to_dict(self):
+        assert self.success, "Cannot convert failed result to dict"
+        return {
+            'essay': self.essay,
+            'comments': [self._comment_to_dict(comment) for comment in self.comments],
+            'general_comment': self.general_comment.comment
+        }
+
+    def _comment_to_dict(self, comment: Comment):
+        return {
+            'comment': comment.comment,
+            'is_positive': comment.is_good,
+            'text': comment.argument.idea,
+        }
+
 
 class Orchestrator:
     def __init__(self):
@@ -68,7 +83,7 @@ class Orchestrator:
             return OrchestratorResult(success=False)
 
         general_comment = self.general_comment_crafter.craft_general_comment(
-            filtered_evaluations)
+            personal_statement, filtered_evaluations)
         self.logger.debug(f"{general_comment=}")
         return OrchestratorResult(
             success=True,
