@@ -169,10 +169,10 @@ class ArgumentEvaluations(models.Model):
 
     def __str__(self):
         return json.dumps({
-            "specificity": self.specificity,
-            "relevance": self.relevance,
-            "interest": self.interest,
-            "capability": self.capability,
+            "specificity": self.specificity.is_specific,
+            "relevance": self.relevance.is_relevant,
+            "interest": self.interest.has_interest,
+            "capability": self.capability.is_capable,
         }, indent=4)
 
     def __repr__(self):
@@ -211,7 +211,7 @@ class JardineArgumentEvaluations(models.Model):
 
 class GeneralComment(models.Model):
     comment = models.TextField()
-    personal_state = models.ForeignKey(
+    personal_statement = models.ForeignKey(
         PersonalStatement, on_delete=models.CASCADE)
 
     def __str__(self):

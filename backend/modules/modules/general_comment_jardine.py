@@ -17,7 +17,7 @@ class JardineGeneralCommentCrafter:
         self.logger = logging.getLogger("JardineGeneralCommentCrafter")
 
     def craft_general_comment(
-        self, personal_state: PersonalStatement, arguments: list[JardineArgumentEvaluations]
+        self, personal_statement: PersonalStatement, arguments: list[JardineArgumentEvaluations]
     ) -> GeneralComment:
         """
         Crafts a general comment for a personal statement.
@@ -29,7 +29,7 @@ class JardineGeneralCommentCrafter:
         community_verdict = self._get_community_verdict(arguments)
         try:
             general_comment = self._craft_comment(
-                personal_state, capability_verdict, aspiration_verdict, leadership_verdict, community_verdict
+                personal_statement, capability_verdict, aspiration_verdict, leadership_verdict, community_verdict
             )
         except Exception as e:
             self.logger.exception("Failed to craft comment")
@@ -38,7 +38,7 @@ class JardineGeneralCommentCrafter:
         try:
             return GeneralComment(
                 comment=general_comment,
-                personal_state=personal_state
+                personal_statement=personal_statement
             )
         except Exception as e:
             self.logger.exception("Failed to save general comment to database")
@@ -104,11 +104,11 @@ class JardineGeneralCommentCrafter:
             return self.verdicts["community"]["6"]
 
     def _craft_comment(
-        self, personal_state: PersonalStatement, capacity_verdict: str, aspiration_verdict: str, leadership_verdict: str, community_verdict: str
+        self, personal_statement: PersonalStatement, capacity_verdict: str, aspiration_verdict: str, leadership_verdict: str, community_verdict: str
     ) -> str:
         client = OpenAI()
         system_message = self.general_comment_prompt.format(
-            field_of_study=personal_state.field_of_study,
+            field_of_study=personal_statement.field_of_study,
             capability_verdict=capacity_verdict,
             aspiration_verdict=aspiration_verdict,
             leadership_verdict=leadership_verdict,
@@ -120,7 +120,7 @@ class JardineGeneralCommentCrafter:
             model="gpt-4o",
             messages=[
                 {"role": "system", "content": system_message},
-                # {"role": "user", "content": personal_state.reparagraphed_essay},
+                # {"role": "user", "content": personal_statement.reparagraphed_essay},
             ]
         )
         return completion.choices[0].message.content

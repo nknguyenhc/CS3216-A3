@@ -97,3 +97,31 @@ class Orchestrator:
             capability=capability,
             interest=interest
         )
+
+    def run_stub(self, personal_statement: PersonalStatement) -> OrchestratorResult:
+        return OrchestratorResult(
+            success=True,
+            essay=personal_statement.essay,
+            comments=[
+                Comment(
+                    comment="This is a positive comment",
+                    is_good=True,
+                    argument=Argument(
+                        idea=personal_statement.essay[:300],
+                        personal_statement=personal_statement
+                    )
+                ),
+                Comment(
+                    comment="This is a negative comment",
+                    is_good=False,
+                    argument=Argument(
+                        idea=personal_statement.essay[-300:],
+                        personal_statement=personal_statement
+                    )
+                ),
+            ],
+            general_comment=GeneralComment(
+                comment="This is a general comment",
+                personal_statement=personal_statement
+            )
+        )
