@@ -127,9 +127,9 @@ if __name__ == '__main__':
         )
 
     extractor_result = IdeaExtractor().extract(example_ps)
-    print(extractor_result)
-    '''
-    '''
+    #print(extractor_result)
+    
+    
     with open("modules/modules/tests/example3.json") as f:
         data = json.load(f)
         example3 = Argument(
@@ -188,8 +188,8 @@ if __name__ == '__main__':
             capability=capability
         )
 
-    general_comment = GeneralCommentCrafter().craft_general_comment(argument_evaluations)
-
+    general_comment = GeneralCommentCrafter().craft_general_comment([argument_evaluations])
+    print(general_comment)
     #relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
     #(relevance_comment)        
 

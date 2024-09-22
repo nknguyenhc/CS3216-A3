@@ -47,10 +47,10 @@ class GeneralCommentCrafter:
 
         self.logger = logging.getLogger("GeneralCommentCrafter")
 
-    def craft_general_comment(self, personal_state: PersonalStatement, arguments: List[ArgumentEvaluations]) -> GeneralComment:
+    def craft_general_comment(self, arguments: List[ArgumentEvaluations]) -> GeneralComment:
         try:
             case_number_capability = self._identify_capability_case(arguments)
-            case_number_interest = self._identify_interest_case(arguments)  
+            case_number_interest = self._identify_interest_case(arguments)
         except Exception as e:
             self.logger.exception("Failed to identify cases")
             return None
@@ -67,8 +67,8 @@ class GeneralCommentCrafter:
         specific_interest = 0
         non_specific_interest = 0
         for argument in arguments:
-            if argument.is_relevant and argument.has_interest:
-                if argument.is_specific:
+            if argument.relevance.is_relevant == "T" and argument.interest.has_interest == "T":
+                if argument.specificity.is_specific:
                     specific_interest += 1
                 else:
                     non_specific_interest += 1
@@ -86,12 +86,11 @@ class GeneralCommentCrafter:
         specific_capability = 0
         non_specific_capability = 0
         for argument in arguments:
-            if argument.is_relevant and argument.is_capable:
-                if argument.is_specific:
+            if argument.relevance.is_relevant == "T" and argument.capability.is_capable == "T":
+                if argument.specificity.is_specific == "T":
                     specific_capability += 1
                 else:
                     non_specific_capability += 1
-
         if specific_capability + non_specific_capability < 3:
             return 0
         elif specific_capability <= 2:
