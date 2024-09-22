@@ -67,7 +67,11 @@ class JardineCommentCrafter:
                 )},
             ],
         )
-        return Comment.objects.create(comment=completion.choices[0].message.content, is_good=False)
+        return Comment.objects.create(
+            comment=completion.choices[0].message.content,
+            is_good=False,
+            argument=argument.argument,
+        )
 
     def _craft_comment_improve_specificity(self, argument: JardineArgumentEvaluations) -> Comment:
         self.logger.info("Crafting comment to improve specificity")
@@ -99,7 +103,11 @@ class JardineCommentCrafter:
                 )},
             ]
         )
-        return Comment.objects.create(comment=completion.choices[0].message.content, is_good=False)
+        return Comment.objects.create(
+            comment=completion.choices[0].message.content,
+            is_good=False,
+            argument=argument.argument,
+        )
 
     def _craft_good_comment(self, argument: JardineArgumentEvaluations) -> Comment:
         self.logger.info("Crafting good comment")
@@ -130,4 +138,8 @@ class JardineCommentCrafter:
                 )},
             ]
         )
-        return Comment.objects.create(comment=completion.choices[0].message.content, is_good=True)
+        return Comment.objects.create(
+            comment=completion.choices[0].message.content,
+            is_good=True,
+            argument=argument.argument,
+        )

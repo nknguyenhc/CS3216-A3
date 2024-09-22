@@ -8,7 +8,7 @@ django.setup()
 load_dotenv()
 logging.basicConfig(level=logging.DEBUG,
                     handlers=[
-                        logging.FileHandler("debug.log"),
+                        logging.FileHandler("Jardine - debug.log"),
                     ],
                     )
 
@@ -43,7 +43,7 @@ if __name__ == '__main__':
         JardineArgumentEvaluations,
     )
     import json
-    from modules.orchestrator import Orchestrator
+    from modules.orchestrator import Orchestrator, JardineOrchestrator
 
     '''
     with open("modules/modules/tests/example1.json") as f:
@@ -237,14 +237,14 @@ if __name__ == '__main__':
     # print(has_conclusion)
     # print(reparagraph_result)
 
-    with open("modules/modules/tests/personal_statements/example1.txt") as f:
-        personal_statement = PersonalStatement.objects.create(
-            field_of_study="Mathematics",
-            essay=f.read(),
-        )
-    orchestrator = Orchestrator()
-    result = orchestrator.run(personal_statement)
-    print(result.to_dict())
+    # with open("modules/modules/tests/personal_statements/example1.txt") as f:
+    #     personal_statement = PersonalStatement.objects.create(
+    #         field_of_study="Mathematics",
+    #         essay=f.read(),
+    #     )
+    # orchestrator = Orchestrator()
+    # result = orchestrator.run(personal_statement)
+    # print(result.to_dict())
 
     # exit(0)
 
@@ -502,3 +502,12 @@ if __name__ == '__main__':
     # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
     #     PersonalStatement(field_of_study="Mathematics"), [])
     # print(jardine_general_comment)
+
+    with open("modules/data/Nguyen - Jardine.txt") as f:
+        personal_statement = PersonalStatement.objects.create(
+            field_of_study="Physics",
+            essay=f.read(),
+        )
+    orchestrator = JardineOrchestrator()
+    result = orchestrator.run(personal_statement)
+    print(result.to_dict())
