@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
-import GoogleLogoutButton from "./GoogleLogoutButton";
 import { useAuth } from "./AuthenticationContext";
 
 // Extract CSRF token from cookies
