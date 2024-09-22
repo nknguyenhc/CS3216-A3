@@ -471,7 +471,7 @@ if __name__ == '__main__':
     # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
     #     PersonalStatement(field_of_study="Mathematics"), [])
     # print(jardine_general_comment)
-
+'''
     with open("modules/data/Nguyen - Jardine.txt") as f:
         personal_statement = PersonalStatement.objects.create(
             field_of_study="Physics",
@@ -480,3 +480,4 @@ if __name__ == '__main__':
     orchestrator = JardineOrchestrator()
     result = orchestrator.run(personal_statement)
     print(result.to_dict())
+'''

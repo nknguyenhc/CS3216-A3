@@ -63,7 +63,7 @@ class CommentCrafter:
             return completion.choices[0].message.content
 
         if not argument.relevance.is_relevant:
-            response = create_completion(
+            output = create_completion(
                 self.relevance_lack_system_prompt.format(
                     field_of_study=argument.argument.personal_statement.field_of_study
                 ),
@@ -75,23 +75,8 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            bad_comment += "Relevance: " + response + "\n"
-            return self.save_comment_to_db(response, argument.argument, bad_comment, good_comment)
-
-        output = create_completion(
-            self.relevance_good_system_prompt.format(
-                field_of_study=argument.argument.personal_statement.field_of_study
-            ),
-            self.relevance_user_prompt.format(
-                is_relevant=argument.relevance.is_relevant,
-                reason=argument.relevance.reason,
-                idea=argument.argument.idea,
-                evidence=argument.argument.evidence,
-                explanation=argument.argument.explanation
-            )
-        )
-
-        good_comment += "Relevance: " + output + "\n"
+            bad_comment += output
+            return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
 
         interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
         
@@ -109,7 +94,7 @@ class CommentCrafter:
                 )
             )
 
-            good_comment += "Interest: " + output + "\n"
+            good_comment += output
 
         if argument.capability.is_capable:
             output = create_completion(
@@ -125,7 +110,7 @@ class CommentCrafter:
                 )
             )
 
-            good_comment += "Capability: " + output + "\n"
+            good_comment +=  output
 
         if interest_or_capable and not argument.specificity.is_specific:
             output = create_completion(
@@ -139,9 +124,9 @@ class CommentCrafter:
                 )
             )
 
-            bad_comment += "Specificity: " + output + "\n"
+            bad_comment += output
 
-        elif not interest_or_capable:
+        elif not interest_or_capable and argument.specificity.is_specific:
 
             output = create_completion(
                 self.interest_lack_system_prompt.format(
@@ -156,7 +141,7 @@ class CommentCrafter:
                 )
             )
 
-            bad_comment += "Interest: " + output + "\n"
+            bad_comment += output
 
             output = create_completion(
                 self.capability_lack_system_prompt,
@@ -169,11 +154,10 @@ class CommentCrafter:
                 )
             )
 
-            bad_comment += "Capability: " + output + "\n"
+            bad_comment += output
 
-        if output:
-            print(bad_comment + "\n")
             print(good_comment + "\n")
+            print(bad_comment + "\n")
             return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
 
     def save_comment_to_db(self, comment: str, argument: Argument, bad_comment: str, good_comment: str) -> Comment:
@@ -186,7 +170,7 @@ class CommentCrafter:
 
             return Comment.objects.create(
                 comment=comment,
-                is_good=is_good,
+                is_good=True if bad_comment == "" else False,
                 argument=argument
             )
 
