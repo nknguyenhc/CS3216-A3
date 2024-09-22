@@ -33,7 +33,7 @@ class LeadershipIdentifier:
             return None
 
         try:
-            leadership = Leadership(
+            leadership = Leadership.objects.create(
                 argument=argument,
                 has_leadership=has_leadership,
                 reason_has_leadership=reason_has_leadership,

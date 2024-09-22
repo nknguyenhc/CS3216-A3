@@ -1,0 +1,24 @@
+{
+    "capability": {
+        "1": "It is good that the user has provided evidence of his capability.",
+        "2": "The scholarship board also looks at the capability of applicants, but the user has not shown evidence of his capability."
+    },
+    "aspiration": {
+        "1": "It is good that the user has demonstrated his aspiration, which can be used to contribute to the community in future.",
+        "2": "It is good that the user has demonstrated his aspiration, but he should also link his aspiration to how he can contribute to the community in future.",
+        "3": "The scholarship board also looks at the aspiration of applicants, but the user has not shown evidence of his aspiration."
+    },
+    "leadership": {
+        "1": "The user has shown evidence of his leadership skills, which is good.",
+        "2": "The user has shown some evidence of his leadership skills, but he should provide more examples of his leadership skills.",
+        "3": "The scholarship board also looks at leadership skills, while the user does not provide any evidence of his leadership skills. It is better to provide some examples of his leadership skills."
+    },
+    "community": {
+        "1": "It is good that the user has ample evidence of his contribution to the community, with how it is related to his field of study, and demonstrated his potential to contribute to the community in future.",
+        "2": "It is good that the user has ample evidence of his contribution to the community, but he should also link his contribution to the community to his field of study.",
+        "3": "It is good that the user has ample evidence of his contribution to the community, but the scholarship board is also looking for potential contributors to the community, so he should also show his potential to contribute to the community in future.",
+        "4": "It is good that the user has ample evidence of his contribution to the community, but he should also link his contribution to the community to his field of study, and demonstrate his potential to contribute to the community in future.",
+        "5": "The scholarship board looks at the contribution to the community of applicants, especially how applicants can use their field of study to contribute, so the user should show more evidence of his contribution to community.",
+        "6": "The scholarship board looks at the contribution to the community of applicants, but the user has not shown evidence of his contribution to the community."
+    }
+}

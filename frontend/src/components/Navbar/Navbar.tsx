@@ -13,7 +13,7 @@ type NavbarProps = {
 
 const Navbar = ({ aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavbarProps) => {
   return (
-    <header className="flex overflow-hidden flex-col justify-center items-center px-10 py-6 text-base bg-black-custom max-md:px-5">
+    <header className="flex overflow-hidden flex-col justify-center items-center px-10 py-6 text-base bg-gray-800 max-md:px-5">
       <div className="flex justify-between items-center w-full max-w-[1208px] max-md:max-w-full">
         <Logo />
         <Navigation

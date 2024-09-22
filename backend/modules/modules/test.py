@@ -1,10 +1,16 @@
 from dotenv import load_dotenv
 import django
 import os
+import logging
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
 django.setup()
 load_dotenv()
+logging.basicConfig(level=logging.DEBUG,
+                    handlers=[
+                        logging.FileHandler("debug.log"),
+                    ],
+                    )
 
 if __name__ == '__main__':
     from .interest import InterestIdentifier
@@ -18,10 +24,29 @@ if __name__ == '__main__':
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
     from .general_comment import GeneralCommentCrafter
-    from modules.models import Argument,Specificity, Relevance, Interest, Capability, ArgumentEvaluations, PersonalStatement
+    from .unwanted_language import UnwantedLanguageIdentifier
+    from .fact_check import FactCheckIdentifier
+    from .comment_jardine import JardineCommentCrafter
+    from .general_comment_jardine import JardineGeneralCommentCrafter
+    from modules.models import (
+        Argument,
+        Specificity,
+        Relevance,
+        Interest,
+        Capability,
+        ArgumentEvaluations,
+        PersonalStatement,
+        FactCheck,
+        UnwantedLanguage,
+        ContributionToCommunity,
+        Aspiration,
+        Leadership,
+        JardineArgumentEvaluations,
+    )
     import json
+    from modules.orchestrator import Orchestrator
 
-    '''
+    
     with open("modules/modules/tests/example1.json") as f:
         data = json.load(f)
         example1 = Argument(
@@ -116,9 +141,8 @@ if __name__ == '__main__':
             ),
         )
 
-    specificity_result = SpecificityIdentifier().identify_specificity(example3)
-    print(specificity_result)
-    '''
+    #specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    #print(specificity_result)
 
     with open("modules/modules/tests/comments/argument_evaluator.json") as f:
         data = json.load(f)
@@ -164,12 +188,13 @@ if __name__ == '__main__':
             capability=capability
         )
 
+    general_comment = GeneralCommentCrafter().craft_general_comment(argument_evaluations)
+
     #relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
-    #print(relevance_comment)        
+    #(relevance_comment)        
 
     #specificity_result = SpecificityIdentifier().identify_specificity(example3)
     #print(specificity_result)
-
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
@@ -180,9 +205,6 @@ if __name__ == '__main__':
     # has_conclusion, reparagraph_result = ReParagrapher().reparagraph(example_ps)
     # print(has_conclusion)
     # print(reparagraph_result)
-
-    general_comments = GeneralCommentCrafter().craft_general_comment(argument_evaluations)
-    print(general_comments) 
 
     ### JARDINE ###
     ### Do not run the code below, only I have access to the data ###
@@ -234,7 +256,7 @@ if __name__ == '__main__':
 
     with open("modules/data/example5.json") as f:
         data = json.load(f)
-        example4 = Argument(
+        example5 = Argument(
             idea=data["idea"],
             evidence=data["evidence"],
             explanation=data["explanation"],
@@ -243,13 +265,198 @@ if __name__ == '__main__':
             ),
         )
 
+    with open("modules/data/poor_example.json") as f:
+        data = json.load(f)
+        poor_example = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    with open("modules/data/poor_example2.json") as f:
+        data = json.load(f)
+        poor_example2 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    with open("modules/modules/tests/example2.json") as f:
+        data = json.load(f)
+        oxbridge_example2 = Argument(
+            idea=data["idea"],
+            evidence=data["evidence"],
+            explanation=data["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+    with open("modules/data/evaluations/poor_example.json") as f:
+        data = json.load(f)
+        poor_example_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=None,
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason=data["no_capability"],
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community=data["no_contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community=data["no_potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration=data["no_aspiration"],
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership=data["no_leadership"],
+            ),
+        )
+
+    with open("modules/data/evaluations/poor_example2.json") as f:
+        data = json.load(f)
+        poor_example_evaluations2 = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=None,
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason=data["no_capability"],
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community=data["no_contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community=data["no_potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration=data["no_aspiration"],
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership=data["no_leadership"],
+            ),
+        )
+
+    with open("modules/data/evaluations/oxbridge_example2.json") as f:
+        data = json.load(f)
+        oxbridge_example2_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=Specificity(
+                is_specific=False,
+                reason=data["no_specificity"]
+            ),
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason="",
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=False,
+                reason_has_contribution_to_community="",
+                will_contribute_to_community=True,
+                reason_will_contribute_to_community=data["potential_to_contribute_to_community"],
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration="",
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership="",
+            ),
+        )
+
+    with open("modules/data/evaluations/example1.json", encoding="utf-8") as f:
+        data = json.load(f)
+        example1_evaluations = JardineArgumentEvaluations(
+            argument=Argument(
+                idea=data["idea"],
+                evidence=data["evidence"],
+                explanation=data["explanation"],
+                personal_statement=PersonalStatement(
+                    field_of_study=data["field_of_study"],
+                ),
+            ),
+            specificity=Specificity(
+                is_specific=True,
+                reason=data["specificity"]
+            ),
+            relevance=None,
+            capability=Capability(
+                is_capable=False,
+                is_capable_reason="",
+            ),
+            contribution_to_community=ContributionToCommunity(
+                has_contribution_to_community=True,
+                reason_has_contribution_to_community=data["contribution_to_community"],
+                will_contribute_to_community=False,
+                reason_will_contribute_to_community="",
+            ),
+            aspiration=Aspiration(
+                has_aspiration=False,
+                reason_has_aspiration="",
+            ),
+            leadership=Leadership(
+                has_leadership=False,
+                reason_has_leadership="",
+            ),
+        )
+    '''
+
+    # specificity_result = SpecificityIdentifier().identify_specificity(example1)
+    # print(specificity_result)
+
+    # capability_result = CapabilityIdentifier().identify_capability(example1)
+    # print(capability_result)
+
     # community_result = ContributionToCommunityIdentifier(
     # ).identify_contribution_to_community(example1)
     # print(community_result)
 
-    # aspiration_result = AspirationIdentifier().identify_aspiration(example2)
+    # aspiration_result = AspirationIdentifier().identify_aspiration(example1)
     # print(aspiration_result)
 
-    leadership_result = LeadershipIdentifier().identify_leadership(example3)
-    print(leadership_result)
-    '''
+    # leadership_result = LeadershipIdentifier().identify_leadership(example1)
+    # print(leadership_result)
+
+    # jardine_comment = JardineCommentCrafter().craft_comment(
+    #     poor_example_evaluations2)
+    # print(jardine_comment)
+
+    # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
+    #     PersonalStatement(field_of_study="Mathematics"), [])
+    # print(jardine_general_comment)

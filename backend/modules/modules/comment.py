@@ -47,175 +47,103 @@ class CommentCrafter:
         with open(path, "r") as f:
             return f.read()
 
-    def craft_comment(self, argument: ArgumentEvaluations) -> Comment:
+    def craft_comment(self, argument: ArgumentEvaluations) -> Comment | None:
         client = OpenAI()
-        completion = None
-        comment = None
+
+        def create_completion(system_prompt, user_prompt):
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ]
+            )
+            return completion.choices[0].message.content
 
         if not argument.relevance.is_relevant:
-            completion = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": self.relevance_lack_system_prompt.format(
-                        field_of_study=argument.argument.personal_statement.field_of_study
-                    )},
-                    {"role": "user", "content": self.relevance_user_prompt.format(
-                        is_relevant=argument.relevance.is_relevant,
-                        reason=argument.relevance.reason,
-                        idea=argument.argument.idea,
-                        evidence=argument.argument.evidence,
-                        explanation=argument.argument.explanation
-                    )},
-                ]
+            response = create_completion(
+                self.relevance_lack_system_prompt.format(
+                    field_of_study=argument.argument.personal_statement.field_of_study
+                ),
+                self.relevance_user_prompt.format(
+                    is_relevant=argument.relevance.is_relevant,
+                    reason=argument.relevance.reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
+                )
+            )
+            return self.save_comment_to_db(response, argument.argument)
+
+        output = create_completion(
+            self.relevance_good_system_prompt.format(
+                field_of_study=argument.argument.personal_statement.field_of_study
+            ),
+            self.relevance_user_prompt.format(
+                is_relevant=argument.relevance.is_relevant,
+                reason=argument.relevance.reason,
+                idea=argument.argument.idea,
+                evidence=argument.argument.evidence,
+                explanation=argument.argument.explanation
+            )
+        )
+
+        interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
+
+        if argument.interest.has_interest:
+            output += create_completion(
+                self.interest_good_system_prompt.format(
+                    field_of_study=argument.argument.personal_statement.field_of_study
+                ),
+                self.interest_user_prompt.format(
+                    has_interest=argument.interest.has_interest,
+                    has_interest_reason=argument.interest.has_interest_reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
+                )
             )
 
-        if completion:
-            response_data = completion.choices[0].message.content
-
-            comment = self.save_comment_to_db(response_data, argument.argument)
-
-            return comment
-
-        else:
-
-            output = ""
-
-            completion = client.chat.completions.create(
-                model="gpt-4o",
-                messages=[
-                    {"role": "system", "content": self.relevance_good_system_prompt.format(
-                        field_of_study=argument.argument.personal_statement.field_of_study
-                    )},
-                    {"role": "user", "content": self.relevance_user_prompt.format(
-                        is_relevant=argument.relevance.is_relevant,
-                        reason=argument.relevance.reason,
-                        idea=argument.argument.idea,
-                        evidence=argument.argument.evidence,
-                        explanation=argument.argument.explanation
-                    )},
-                ]
+        if argument.capability.is_capable:
+            output += create_completion(
+                self.capability_good_system_prompt.format(
+                    field_of_study=argument.argument.personal_statement.field_of_study
+                ),
+                self.capability_user_prompt.format(
+                    is_capable=argument.capability.is_capable,
+                    is_capable_reason=argument.capability.is_capable_reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
+                )
             )
 
-            output += completion.choices[0].message.content
-
-            interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
-
-            if argument.interest.has_interest:
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.interest_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.interest_user_prompt.format(
-                            has_interest=argument.interest.has_interest,
-                            has_interest_reason=argument.interest.has_interest_reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
+        if interest_or_capable and not argument.specificity.is_specific:
+            output += create_completion(
+                self.specificity_good_system_prompt,
+                self.specificity_user_prompt.format(
+                    is_specific=argument.specificity.is_specific,
+                    is_capable_reason=argument.specificity.reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
                 )
+            )
 
-                output += completion.choices[0].message.content
-
-            if argument.capability.is_capable:
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.capability_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.capability_user_prompt.format(
-                            is_capable=argument.capability.is_capable,
-                            is_capable_reason=argument.capability.is_capable_reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
+        elif not interest_or_capable:
+            output += create_completion(
+                self.specificity_good_system_prompt,
+                self.specificity_user_prompt.format(
+                    is_specific=argument.specificity.is_specific,
+                    is_capable_reason=argument.specificity.reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
                 )
-
-                output += completion.choices[0].message.content
-
-            if interest_or_capable and not argument.specificity.is_specific:
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.specificity_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.specificity_user_prompt.format(
-                            is_specific=argument.specificity.is_specific,
-                            is_capable_reason=argument.specificity.reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
-                )
-
-                output += completion.choices[0].message.content
-
-            if not interest_or_capable and not argument.specificity.is_specific:
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.specificity_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.specificity_user_prompt.format(
-                            is_specific=argument.specificity.is_specific,
-                            is_capable_reason=argument.specificity.reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
-                )
-
-                output += completion.choices[0].message.content
-
-            if not interest_or_capable and argument.specificity.is_specific:
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.interest_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.interest_user_prompt.format(
-                            has_interest=argument.interest.has_interest,
-                            has_interest_reason=argument.interest.has_interest_reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
-                )
-
-                output += completion.choices[0].message.content
-
-                completion = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": self.capability_good_system_prompt.format(
-                            field_of_study=argument.argument.personal_statement.field_of_study
-                        )},
-                        {"role": "user", "content": self.capability_user_prompt.format(
-                            is_capable=argument.capability.is_capable,
-                            is_capable_reason=argument.capability.is_capable_reason,
-                            idea=argument.argument.idea,
-                            evidence=argument.argument.evidence,
-                            explanation=argument.argument.explanation
-                        )},
-                    ]
-                )
-
-                output += completion.choices[0].message.content
+            )
 
         if output:
-            comment = self.save_comment_to_db(output, argument.argument)
-            return comment
+            return self.save_comment_to_db(output, argument.argument)
 
     def save_comment_to_db(self, comment: str, argument: Argument) -> Comment:
         if not comment or not argument:
@@ -227,6 +155,7 @@ class CommentCrafter:
 
             return Comment.objects.create(
                 comment=comment,
+                is_good=True,  # ???
                 argument=argument
             )
 

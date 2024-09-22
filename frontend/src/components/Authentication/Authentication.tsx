@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
-import GoogleLogoutButton from "./GoogleLogoutButton";
 import { useAuth } from "./AuthenticationContext";
 
 // Extract CSRF token from cookies
@@ -24,7 +23,6 @@ const client = axios.create({
 });
 
 const Authentication: React.FC = () => {
-  // const [currentUser, setCurrentUser] = useState<boolean | null>(null);
   const { currentUser, setCurrentUser } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
@@ -32,6 +30,8 @@ const Authentication: React.FC = () => {
   const [password, setPassword] = useState<string>("");
 
   // Gapi setup
+  const navigate = useNavigate();
+
   useEffect(() => {
     const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 
@@ -45,10 +45,9 @@ const Authentication: React.FC = () => {
     gapi.load("client:auth2", start);
 
     client
-      .get("/api/user")
+      .get("/api/auth/user")
       .then((res: AxiosResponse) => {
         setCurrentUser(true);
-        navigate('/');
       })
       .catch(() => {
         setCurrentUser(false);
@@ -65,7 +64,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");
@@ -81,7 +80,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");
@@ -96,7 +95,7 @@ const Authentication: React.FC = () => {
     const csrfToken = getCSRFToken();
 
     client
-      .post("/api/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
+      .post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } })
       .then(() => {
         setCurrentUser(true);
         navigate("/");
@@ -105,8 +104,6 @@ const Authentication: React.FC = () => {
         console.error("Logout failed:", error);
       });
   };
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-row min-h-screen bg-gray-100 overflow-hidden">
@@ -173,7 +170,6 @@ const Authentication: React.FC = () => {
               {/* Google Auth buttons */}
               <div className="mt-5">
                 <GoogleLoginButton />
-                <GoogleLogoutButton />
               </div>
             </div>
 

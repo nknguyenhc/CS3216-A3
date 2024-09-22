@@ -1,60 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 import json
-
-
-class AppUserManager(BaseUserManager):
-    def create_user(self, email, password=None, username=None):
-        if not email:
-            raise ValueError('An email is required.')
-        if not password:
-            raise ValueError('A password is required.')
-        if not username:
-            raise ValueError('A username is required.')
-
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username)
-        user.set_password(password)
-        user.save()
-        return user
-
-    def create_superuser(self, email, password=None, username=None):
-        if not email:
-            raise ValueError('An email is required.')
-        if not password:
-            raise ValueError('A password is required.')
-        if not username:
-            raise ValueError('A username is required.')
-
-        user = self.create_user(email, password, username)
-        user.is_superuser = True
-        user.is_staff = True
-        user.save()
-        return user
-
-
-class AppUser(AbstractBaseUser, PermissionsMixin):
-    user_id = models.AutoField(primary_key=True)
-    email = models.EmailField(max_length=50, unique=True)
-    username = models.CharField(max_length=50, default='default_username')
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
-
-    objects = AppUserManager()
-
-    groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='appuser_set',
-        blank=True,
-    )
-    user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='appuser_set',
-        blank=True,
-    )
-
-    def __str__(self):
-        return self.username
 
 
 class PersonalStatement(models.Model):
@@ -202,11 +147,13 @@ class Leadership(models.Model):
 
 class Comment(models.Model):
     comment = models.TextField()
+    is_good = models.BooleanField()
     argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
 
     def __str__(self):
         return json.dumps({
             "comment": self.comment,
+            "is_good": self.is_good,
         }, indent=4)
 
     def __repr__(self):
@@ -222,9 +169,37 @@ class ArgumentEvaluations(models.Model):
 
     def __str__(self):
         return json.dumps({
+            "specificity": self.specificity.is_specific,
+            "relevance": self.relevance.is_relevant,
+            "interest": self.interest.has_interest,
+            "capability": self.capability.is_capable,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+    class Meta:
+        managed = False
+
+
+class JardineArgumentEvaluations(models.Model):
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+    specificity = models.ForeignKey(Specificity, on_delete=models.CASCADE)
+    relevance = models.ForeignKey(Relevance, on_delete=models.CASCADE)
+    capability = models.ForeignKey(Capability, on_delete=models.CASCADE)
+    contribution_to_community = models.ForeignKey(
+        ContributionToCommunity, on_delete=models.CASCADE)
+    aspiration = models.ForeignKey(Aspiration, on_delete=models.CASCADE)
+    leadership = models.ForeignKey(Leadership, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
             "specificity": self.specificity,
             "relevance": self.relevance,
-            "suitability": self.suitability,
+            "capability": self.capability,
+            "contribution_to_community": self.contribution_to_community,
+            "aspiration": self.aspiration,
+            "leadership": self.leadership,
         }, indent=4)
 
     def __repr__(self):
@@ -236,12 +211,42 @@ class ArgumentEvaluations(models.Model):
 
 class GeneralComment(models.Model):
     comment = models.TextField()
-    personal_state = models.ForeignKey(
+    personal_statement = models.ForeignKey(
         PersonalStatement, on_delete=models.CASCADE)
 
     def __str__(self):
         return json.dumps({
             "comment": self.comment,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class UnwantedLanguage(models.Model):
+    has_unwanted_language = models.BooleanField()
+    has_unwanted_language_reason = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_unwanted_language": self.has_unwanted_language,
+            "has_unwanted_language_reason": self.has_unwanted_language_reason,
+        }, indent=4)
+
+    def __repr__(self):
+        return self.__str__()
+
+
+class FactCheck(models.Model):
+    has_fake_fact = models.BooleanField()
+    has_fake_fact_reason = models.TextField()
+    argument = models.ForeignKey(Argument, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return json.dumps({
+            "has_fake_facts": self.has_fake_fact,
+            "has_fake_facts_reason": self.has_fake_fact_reason,
         }, indent=4)
 
     def __repr__(self):

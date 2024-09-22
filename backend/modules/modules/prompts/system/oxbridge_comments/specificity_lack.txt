@@ -8,7 +8,7 @@ The interest consists of the following:
 An argument consists of the following:
 * Idea: What the idea is about.
 * Evidence: Evidence to support what the person is claiming.
-* Explanation: A link back to {field_of_study}.
+* Explanation: A link back to idea.
 
 The field of study will be given by the user.
 

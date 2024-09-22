@@ -3,15 +3,18 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 interface AuthContextType {
   currentUser: boolean | null;
   setCurrentUser: (state: boolean | null) => void;
+  loggedInWithGoogle: boolean;
+  setLoggedInWithGoogle: (state: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<boolean | null>(null);
+  const [loggedInWithGoogle, setLoggedInWithGoogle] = useState<boolean>(false);
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser }}>
+    <AuthContext.Provider value={{ currentUser, setCurrentUser, loggedInWithGoogle, setLoggedInWithGoogle }}>
       {children}
     </AuthContext.Provider>
   );
