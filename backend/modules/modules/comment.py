@@ -91,7 +91,7 @@ class CommentCrafter:
         )
 
         interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
-
+        
         if argument.interest.has_interest:
             output += create_completion(
                 self.interest_good_system_prompt.format(
@@ -125,7 +125,7 @@ class CommentCrafter:
                 self.specificity_good_system_prompt,
                 self.specificity_user_prompt.format(
                     is_specific=argument.specificity.is_specific,
-                    is_capable_reason=argument.specificity.reason,
+                    reason=argument.specificity.reason,
                     idea=argument.argument.idea,
                     evidence=argument.argument.evidence,
                     explanation=argument.argument.explanation
@@ -134,16 +134,29 @@ class CommentCrafter:
             is_good = False
 
         elif not interest_or_capable:
+
             output += create_completion(
-                self.specificity_good_system_prompt,
-                self.specificity_user_prompt.format(
-                    is_specific=argument.specificity.is_specific,
-                    is_capable_reason=argument.specificity.reason,
+                self.interest_lack_system_prompt,
+                self.interest_user_prompt.format(
+                    has_interest=argument.interest.has_interest,
+                    has_interest_reason=argument.interest.has_interest_reason,
                     idea=argument.argument.idea,
                     evidence=argument.argument.evidence,
                     explanation=argument.argument.explanation
                 )
             )
+
+            output += create_completion(
+                self.capability_lack_system_prompt,
+                self.capability_user_prompt.format(
+                    is_capable=argument.capability.is_capable,
+                    is_capable_reason=argument.capability.is_capable_reason,
+                    idea=argument.argument.idea,
+                    evidence=argument.argument.evidence,
+                    explanation=argument.argument.explanation
+                )
+            )
+
             is_good = False
 
         if output:

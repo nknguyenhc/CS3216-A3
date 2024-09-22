@@ -157,25 +157,25 @@ if __name__ == '__main__':
         )
 
         relevance = Relevance(
-            is_relevant=data["is_relevant"],
+            is_relevant = False if data["is_relevant"] == "F" else True,
             reason=data["is_relevant_reason"],
             argument=argument
         )
 
         specificity = Specificity(
-            is_specific=data["is_specific"],
+            is_specific = False if data["is_specific"] == "F" else True,
             reason=data["is_specific_reason"],
             argument=argument
         )
 
         interest = Interest(
-            has_interest=data["has_interest"],
+            has_interest = False if data["has_interest"] == "F" else True,
             has_interest_reason=data["has_interest_reason"],
             argument=argument
         )
 
         capability = Capability(
-            is_capable=data["is_capable"],
+            is_capable = False if data["is_capable"] == "F" else True,
             is_capable_reason=data["is_capable_reason"],
             argument=argument
         )  
