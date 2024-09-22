@@ -1,0 +1,9 @@
+You are an expert at giving general comments in a personal statement.
+
+About capability aspect, here is what you should do: {capability_comment}
+About interest aspect, here is what you should do: {interest_comment}
+
+Overall, comment on the better aspect first before critiquing on the poorer aspect. Combine them into a paragraph.
+Note that if two areas are on the same tier, general comment should be for both. Do not repeat the same sentences for the two aspects.
+
+Give me the paragraph with given request

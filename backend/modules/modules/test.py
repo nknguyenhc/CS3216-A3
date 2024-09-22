@@ -23,6 +23,7 @@ if __name__ == '__main__':
     from .leadership import LeadershipIdentifier
     from .specificity import SpecificityIdentifier
     from .comment import CommentCrafter
+    from .general_comment import GeneralCommentCrafter
     from .unwanted_language import UnwantedLanguageIdentifier
     from .fact_check import FactCheckIdentifier
     from .comment_jardine import JardineCommentCrafter
@@ -126,9 +127,9 @@ if __name__ == '__main__':
         )
 
     extractor_result = IdeaExtractor().extract(example_ps)
-    print(extractor_result)
-    '''
-    '''
+    #print(extractor_result)
+    
+    
     with open("modules/modules/tests/example3.json") as f:
         data = json.load(f)
         example3 = Argument(
@@ -140,9 +141,8 @@ if __name__ == '__main__':
             ),
         )
 
-    specificity_result = SpecificityIdentifier().identify_specificity(example3)
-    print(specificity_result)
-    '''
+    #specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    #print(specificity_result)
 
     with open("modules/modules/tests/comments/argument_evaluator.json") as f:
         data = json.load(f)
@@ -188,42 +188,13 @@ if __name__ == '__main__':
             capability=capability
         )
 
-    relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
-    print(relevance_comment) 
+    general_comment = GeneralCommentCrafter().craft_general_comment([argument_evaluations])
+    print(general_comment)
+    #relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
+    #(relevance_comment)        
 
-    '''
-    with open("modules/modules/tests/language/example2.json") as f:
-        data = json.load(f)
-        example1 = Argument(
-            idea=data["idea"],
-            evidence=data["evidence"],
-            explanation=data["explanation"],
-            personal_statement=PersonalStatement(
-                field_of_study=data["field_of_study"],
-            ),
-        )
-
-    unwanted_language_result = UnwantedLanguageIdentifier().identify_unwanted_language(example1)
-    print(unwanted_language_result)
-    '''
-    '''
-    with open("modules/modules/tests/fact_check/example2.json") as f:
-        data = json.load(f)
-        example1 = Argument(
-            idea=data["idea"],
-            evidence=data["evidence"],
-            explanation=data["explanation"],
-            personal_statement=PersonalStatement(
-                field_of_study=data["field_of_study"],
-            ),
-        )
-    '''
-
-    # fact_check_result = FactCheckIdentifier().identify_fact_check(example1)
-    # print(fact_check_result)
-
-    # specificity_result = SpecificityIdentifier().identify_specificity(example3)
-    # print(specificity_result)
+    #specificity_result = SpecificityIdentifier().identify_specificity(example3)
+    #print(specificity_result)
 
     # suitability_result = CapabilityIdentifier().identify_capability(example2)
     # print(suitability_result)
