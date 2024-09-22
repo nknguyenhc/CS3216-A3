@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
     };
 
     emailjs
-      .send("service_kcou7ol", "template_2mf0q8v", templateParams, "TtNGDN7OZ11CCvt63")
+      .send("service_kcou7ol", "template_9h98wr9", templateParams, "TtNGDN7OZ11CCvt63")
       .then((response: EmailJSResponseStatus) => {
         console.log("Success!", response.status, response.text);
         setName("");
@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
             <input
               type="text"
               placeholder="Your Name"
-              className="w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-black w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -48,14 +48,14 @@ const Footer: React.FC = () => {
             <input
               type="email"
               placeholder="Your Email"
-              className="w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-black w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <textarea
               placeholder="Your Message"
-              className="w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-black w-full p-2 mb-2 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
