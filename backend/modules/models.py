@@ -1,22 +1,40 @@
 from django.db import models
+from auth.models import AppUser
+from django.utils import timezone
 import json
 
 
 class PersonalStatement(models.Model):
+    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='personal_statements', null=True)
+    title = models.CharField(max_length=200, null=True)
+    focus = models.BooleanField(default=False)  # 0 is Oxbridge, 1 is Jardine
     field_of_study = models.TextField()
     essay = models.TextField()
     reparagraphed_essay = models.TextField(null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user': self.user.id if self.user else None,
+            'title': self.title,
+            'focus': self.focus,
+            'field_of_study': self.field_of_study,
+            'essay': self.essay,
+            'reparagraphed_essay': self.reparagraphed_essay,
+            'created_at': self.created_at,
+            'general_comment': self.general_comments.first().comment if self.general_comments.exists() else None,
+            'comments': [
+                {'comment': comment.comment, 'is_good': comment.is_good} 
+                for comment in self.comments.all()
+            ]
+        }
 
     def __str__(self):
-        return json.dumps({
-            "field_of_study": self.field_of_study,
-            "essay": self.essay,
-            "reparagraphed_essay": self.reparagraphed_essay,
-        }, indent=4)
+        return json.dumps(self.to_dict(), indent=4)
 
     def __repr__(self):
         return self.__str__()
-
 
 class Argument(models.Model):
     idea = models.TextField()

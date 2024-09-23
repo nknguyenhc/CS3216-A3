@@ -47,7 +47,7 @@ class GeneralCommentCrafter:
 
         self.logger = logging.getLogger("GeneralCommentCrafter")
 
-    def craft_general_comment(self, arguments: List[ArgumentEvaluations]) -> GeneralComment:
+    def craft_general_comment(self, personal_statement: PersonalStatement, arguments: List[ArgumentEvaluations]) -> GeneralComment:
         try:
             case_number_capability = self._identify_capability_case(arguments)
             case_number_interest = self._identify_interest_case(arguments)
@@ -56,7 +56,13 @@ class GeneralCommentCrafter:
             return None
         
         try:
-            general_comment = self._craft_general_comment(case_number_interest, case_number_capability)
+            comment = self._craft_general_comment(case_number_interest, case_number_capability)
+            personal_statement.save()
+            general_comment = GeneralComment.objects.create(
+                comment=comment,
+                personal_statement=personal_statement
+            )
+            return general_comment
         except Exception as e:
             self.logger.exception("Failed to generate general comments")
             return None
