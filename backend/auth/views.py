@@ -57,25 +57,21 @@ class UserRegister(APIView):
     def post(self, request):
         data = request.data
 
-        # Validate email
         try:
             email = validate_email(data.get('email', ''))
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate username
         try:
             username = validate_username(data.get('username', ''))
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate password
         try:
             password = validate_password(data.get('password', ''))
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Prepare clean data for the serializer
         clean_data = {
             'email': email,
             'username': username,
@@ -84,7 +80,7 @@ class UserRegister(APIView):
 
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.save()  # Use save instead of create
+            user = serializer.save
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)

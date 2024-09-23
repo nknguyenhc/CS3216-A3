@@ -22,11 +22,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
+    username = serializers.CharField()
     password = serializers.CharField()
 
     def validate(self, attrs):
         user = authenticate(
-            username=attrs['email'], password=attrs['password'])
+            username=attrs['username'], email=attrs['email'], password=attrs['password'])
         if not user:
             raise ValidationError('User not found or invalid credentials')
         return attrs

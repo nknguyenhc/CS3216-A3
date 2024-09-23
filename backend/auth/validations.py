@@ -38,7 +38,7 @@ def validate_login_username(username):
     if not username:
         raise ValidationError('A username is needed.')
     
-    if UserModel.objects.filter(username=username).exists():
+    if not UserModel.objects.filter(username=username).exists():
         raise ValidationError('Username is not registered.')
 
     return username
