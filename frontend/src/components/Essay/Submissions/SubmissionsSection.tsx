@@ -35,8 +35,8 @@ const SubmissionsSection: React.FC<SubmissionsSectionProps> = ({ submissions }) 
 
   return (
     <div>
-      <div className="text-lg font-bold text-left text-black mb-8">Your past submissions</div>
-      <div className="flex items-center space-x-6 mb-8">
+      <div className="text-lg font-bold text-left text-black mb-6">Your past submissions</div>
+      <div className="flex items-center space-x-6 mb-12">
         <FindByTitle title={title} setTitle={setTitle} />
         <SortButton
           label="Sort by Create Time"

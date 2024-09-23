@@ -7,7 +7,7 @@ interface FindByTitleProps {
 
 const FindByTitle: React.FC<FindByTitleProps> = ({ title, setTitle }) => {
   return (
-    <div className="mb-12">
+    <div>
       <input
         type="text"
         value={title}

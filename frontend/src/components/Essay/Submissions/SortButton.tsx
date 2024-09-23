@@ -8,7 +8,7 @@ interface SortButtonProps {
 
 const SortButton: React.FC<SortButtonProps> = ({ label, active, onClick }) => {
   return (
-    <div className="mb-12">
+    <div>
       <button
         onClick={onClick}
         className={`px-4 py-2 rounded-lg shadow-lg ${active ? "bg-dark-blue-custom text-white" : "bg-light-blue-custom text-black-custom"
