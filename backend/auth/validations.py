@@ -13,16 +13,6 @@ def validate_email(email):
 
     return email
 
-def validate_login_email(email):
-    email = email.strip()
-    if not email:
-        raise ValidationError('An email is needed.')
-    
-    if not UserModel.objects.filter(email=email).exists():
-        raise ValidationError('Email is not registered.')
-
-    return email
-
 def validate_username(username):
     username = username.strip()
     if not username:
@@ -33,15 +23,24 @@ def validate_username(username):
 
     return username
 
-def validate_login_username(username):
+def validate_login_credentials(email, username, password):
+    email = email.strip()
     username = username.strip()
+    password = password.strip()
+
+    if not email:
+        raise ValidationError('An email is needed.')
+    
     if not username:
         raise ValidationError('A username is needed.')
     
-    if not UserModel.objects.filter(username=username).exists():
-        raise ValidationError('Username is not registered.')
+    if not password:
+        raise ValidationError('A password is needed.')
 
-    return username
+    if not UserModel.objects.filter(email=email, username=username).exists():
+        raise ValidationError('Invalid email, username, and password.')
+
+    return email, username
 
 def validate_password(password):
     password = password.strip()

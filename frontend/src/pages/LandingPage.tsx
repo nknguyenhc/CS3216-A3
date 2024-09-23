@@ -1,5 +1,5 @@
 import { useRefs } from "../context/RefsContext";
-import About from "../components/About/About";
+import Upload from "../components/Upload/Upload";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
 import Hero from "../components/Hero/Hero";
@@ -11,7 +11,7 @@ import Reviews from "../components/Reviews/Reviews";
 import { ParallaxProvider } from "react-scroll-parallax";
 
 const LandingPage = () => {
-  const { aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef } = useRefs();
+  const { uploadEssayRef, howItWorksRef, pricingRef, reviewsRef, faqRef } = useRefs();
 
   return (
     <div>
@@ -19,7 +19,7 @@ const LandingPage = () => {
         <Hero />
       </ParallaxProvider>
 
-      <About ref={aboutRef} />
+      <Upload ref={uploadEssayRef} />
       <AdvantagesSection />
       <ScrollVideo />
       <FeedbackSteps ref={howItWorksRef} />

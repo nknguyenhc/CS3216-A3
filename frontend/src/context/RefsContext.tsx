@@ -1,7 +1,7 @@
 import React, { createContext, useContext, RefObject } from 'react';
 
 type RefsContextType = {
-  aboutRef: RefObject<HTMLElement>;
+  uploadEssayRef: RefObject<HTMLElement>;
   howItWorksRef: RefObject<HTMLElement>;
   pricingRef: RefObject<HTMLDivElement>;
   reviewsRef: RefObject<HTMLDivElement>;

@@ -1,14 +1,14 @@
 import { RefObject } from "react";
 
 type NavigationProps = {
-  aboutRef: RefObject<HTMLElement>;
+  uploadEssayRef: RefObject<HTMLElement>;
   howItWorksRef: RefObject<HTMLElement>;
   pricingRef: RefObject<HTMLElement>;
   reviewsRef: RefObject<HTMLElement>;
   faqRef: RefObject<HTMLElement>;
 };
 
-const Navigations = ({ aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavigationProps) => {
+const Navigations = ({ uploadEssayRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavigationProps) => {
   const scrollToSection = (ref: RefObject<HTMLElement>) => {
     if (ref && ref.current) {
       console.log("clicked true");
@@ -21,10 +21,10 @@ const Navigations = ({ aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef }
   return (
     <nav className="flex gap-8 items-center self-stretch px-px my-auto font-medium text-gray-800 max-md:max-w-full">
       <button
-        onClick={() => scrollToSection(aboutRef)}
+        onClick={() => scrollToSection(uploadEssayRef)}
         className="text-white relative text-xl w-fit block bg-gradient-to-r from-sky-600 to-sky-600 bg-[length:0%_100%] bg-left hover:bg-[length:100%_100%] hover:text-transparent transition-all duration-500 ease-out bg-clip-text after:block after:content-[''] after:absolute after:h-[3px] after:bg-sky-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left"
       >
-        About Us
+        Upload 
       </button>
       <button
         onClick={() => scrollToSection(howItWorksRef)}

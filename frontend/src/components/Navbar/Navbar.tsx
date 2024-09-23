@@ -4,20 +4,20 @@ import Navigation from "./Navigations";
 import AuthButtons from "./AuthButtons";
 
 type NavbarProps = {
-  aboutRef: RefObject<HTMLElement>;
+  uploadEssayRef: RefObject<HTMLElement>;
   howItWorksRef: RefObject<HTMLElement>;
   pricingRef: RefObject<HTMLElement>;
   reviewsRef: RefObject<HTMLElement>;
   faqRef: RefObject<HTMLElement>;
 };
 
-const Navbar = ({ aboutRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavbarProps) => {
+const Navbar = ({ uploadEssayRef, howItWorksRef, pricingRef, reviewsRef, faqRef }: NavbarProps) => {
   return (
     <header className="flex overflow-hidden flex-col justify-center items-center px-10 py-6 text-base bg-gray-800 max-md:px-5">
       <div className="flex justify-between items-center w-full max-w-[1208px] max-md:max-w-full">
         <Logo />
         <Navigation
-          aboutRef={aboutRef}
+          uploadEssayRef={uploadEssayRef}
           howItWorksRef={howItWorksRef}
           pricingRef={pricingRef}
           reviewsRef={reviewsRef}

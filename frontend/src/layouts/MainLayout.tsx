@@ -4,14 +4,14 @@ import { useRef } from "react";
 import { RefsProvider } from "../context/RefsContext";
 
 const MainLayout = () => {
-  const aboutRef = useRef<HTMLElement | null>(null);
+  const uploadEssayRef = useRef<HTMLElement | null>(null);
   const howItWorksRef = useRef<HTMLElement | null>(null);
   const pricingRef = useRef<HTMLDivElement | null>(null);
   const reviewsRef = useRef<HTMLDivElement | null>(null);
   const faqRef = useRef<HTMLDivElement | null>(null);
 
   const refs = {
-    aboutRef,
+    uploadEssayRef,
     howItWorksRef,
     pricingRef,
     reviewsRef,
@@ -27,7 +27,7 @@ const MainLayout = () => {
     <div>
       {shouldShowNavBar && (
         <Navbar
-          aboutRef={aboutRef}
+          uploadEssayRef={uploadEssayRef}
           howItWorksRef={howItWorksRef}
           pricingRef={pricingRef}
           reviewsRef={reviewsRef}

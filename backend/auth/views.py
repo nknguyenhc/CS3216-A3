@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
 import os
 from .serializers import UserRegisterSerializer, UserSerializer
-from .validations import validate_email, validate_login_email, validate_username, validate_login_username, validate_password
+from .validations import validate_email, validate_username, validate_password, validate_login_credentials
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
@@ -80,7 +80,7 @@ class UserRegister(APIView):
 
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
-            user = serializer.save
+            user = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
@@ -97,31 +97,15 @@ class UserLogin(APIView):
         username = data.get('username', '').strip()
         password = data.get('password', '').strip()
 
-        # Validate email
         try:
-            validate_login_email(email)
+            validate_login_credentials(email, username, password)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate username
-        try:
-            validate_login_username(username)
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Validate password
-        try:
-            validate_password(password)
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Authenticate user
         user = authenticate(request, email=email,
                             username=username, password=password)
 
-        # Check if user exists
         if user is None:
-            # Check if the email or username is valid
             if not UserModel.objects.filter(email=email).exists():
                 return Response({"error": "Email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
             elif not UserModel.objects.filter(username=username).exists():
@@ -129,7 +113,6 @@ class UserLogin(APIView):
             else:
                 return Response({"error": "Invalid password."}, status=status.HTTP_401_UNAUTHORIZED)
 
-        # Log the user in
         login(request, user)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

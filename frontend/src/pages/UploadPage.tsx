@@ -20,7 +20,7 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const UploadEssayPage: React.FC = () => {
+const UploadPage: React.FC = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -97,4 +97,4 @@ const UploadEssayPage: React.FC = () => {
   );
 };
 
-export default UploadEssayPage;
+export default UploadPage;

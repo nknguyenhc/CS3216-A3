@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
-
 class AppUserManager(BaseUserManager):
     def create_user(self, email, password=None, username=None):
         if not email:
@@ -12,7 +11,7 @@ class AppUserManager(BaseUserManager):
             raise ValueError('A username is required.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username)
+        user = self.model(email=email, username=username, free_upload_count=3)  # Initialize free_upload_count to 3
         user.set_password(password)
         user.save()
         return user
@@ -36,6 +35,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=50, unique=True)
     username = models.CharField(max_length=50, default='default_username')
+    free_upload_count = models.PositiveIntegerField(default=3)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
