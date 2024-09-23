@@ -8,6 +8,7 @@ from .orchestrator import JardineOrchestrator
 orchestrator = Orchestrator()
 jardine_orchestrator = JardineOrchestrator()
 
+
 class Essay(APIView):
     permissions_classes = [IsAuthenticated]
 
@@ -39,7 +40,7 @@ class Essay(APIView):
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
 
         return JsonResponse(result.to_dict())
-    
+
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=False)
         response_data = [
@@ -47,12 +48,13 @@ class Essay(APIView):
                 'id': ps.id,
                 'title': ps.title,
                 'field_of_study': ps.field_of_study,
-                'created_at': ps.created_at
+                'created_at': ps.created_at,
                 'number_of_comment': ps.number_of_comment()
             }
             for ps in personal_statements
         ]
         return JsonResponse(response_data, safe=False, status=200)
+
 
 class JardineEssay(APIView):
     permissions_classes = [IsAuthenticated]
@@ -62,11 +64,11 @@ class JardineEssay(APIView):
         essay: str = data.get('essay')
         if not essay:
             return JsonResponse({'error': 'No essay provided'}, status=400)
-        
+
         field_of_study: str = data.get('field_of_study')
         if not field_of_study:
             return JsonResponse({'error': 'No field of study provided'}, status=400)
-        
+
         title: str = data.get('title')
         if not title:
             return JsonResponse({'error': 'No title provided'}, status=400)
@@ -85,7 +87,7 @@ class JardineEssay(APIView):
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
 
         return JsonResponse(result.to_dict())
-    
+
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=True)
         response_data = [
@@ -93,12 +95,13 @@ class JardineEssay(APIView):
                 'id': ps.id,
                 'title': ps.title,
                 'field_of_study': ps.field_of_study,
-                'created_at': ps.created_at
+                'created_at': ps.created_at,
                 'number_of_comment': ps.number_of_comment()
             }
             for ps in personal_statements
         ]
         return JsonResponse(response_data, safe=False, status=200)
+
 
 class GetFeedback(APIView):
     def get(self, request: HttpRequest):
@@ -109,6 +112,7 @@ class GetFeedback(APIView):
         try:
             personal_statement = PersonalStatement.objects.get(id=ps_id)
         except PersonalStatement.DoesNotExist:
-            raise JsonResponse({'error': 'Not found personal statement'}, status=404)
+            raise JsonResponse(
+                {'error': 'Not found personal statement'}, status=404)
 
         return JsonResponse(personal_statement.to_dict())
