@@ -25,7 +25,7 @@ const UploadEssayPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) {
+    if (!currentUser) {
       navigate("/authentication");
     }
   }, [currentUser, navigate]);
@@ -38,7 +38,7 @@ const UploadEssayPage: React.FC = () => {
 
   const submitEssay = () => {
     const csrfToken = getCSRFToken();
-    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/jardine/essay/";
+    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
     if (!statement.trim() || !fieldOfStudy.trim()) {
       setErrorMessage("Please fill in all required fields.");
