@@ -34,14 +34,8 @@ COPY --from=frontend-build /app/dist /app/dist
 # Copy source code
 COPY ./backend .
 
-# Apply migrations
-RUN python manage.py migrate
-
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 80
-
-# Run the app
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "backend.wsgi:application"]
