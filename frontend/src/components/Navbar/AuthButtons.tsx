@@ -11,7 +11,7 @@ const getCSRFToken = () => {
 
 // Axios setup
 const client = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.BACKEND_URL,
   withCredentials: true,
 });
 
@@ -27,7 +27,7 @@ const AuthButtons = () => {
   const handleLogout = async () => {
     if (loggedInWithGoogle) {
       const authInstance = gapi.auth2.getAuthInstance();
-      
+
       try {
         await authInstance.signOut();
         console.log("Google logout successful!");
@@ -39,7 +39,7 @@ const AuthButtons = () => {
       }
     } else {
       const csrfToken = getCSRFToken();
-  
+
       try {
         await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
         setCurrentUser(false);
@@ -49,7 +49,7 @@ const AuthButtons = () => {
       }
     }
   };
-  
+
   return (
     <div className="flex gap-4 self-stretch font-bold whitespace-nowrap">
       {currentUser ? (

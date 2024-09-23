@@ -1,1 +1,1 @@
-export const API_URL: string = 'http://localhost:8000';
+export const API_URL: string = import.meta.env.BACKEND_URL as string;

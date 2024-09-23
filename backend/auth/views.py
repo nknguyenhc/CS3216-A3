@@ -11,12 +11,14 @@ import os
 from .serializers import UserRegisterSerializer, UserSerializer
 from .validations import validate_email, validate_username, validate_password
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
+
 
 class StripeCheckoutView(APIView):
     PRICE_IDS = {
@@ -39,8 +41,8 @@ class StripeCheckoutView(APIView):
                     },
                 ],
                 mode='payment',
-                success_url='http://localhost:8000/success',
-                cancel_url='http://localhost:8000/unsuccess',
+                success_url=f'{settings.SITE_URL}/success',
+                cancel_url=f'{settings.SITE_URL}/unsuccess',
             )
             return redirect(checkout_session.url, code=303)
 
@@ -87,6 +89,7 @@ class UserRegister(APIView):
 
         return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
@@ -117,7 +120,8 @@ class UserLogin(APIView):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Authenticate user
-        user = authenticate(request, email=email, username=username, password=password)
+        user = authenticate(request, email=email,
+                            username=username, password=password)
 
         # Check if user exists
         if user is None:
@@ -133,7 +137,6 @@ class UserLogin(APIView):
         login(request, user)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 
 class UserLogout(APIView):
