@@ -13,6 +13,16 @@ def validate_email(email):
 
     return email
 
+def validate_login_email(email):
+    email = email.strip()
+    if not email:
+        raise ValidationError('An email is needed.')
+    
+    if not UserModel.objects.filter(email=email).exists():
+        raise ValidationError('Email is not registered.')
+
+    return email
+
 def validate_username(username):
     username = username.strip()
     if not username:
@@ -20,6 +30,16 @@ def validate_username(username):
     
     if UserModel.objects.filter(username=username).exists():
         raise ValidationError('Username is already taken, choose another one.')
+
+    return username
+
+def validate_login_username(username):
+    username = username.strip()
+    if not username:
+        raise ValidationError('A username is needed.')
+    
+    if UserModel.objects.filter(username=username).exists():
+        raise ValidationError('Username is not registered.')
 
     return username
 

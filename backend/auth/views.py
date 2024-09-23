@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
 import os
 from .serializers import UserRegisterSerializer, UserSerializer
-from .validations import validate_email, validate_username, validate_password
+from .validations import validate_email, validate_login_email, validate_username, validate_login_username, validate_password
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
@@ -103,13 +103,13 @@ class UserLogin(APIView):
 
         # Validate email
         try:
-            validate_email(email)
+            validate_login_email(email)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         # Validate username
         try:
-            validate_username(username)
+            validate_login_username(username)
         except ValidationError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
