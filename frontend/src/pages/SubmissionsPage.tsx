@@ -92,7 +92,7 @@ const SubmissionsPage: React.FC = () => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
-        console.error("Fetch failed:", error);
+        console.error("Fetch failed:", errorMessage);
       });
   };
 

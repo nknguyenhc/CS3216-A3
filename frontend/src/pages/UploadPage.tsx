@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
-import { useAuth } from "../components/Authentication/AuthenticationContext";
 import Footer from "../components/Footer/Footer";
 
 const getCSRFToken = () => {
