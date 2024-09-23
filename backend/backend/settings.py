@@ -94,12 +94,14 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost',
     'http://127.0.0.1',
     'http://0.0.0.0',
+    'https://stellar-cs3216a3.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1',
     'http://0.0.0.0',
+    'https://stellar-cs3216a3.com',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
