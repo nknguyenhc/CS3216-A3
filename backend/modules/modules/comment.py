@@ -93,7 +93,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
             good_comment += output
 
         if argument.capability.is_capable:
@@ -109,7 +108,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
             good_comment +=  output
 
         if interest_or_capable and not argument.specificity.is_specific:
@@ -123,7 +121,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
             bad_comment += output
 
         elif not interest_or_capable and argument.specificity.is_specific:
@@ -140,7 +137,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
             bad_comment += output
 
             output = create_completion(
@@ -153,15 +149,12 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
             bad_comment += output
 
-            print(good_comment + "\n")
-            print(bad_comment + "\n")
-            return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
+        return self.save_comment_to_db(argument.argument, bad_comment, good_comment)
 
-    def save_comment_to_db(self, comment: str, argument: Argument, bad_comment: str, good_comment: str) -> Comment:
-        if not comment or not argument or not bad_comment or not good_comment:
+    def save_comment_to_db(self, argument: Argument, bad_comment: str, good_comment: str) -> Comment:
+        if not argument or (not bad_comment and not good_comment):
             raise ValueError("All fields must be provided")
 
         try:
@@ -169,7 +162,7 @@ class CommentCrafter:
             argument.save()
 
             return Comment.objects.create(
-                comment=comment,
+                comment=good_comment + bad_comment,
                 is_good=True if bad_comment == "" else False,
                 argument=argument
             )

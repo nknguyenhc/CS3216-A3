@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
@@ -22,14 +22,7 @@ const client = axios.create({
 });
 
 const UploadPage: React.FC = () => {
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/authentication");
-    }
-  }, [currentUser, navigate]);
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [title, setTitle] = React.useState<string>("");
@@ -61,9 +54,8 @@ const UploadPage: React.FC = () => {
         }
       )
       .then(() => {
-        // this is just testing and should be navigate to feedback
         setErrorMessage(null);
-        alert("Successful");
+        navigate("/essay/comment");
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {

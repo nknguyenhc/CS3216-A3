@@ -221,6 +221,8 @@ if __name__ == '__main__':
     ### Do not run the code below, only I have access to the data ###
 
     '''
+
+    '''
     with open("modules/data/example1.json", encoding="utf-8") as f:
         data = json.load(f)
         example1 = Argument(
@@ -471,6 +473,7 @@ if __name__ == '__main__':
     # jardine_general_comment = JardineGeneralCommentCrafter().craft_general_comment(
     #     PersonalStatement(field_of_study="Mathematics"), [])
     # print(jardine_general_comment)
+
 '''
     with open("modules/data/Nguyen - Jardine.txt") as f:
         personal_statement = PersonalStatement.objects.create(
@@ -480,3 +483,55 @@ if __name__ == '__main__':
     orchestrator = JardineOrchestrator()
     result = orchestrator.run(personal_statement)
     print(result.to_dict())
+'''
+
+
+with open("modules/modules/tests/comments/argument_evaluator.json") as f:
+        data = json.load(f)
+
+        argument = Argument(
+            idea=data["argument"]["idea"],
+            evidence=data["argument"]["evidence"],
+            explanation=data["argument"]["explanation"],
+            personal_statement=PersonalStatement(
+                field_of_study=data["field_of_study"],
+            ),
+        )
+
+        relevance = Relevance(
+            is_relevant = False if data["is_relevant"] == "F" else True,
+            reason=data["is_relevant_reason"],
+            argument=argument
+        )
+
+        specificity = Specificity(
+            is_specific = False if data["is_specific"] == "F" else True,
+            reason=data["is_specific_reason"],
+            argument=argument
+        )
+
+        interest = Interest(
+            has_interest = False if data["has_interest"] == "F" else True,
+            has_interest_reason=data["has_interest_reason"],
+            argument=argument
+        )
+
+        capability = Capability(
+            is_capable = False if data["is_capable"] == "F" else True,
+            is_capable_reason=data["is_capable_reason"],
+            argument=argument
+        )  
+
+        argument_evaluations = ArgumentEvaluations(
+            argument=argument,
+            specificity=specificity,
+            relevance=relevance,
+            interest=interest,
+            capability=capability
+        )
+
+#general_comment = GeneralCommentCrafter().craft_general_comment([argument_evaluations])
+#print(general_comment)
+
+relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
+print(relevance_comment)       
