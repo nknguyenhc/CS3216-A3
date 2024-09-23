@@ -39,7 +39,7 @@ const SubmissionsPage: React.FC = () => {
   }, [currentUser, navigate]);
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
-  const [, setErrorMessage] = React.useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([
     {
       id: 1,
