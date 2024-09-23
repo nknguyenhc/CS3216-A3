@@ -44,15 +44,6 @@ const Authentication: React.FC = () => {
     }
 
     gapi.load("client:auth2", start);
-
-    client
-      .get("/api/auth/user")
-      .then(() => {
-        setCurrentUser(true);
-      })
-      .catch(() => {
-        setCurrentUser(false);
-      });
   }, []);
 
   const updateFormBtn = () => {
