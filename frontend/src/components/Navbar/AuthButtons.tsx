@@ -11,7 +11,7 @@ const getCSRFToken = () => {
 
 // Axios setup
 const client = axios.create({
-  baseURL: import.meta.env.BACKEND_URL,
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
 

@@ -16,7 +16,7 @@ axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true;
 
 const client = axios.create({
-  baseURL: import.meta.env.BACKEND_URL,
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   withCredentials: true,
 });
 
@@ -25,7 +25,7 @@ const UploadEssayPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (currentUser) {
       navigate("/authentication");
     }
   }, [currentUser, navigate]);
