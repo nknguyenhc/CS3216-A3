@@ -34,7 +34,8 @@ const Authentication: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+    //const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+    const clientId: string = "59774494509-pv5rfdsda238bdtuk1c8f6ip63m8b524.apps.googleusercontent.com"
 
     function start() {
       gapi.client.init({
