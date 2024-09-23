@@ -42,11 +42,17 @@ class Essay(APIView):
     
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=False)
-        return JsonResponse(
-            [ps.to_dict() for ps in personal_statements], 
-            safe=False, 
-            status=200
-        )
+        response_data = [
+            {
+                'id': ps.id,
+                'title': ps.title,
+                'field_of_study': ps.field_of_study,
+                'created_at': ps.created_at
+                'number_of_comment': ps.number_of_comment()
+            }
+            for ps in personal_statements
+        ]
+        return JsonResponse(response_data, safe=False, status=200)
 
 class JardineEssay(APIView):
     permissions_classes = [IsAuthenticated]
@@ -82,11 +88,17 @@ class JardineEssay(APIView):
     
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=True)
-        return JsonResponse(
-            [ps.to_dict() for ps in personal_statements], 
-            safe=False, 
-            status=200
-        )
+        response_data = [
+            {
+                'id': ps.id,
+                'title': ps.title,
+                'field_of_study': ps.field_of_study,
+                'created_at': ps.created_at
+                'number_of_comment': ps.number_of_comment()
+            }
+            for ps in personal_statements
+        ]
+        return JsonResponse(response_data, safe=False, status=200)
 
 class GetFeedback(APIView):
     def get(self, request: HttpRequest):

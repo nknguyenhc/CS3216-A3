@@ -19,7 +19,7 @@ const MainLayout = () => {
   };
 
   const location = useLocation();
-  const showNavBarPaths = ["/", "/essay/upload"];
+  const showNavBarPaths = ["/", "/essay/upload", "/submissions"];
 
   const shouldShowNavBar = showNavBarPaths.includes(location.pathname);
   console.log(shouldShowNavBar);

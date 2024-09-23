@@ -8,6 +8,7 @@ import UnsuccessPage from "./pages/UnsuccessPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Authentication from "./components/Authentication/Authentication";
 import UploadPage from "./pages/UploadPage";
+import SubmissionsPage from "./pages/SubmissionsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
       <Route path="/unsuccess" element={<UnsuccessPage />} />
       <Route path="/essay/upload" element={<UploadPage />} />
       <Route path="*" element={<NotFoundPage />} />
+      <Route path="/submissions" element={<SubmissionsPage />} />
     </Route>
   )
 );

@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
-import EssayForm from "../components/Essay/Upload/EssayForm";
-import Pricing from "../components/Pricing/Pricing";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
+import SubmissionsSection from "../components/Essay/Submissions/SubmissionsSection";
 import Footer from "../components/Footer/Footer";
 
 const getCSRFToken = () => {
@@ -21,7 +20,15 @@ const client = axios.create({
   withCredentials: true,
 });
 
-const UploadPage: React.FC = () => {
+const SubmissionsPage: React.FC = () => {
+  interface PersonalStatement {
+    id: number;
+    title: string;
+    field_of_study: string;
+    created_at: string;
+    comments: number;
+  }
+
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -32,38 +39,51 @@ const UploadPage: React.FC = () => {
   }, [currentUser, navigate]);
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
-  const [title, setTitle] = React.useState<string>("");
-  const [statement, setStatement] = React.useState<string>("");
-  const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([
+    {
+      id: 1,
+      title: "Personal Statement for Computer Science",
+      field_of_study: "Computer Science",
+      created_at: "2023-08-15T12:34:56Z",
+      comments: 6,
+    },
+    {
+      id: 2,
+      title: "Personal Statement for Business Administration",
+      field_of_study: "Business Administration",
+      created_at: "2023-07-10T09:15:20Z",
+      comments: 4,
+    },
+    {
+      id: 3,
+      title: "Personal Statement for Economics",
+      field_of_study: "Economics",
+      created_at: "2023-06-01T16:22:10Z",
+      comments: 8,
+    },
+  ]);
 
-  const submitEssay = () => {
+  useEffect(() => {
+    fetchSubmissions();
+  }, []);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [focus]);
+
+  const fetchSubmissions = () => {
     const csrfToken = getCSRFToken();
-    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
-
-    if (!statement.trim() || !fieldOfStudy.trim()) {
-      setErrorMessage("Please fill in all required fields.");
-      console.log(errorMessage);
-      return;
-    }
+    const url = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
     client
-      .post(
-        `${postUrl}`,
-        {
-          essay: statement,
-          field_of_study: fieldOfStudy,
+      .get(url, {
+        headers: {
+          "X-CSRFToken": csrfToken,
         },
-        {
-          headers: {
-            "X-CSRFToken": csrfToken,
-          },
-        }
-      )
-      .then(() => {
-        // this is just testing and should be navigate to feedback
-        setErrorMessage(null);
-        alert("Successful");
+      })
+      .then((response) => {
+        setSubmissions(response.data);
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
@@ -72,31 +92,24 @@ const UploadPage: React.FC = () => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
-        console.error("Upload failed:", error);
+        console.error("Fetch failed:", error);
       });
   };
 
   return (
     <div>
       <div className="max-w-screen-xl mx-auto px-4 py-10">
-        <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">Upload your personal statement</h1>
+        <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">
+          See your past submissions
+        </h1>
         <div className="max-w-[1200px] mx-auto space-y-16">
           <FocusSection focus={focus} setFocus={setFocus} />
-          <EssayForm
-            title={title}
-            setTitle={setTitle}
-            statement={statement}
-            setStatement={setStatement}
-            fieldOfStudy={fieldOfStudy}
-            setFieldOfStudy={setFieldOfStudy}
-            submitEssay={submitEssay}
-          />
+          <SubmissionsSection submissions={submissions} />
         </div>
       </div>
-      <Pricing />
       <Footer />
     </div>
   );
 };
 
-export default UploadPage;
+export default SubmissionsPage;

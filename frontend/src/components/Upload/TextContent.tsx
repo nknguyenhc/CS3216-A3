@@ -17,14 +17,14 @@ const TextContent = () => {
           expert guidance. Click the button below to start enhancing your personal statement today!
         </p>
 
-        <p className="mt-4 text-base text-red-600 mb-5">
-          Please log in or sign up before uploading your personal statement.
-        </p>
-
         {currentUser ? (
           <GoToUploadButton />
         ) : (
           <>
+            <p className="mt-4 text-base text-red-600 mb-5">
+              Please log in or sign up before uploading your personal statement.
+            </p>
+
             <AuthButtons />
           </>
         )}

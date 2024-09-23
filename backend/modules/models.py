@@ -30,6 +30,9 @@ class PersonalStatement(models.Model):
             ]
         }
 
+    def number_of_comment(self):
+        return Comment.objects.filter(argument__personal_statement=self).count()
+
     def __str__(self):
         return json.dumps(self.to_dict(), indent=4)
 
