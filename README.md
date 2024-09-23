@@ -46,3 +46,12 @@ npm i
 ```bash
 npm start
 ```
+
+## Deployment
+
+Run the following commands to start docker containers:
+
+```bash
+docker network create --driver bridge my_recipe_ntwk
+docker-compose up --build
+```
