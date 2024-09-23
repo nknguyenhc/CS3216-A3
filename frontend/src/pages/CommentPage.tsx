@@ -136,7 +136,7 @@ const CommentPage: React.FC = () => {
               }`}
               style={{
                 top: `${commentPositions[comment.id]}px`,
-                transform: "translateY(-550%)",
+                transform: "translateY(-350%)",
               }}
             >
               <p className="text-sm">{comment.comment}</p>

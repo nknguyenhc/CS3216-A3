@@ -24,12 +24,6 @@ const UploadPage: React.FC = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/authentication");
-    }
-  }, [currentUser, navigate]);
-
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [title, setTitle] = React.useState<string>("");
   const [statement, setStatement] = React.useState<string>("");
@@ -60,7 +54,6 @@ const UploadPage: React.FC = () => {
         }
       )
       .then(() => {
-        // this is just testing and should be navigate to feedback
         setErrorMessage(null);
         navigate("/essay/comment")
       })
