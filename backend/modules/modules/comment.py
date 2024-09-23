@@ -75,7 +75,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            print(output)
             bad_comment += output
             return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
 
@@ -94,8 +93,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-
-            print(output)
             good_comment += output
 
         if argument.capability.is_capable:
@@ -111,7 +108,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            print(output)
             good_comment +=  output
 
         if interest_or_capable and not argument.specificity.is_specific:
@@ -125,7 +121,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            print(output)
             bad_comment += output
 
         elif not interest_or_capable and argument.specificity.is_specific:
@@ -142,7 +137,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            print(output)
             bad_comment += output
 
             output = create_completion(
@@ -155,7 +149,6 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            print(output)
             bad_comment += output
 
         return self.save_comment_to_db(argument.argument, bad_comment, good_comment)
@@ -168,7 +161,7 @@ class CommentCrafter:
             argument.personal_statement.save()
             argument.save()
 
-            saved_comment = Comment.objects.create(
+            return Comment.objects.create(
                 comment=good_comment + bad_comment,
                 is_good=True if bad_comment == "" else False,
                 argument=argument
