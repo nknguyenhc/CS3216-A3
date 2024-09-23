@@ -20,7 +20,8 @@ const SubmissionsSection: React.FC<SubmissionsSectionProps> = ({ submissions }) 
   const [sortBy, setSortBy] = useState<string>("");
 
   const filteredSubmissions = submissions.filter((submission) =>
-    submission.title.toLowerCase().includes(title.toLowerCase())
+  ((submission.title) ? submission.title.toLowerCase().includes(title.toLowerCase())
+    : '')
   );
 
   const sortedSubmissions = [...filteredSubmissions].sort((a, b) => {

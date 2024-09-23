@@ -43,6 +43,7 @@ const UploadPage: React.FC = () => {
       .post(
         `${postUrl}`,
         {
+          title: title,
           essay: statement,
           field_of_study: fieldOfStudy,
         },

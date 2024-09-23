@@ -1,11 +1,12 @@
 from django.db import models
-from auth.models import AppUser
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 import json
 
+UserModel = get_user_model()
 
 class PersonalStatement(models.Model):
-    user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='personal_statements', null=True)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='personal_statements', null=True)
     title = models.CharField(max_length=200, null=True)
     focus = models.BooleanField(default=False)  # 0 is Oxbridge, 1 is Jardine
     field_of_study = models.TextField()
@@ -14,6 +15,15 @@ class PersonalStatement(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def to_dict(self):
+        comments = [
+            {
+                'comment': comment.comment,
+                'is_good': comment.is_good,
+                'argument_id': comment.argument.id  # Optional: Add the argument ID for context
+            }
+            for comment in Comment.objects.filter(argument__personal_statement=self)
+        ]
+
         return {
             'id': self.id,
             'user': self.user.id if self.user else None,
@@ -24,10 +34,7 @@ class PersonalStatement(models.Model):
             'reparagraphed_essay': self.reparagraphed_essay,
             'created_at': self.created_at,
             'general_comment': self.general_comments.first().comment if self.general_comments.exists() else None,
-            'comments': [
-                {'comment': comment.comment, 'is_good': comment.is_good} 
-                for comment in self.comments.all()
-            ]
+            'comments': comments
         }
 
     def number_of_comment(self):
