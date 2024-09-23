@@ -28,13 +28,13 @@ const Authentication: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Error message state
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Gapi setup
   const navigate = useNavigate();
 
   useEffect(() => {
-    const clientId: string = "YOUR_CLIENT_ID";
+    const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 
     function start() {
       gapi.client.init({
