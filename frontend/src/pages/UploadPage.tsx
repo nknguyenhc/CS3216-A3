@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
-import { useAuth } from "../components/Authentication/AuthenticationContext";
 
 const getCSRFToken = () => {
   const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
@@ -21,7 +20,6 @@ const client = axios.create({
 });
 
 const UploadPage: React.FC = () => {
-  const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
@@ -55,7 +53,7 @@ const UploadPage: React.FC = () => {
       )
       .then(() => {
         setErrorMessage(null);
-        navigate("/essay/comment")
+        navigate("/essay/comment");
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
