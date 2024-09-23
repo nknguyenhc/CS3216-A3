@@ -29,7 +29,7 @@ COPY ./backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy compiled files from build image
-COPY --from=frontend-build /app/dist /app/static
+COPY --from=frontend-build /app/dist /app/dist
 
 # Copy source code
 COPY ./backend .

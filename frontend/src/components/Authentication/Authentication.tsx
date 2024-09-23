@@ -23,7 +23,7 @@ const client = axios.create({
 });
 
 const Authentication: React.FC = () => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { setCurrentUser } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");

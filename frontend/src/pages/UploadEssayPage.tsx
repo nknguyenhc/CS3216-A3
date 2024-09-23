@@ -1,10 +1,10 @@
-import React, { FormEvent, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import FocusSection from '../components/Essay/Upload/FocusSection';
-import EssayForm from '../components/Essay/Upload/EssayForm';
-import Pricing from '../components/Pricing/Pricing';
-import { useAuth } from '../components/Authentication/AuthenticationContext';
+import FocusSection from "../components/Essay/Upload/FocusSection";
+import EssayForm from "../components/Essay/Upload/EssayForm";
+import Pricing from "../components/Pricing/Pricing";
+import { useAuth } from "../components/Authentication/AuthenticationContext";
 
 const getCSRFToken = () => {
   const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
@@ -21,7 +21,7 @@ const client = axios.create({
 });
 
 const UploadEssayPage: React.FC = () => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,15 +30,15 @@ const UploadEssayPage: React.FC = () => {
     }
   }, [currentUser, navigate]);
 
-  const [focus, setFocus] = React.useState<string>('Jardine scholarship');
-  const [title, setTitle] = React.useState<string>('');
-  const [statement, setStatement] = React.useState<string>('');
-  const [fieldOfStudy, setFieldOfStudy] = React.useState<string>('');
+  const [focus, setFocus] = React.useState<string>("Jardine scholarship");
+  const [title, setTitle] = React.useState<string>("");
+  const [statement, setStatement] = React.useState<string>("");
+  const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const submitEssay = () => {
     const csrfToken = getCSRFToken();
-    const postUrl = (focus === 'Oxbridge') ? "api/essay/" : "api/jardine/essay/";
+    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/jardine/essay/";
 
     if (!statement.trim() || !fieldOfStudy.trim()) {
       setErrorMessage("Please fill in all required fields.");
@@ -47,14 +47,16 @@ const UploadEssayPage: React.FC = () => {
     }
 
     client
-      .post(`${postUrl}`, {
-        essay: statement,
-        field_of_study: fieldOfStudy
-      },
+      .post(
+        `${postUrl}`,
+        {
+          essay: statement,
+          field_of_study: fieldOfStudy,
+        },
         {
           headers: {
-            "X-CSRFToken": csrfToken
-          }
+            "X-CSRFToken": csrfToken,
+          },
         }
       )
       .then(() => {
@@ -76,9 +78,7 @@ const UploadEssayPage: React.FC = () => {
   return (
     <div>
       <div className="max-w-screen-xl mx-auto px-4 py-10">
-        <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">
-          Upload your personal statement
-        </h1>
+        <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">Upload your personal statement</h1>
         <div className="max-w-[1200px] mx-auto space-y-16">
           <FocusSection focus={focus} setFocus={setFocus} />
           <EssayForm
@@ -91,7 +91,6 @@ const UploadEssayPage: React.FC = () => {
             submitEssay={submitEssay}
           />
         </div>
-
       </div>
       <Pricing />
     </div>

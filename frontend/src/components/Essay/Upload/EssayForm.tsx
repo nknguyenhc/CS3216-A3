@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
-import TitleInput from './TitleInput';
-import PersonalStatementInput from './PersonalStatementInput';
-import FieldOfStudyInput from './FieldOfStudyInput';
-import SubmitButton from './SubmitButton';
-import FormFooter from './FormFooter';
+import React, { useRef } from "react";
+import TitleInput from "./TitleInput";
+import PersonalStatementInput from "./PersonalStatementInput";
+import FieldOfStudyInput from "./FieldOfStudyInput";
+import SubmitButton from "./SubmitButton";
+import FormFooter from "./FormFooter";
 
 interface EssayFormProps {
   title: string;
@@ -22,15 +22,13 @@ const EssayForm: React.FC<EssayFormProps> = ({
   setStatement,
   fieldOfStudy,
   setFieldOfStudy,
-  submitEssay
+  submitEssay,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   return (
     <div>
-      <div className="text-lg font-bold text-left text-black mb-8">
-        Upload your personal statement
-      </div>
+      <div className="text-lg font-bold text-left text-black mb-8">Upload your personal statement</div>
       <div className="p-10 bg-white border border-[#B0B0B0] border-custom-thin shadow-lg rounded-[20px] h-[800px] flex flex-col justify-between">
         <div className="flex space-x-8">
           <TitleInput title={title} setTitle={setTitle} />
