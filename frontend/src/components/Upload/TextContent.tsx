@@ -17,6 +17,8 @@ const TextContent = () => {
           expert guidance. Click the button below to start enhancing your personal statement today!
         </p>
 
+        <GoToUploadButton />
+
         {currentUser ? (
           <GoToUploadButton />
         ) : (

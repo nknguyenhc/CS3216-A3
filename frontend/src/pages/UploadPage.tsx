@@ -62,7 +62,7 @@ const UploadPage: React.FC = () => {
       .then(() => {
         // this is just testing and should be navigate to feedback
         setErrorMessage(null);
-        alert("Successful");
+        navigate("/essay/comment")
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
