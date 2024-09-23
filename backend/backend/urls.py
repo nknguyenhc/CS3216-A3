@@ -24,3 +24,5 @@ urlpatterns = [
     path('api/auth/', include('auth.urls')),
     path('api/essay/', include('modules.urls')),
 ]
+
+handler404 = views.handler404
