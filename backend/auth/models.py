@@ -11,7 +11,7 @@ class AppUserManager(BaseUserManager):
             raise ValueError('A username is required.')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username, free_upload_count=3)  # Initialize free_upload_count to 3
+        user = self.model(email=email, username=username, free_upload_count=3)
         user.set_password(password)
         user.save()
         return user
