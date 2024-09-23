@@ -104,6 +104,8 @@ class JardineEssay(APIView):
 
 
 class GetFeedback(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def get(self, request: HttpRequest):
         ps_id = request.GET.get('id')
         if not ps_id:
