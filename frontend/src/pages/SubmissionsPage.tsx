@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-// import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import SubmissionsSection from "../components/Essay/Submissions/SubmissionsSection";
@@ -30,13 +30,13 @@ const SubmissionsPage: React.FC = () => {
   }
 
   const { token, currEmail, currUsername } = useAuth();
-  // const navigate = useNavigate();
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([]);
 
   useEffect(() => {
+    ReactGA.pageview("/submissions"); // Track the page view
     fetchSubmissions();
   }, []);
 

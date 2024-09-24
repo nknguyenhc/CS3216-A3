@@ -1,5 +1,6 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "./AuthenticationContext";
@@ -33,6 +34,11 @@ const Authentication: React.FC = () => {
         setCurrentUser(true);
         setCurrEmail(email);
         setCurrUsername(username);
+        ReactGA.event({
+          category: "User",
+          action: "Registration Successful",
+          label: username,
+        });
         navigate("/");
       })
       .catch((error) => {
@@ -40,7 +46,12 @@ const Authentication: React.FC = () => {
           ? error.response.data.error.replace(/[\[\]']/g, "")
           : "Username, email, or password in use";
         setErrorMessage(errorMsg);
-        console.error("Registration failed:", error|| "Unknown error");
+        ReactGA.event({
+          category: "User",
+          action: "Registration Failed",
+          label: errorMsg,
+        });
+        console.error("Registration failed:", error || "Unknown error");
       });
   };
 
@@ -57,6 +68,11 @@ const Authentication: React.FC = () => {
         setCurrentUser(true);
         setCurrEmail(email);
         setCurrUsername(username);
+        ReactGA.event({
+          category: "User",
+          action: "Login Successful",
+          label: username,
+        });
         navigate("/");
       })
       .catch((error) => {
@@ -64,6 +80,11 @@ const Authentication: React.FC = () => {
           ? error.response.data.error.replace(/[\[\]']/g, "")
           : "Invalid username, email, or password.";
         setErrorMessage(errorMsg);
+        ReactGA.event({
+          category: "User",
+          action: "Login Failed",
+          label: errorMsg,
+        });
         console.error("Login failed:", error.response?.data?.error || "Unknown error");
       });
   };

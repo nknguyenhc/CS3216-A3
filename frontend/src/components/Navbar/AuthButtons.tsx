@@ -3,6 +3,7 @@ import { useAuth } from "../Authentication/AuthenticationContext";
 import { GoogleLogout } from "react-google-login";
 import { useRef } from "react";
 import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
+import ReactGA from "react-ga";
 
 const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 
@@ -19,6 +20,11 @@ const AuthButtons = () => {
 
   const handleLogoutSuccess = () => {
     console.log("Google logout successful!");
+    ReactGA.event({
+      category: "User",
+      action: "Logout Successful",
+      label: "Google Logout"
+    });
     setCurrentUser(false);
     setLoggedInWithGoogle(false);
     navigate("/");
@@ -35,9 +41,18 @@ const AuthButtons = () => {
 
       try {
         await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
+        ReactGA.event({
+          category: "User",
+          action: "Logout Successful",
+          label: "API Logout"
+        });
         setCurrentUser(false);
         navigate("/");
       } catch (error) {
+        ReactGA.event({
+          category: "User",
+          action: "Logout Failed",
+        });
         console.error("Logout failed:", error);
       }
     }

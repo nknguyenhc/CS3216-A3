@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ReactGA from "react-ga";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
@@ -17,13 +18,16 @@ const UploadPage: React.FC = () => {
   const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
+  useEffect(() => {
+    ReactGA.pageview("/essay/upload");
+  }, []);
+
   const submitEssay = () => {
     const csrfToken = getCSRFToken();
     const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
     if (!statement.trim() || !fieldOfStudy.trim()) {
       setErrorMessage("Please fill in all required fields.");
-      console.log(errorMessage);
       return;
     }
 
@@ -45,9 +49,12 @@ const UploadPage: React.FC = () => {
         }
       )
       .then((response) => {
+        ReactGA.event({
+          category: "User",
+          action: "Submitted Essay",
+          label: focus,
+        });
         setErrorMessage(null);
-        console.log("response", response);
-
         navigate("/essay/comment", {
           state: {
             response: response.data,
@@ -55,13 +62,19 @@ const UploadPage: React.FC = () => {
         });
       })
       .catch((error) => {
+        ReactGA.event({
+          category: "User",
+          action: "Upload Failed",
+          label: error.response?.data?.error || "Unknown Error",
+        });
+
         if (error.response && error.response.data && error.response.data.error) {
           const errorMsg = error.response.data.error.replace(/[\[\]']/g, "");
           setErrorMessage(errorMsg);
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
-        console.error("Upload failed:", error);
+        console.log(errorMessage);
       });
   };
 

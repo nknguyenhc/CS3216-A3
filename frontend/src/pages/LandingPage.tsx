@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useRefs } from "../context/RefsContext";
+import ReactGA from "react-ga";
 import Upload from "../components/Upload/Upload";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
@@ -12,6 +14,13 @@ import { ParallaxProvider } from "react-scroll-parallax";
 
 const LandingPage = () => {
   const { uploadEssayRef, howItWorksRef, pricingRef, reviewsRef, faqRef } = useRefs();
+
+  useEffect(() => {
+    ReactGA.event({
+      category: "Page View",
+      action: "Viewed Landing Page"
+    });
+  }, []);
 
   return (
     <div>

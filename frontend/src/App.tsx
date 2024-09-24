@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./components/Authentication/AuthenticationContext";
-
 import LandingPage from "./pages/LandingPage";
 import MainLayout from "./layouts/MainLayout";
 import SuccessPage from "./pages/SuccessPage";
@@ -10,6 +10,10 @@ import Authentication from "./components/Authentication/Authentication";
 import UploadPage from "./pages/UploadPage";
 import CommentPage from "./pages/CommentPage/CommentPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
+import ReactGA from "react-ga";
+
+const trackingId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
+ReactGA.initialize(trackingId || "G-96YKP5BQ1S", { debug: true });
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,13 +24,17 @@ const router = createBrowserRouter(
       <Route path="/unsuccess" element={<UnsuccessPage />} />
       <Route path="/essay/upload" element={<UploadPage />} />
       <Route path="/essay/comment" element={<CommentPage />} />
-      <Route path="*" element={<NotFoundPage />} />
       <Route path="/submissions" element={<SubmissionsPage />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
 );
 
 const App = () => {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   return (
     <AuthProvider>
       <RouterProvider router={router} />
