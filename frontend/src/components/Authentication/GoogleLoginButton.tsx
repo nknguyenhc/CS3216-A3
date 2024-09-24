@@ -13,10 +13,14 @@ const GoogleLoginButton: React.FC = () => {
 
   useEffect(() => {
     gapi.load("client:auth2", () => {
-      gapi.auth2.init({clientId:clientId, scope: 'email'})
-    })
-  })
-
+      gapi.auth2.init({
+        clientId: clientId,
+        scope: 'email',
+        plugin_name: "hello"
+      } as any);
+    });
+  }, []);
+  
   const onSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     if ("profileObj" in response) {
       setCurrentUser(true);
