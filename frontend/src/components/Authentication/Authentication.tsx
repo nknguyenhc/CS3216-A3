@@ -30,9 +30,9 @@ const Authentication: React.FC = () => {
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Gapi setup
   const navigate = useNavigate();
 
+  /*
   useEffect(() => {
     const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 
@@ -45,6 +45,7 @@ const Authentication: React.FC = () => {
 
     gapi.load("client:auth2", start);
   }, []);
+  */
 
   const updateFormBtn = () => {
     setRegistrationToggle((prev) => !prev);
