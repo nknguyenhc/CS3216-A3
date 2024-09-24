@@ -1,15 +1,28 @@
-/*
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthenticationContext";
+import { useEffect } from "react";
+import { gapi } from "gapi-script"
 
-const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+// const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+
+const clientId: string = "577083967585-e2klir9v7vt5edbn4juc7b705tjck9t0.apps.googleusercontent.com";
 
 const GoogleLoginButton: React.FC = () => {
   const { setCurrentUser } = useAuth();
   const { setLoggedInWithGoogle } = useAuth();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    gapi.load("client:auth2", () => {
+      gapi.auth2.init({
+        clientId: clientId,
+        scope: 'email',
+        plugin_name: "hello"
+      } as any);
+    });
+  }, []);
+  
   const onSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     if ("profileObj" in response) {
       setCurrentUser(true);
@@ -31,17 +44,14 @@ const GoogleLoginButton: React.FC = () => {
         onSuccess={onSuccess}
         onFailure={onFailure}
         cookiePolicy={"single_host_origin"}
-        isSignedIn={true}
-        
       />
     </div>
   );
 };
 
 export default GoogleLoginButton;
-*/
 
-
+/*
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthenticationContext";
@@ -87,3 +97,4 @@ const GoogleLoginButton: React.FC = () => {
 };
 
 export default GoogleLoginButton;
+*/
