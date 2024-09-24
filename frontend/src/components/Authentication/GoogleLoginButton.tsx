@@ -1,3 +1,43 @@
+import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthenticationContext';
+
+const GoogleLoginButton: React.FC = () => {
+  const { setCurrentUser, setLoggedInWithGoogle } = useAuth();
+  const navigate = useNavigate();
+
+  const onSuccess = (credentialResponse: any) => {
+    if (credentialResponse && credentialResponse.credential) {
+      // Process the credential token (JWT) from the response
+      const token = credentialResponse.credential;
+
+      // You can authenticate the user or store the token here
+      setCurrentUser(true);
+      setLoggedInWithGoogle(true);
+      navigate("/");
+
+      console.log("Login success! Token:", token);
+    }
+  };
+
+  const onError = () => {
+    console.log("Login failed");
+  };
+
+  return (
+    <div>
+      <GoogleLogin
+        onSuccess={onSuccess}
+        onError={onError}
+      />
+    </div>
+  );
+};
+
+export default GoogleLoginButton;
+
+
+/*
 import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthenticationContext";
@@ -50,6 +90,7 @@ const GoogleLoginButton: React.FC = () => {
 };
 
 export default GoogleLoginButton;
+*/
 
 /*
 import React, { useEffect } from "react";
