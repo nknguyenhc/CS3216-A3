@@ -12,7 +12,7 @@ jardine_orchestrator = JardineOrchestrator()
 class Essay(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request: HttpRequest):        
+    def post(self, request: HttpRequest):
         data = request.data
         essay: str = data.get('essay')
         if not essay:
@@ -46,11 +46,18 @@ class Essay(APIView):
         response_data = [
             {
                 'id': ps.id,
+                'user': ps.user.id if ps.user else None,
                 'title': ps.title,
+                'focus': ps.focus,
                 'field_of_study': ps.field_of_study,
+                'essay': ps.essay,
+                'reparagraphed_essay': ps.reparagraphed_essay,
                 'created_at': ps.created_at,
+                'general_comment': ps.general_comments.first().comment if ps.general_comments.exists() else None,
+                'comments': ps.comments,
                 'number_of_comment': ps.number_of_comment()
             }
+
             for ps in personal_statements
         ]
         return JsonResponse(response_data, safe=False, status=200)
@@ -105,7 +112,7 @@ class JardineEssay(APIView):
 
 class GetFeedback(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request: HttpRequest):
         ps_id = request.GET.get('id')
         if not ps_id:
