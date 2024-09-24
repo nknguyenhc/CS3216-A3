@@ -11,8 +11,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_db:/var/lib/postgresql/data
-    networks:
-      - my-private-ntwk
 
   web:
     build: .
@@ -21,14 +19,7 @@ services:
     command: ["sh", "./start.sh"]
     depends_on:
       - postgres_db
-    networks:
-      - my-private-ntwk
 
 volumes:
   postgres_db:
     driver: local
-
-networks:
-  my-private-ntwk:
-    external:
-      name: my_recipe_ntwk

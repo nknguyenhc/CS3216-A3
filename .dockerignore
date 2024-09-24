@@ -1,4 +1,5 @@
 .git/
 **/__pycache__/
 backend/db.sqlite3
+backend/dist
 frontend/node_modules

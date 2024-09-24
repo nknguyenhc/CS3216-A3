@@ -6,10 +6,10 @@ import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
 
-const getCSRFToken = () => {
-  const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
-  return csrfCookie ? csrfCookie.split("=")[1] : null;
-};
+// const getCSRFToken = () => {
+//   const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
+//   return csrfCookie ? csrfCookie.split("=")[1] : null;
+// };
 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -30,8 +30,8 @@ const UploadPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const submitEssay = () => {
-    const csrfToken = getCSRFToken();
-    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
+    // const csrfToken = getCSRFToken();
+    // const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
     if (!statement.trim() || !fieldOfStudy.trim()) {
       setErrorMessage("Please fill in all required fields.");

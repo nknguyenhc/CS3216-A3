@@ -1,7 +1,6 @@
-import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
+import React, { useState, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { gapi } from "gapi-script";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "./AuthenticationContext";
