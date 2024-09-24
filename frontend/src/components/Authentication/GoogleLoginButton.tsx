@@ -4,7 +4,9 @@ import { useAuth } from "./AuthenticationContext";
 import { useEffect } from "react";
 import { gapi } from "gapi-script"
 
-const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+// const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
+
+const clientId: string = "577083967585-e2klir9v7vt5edbn4juc7b705tjck9t0.apps.googleusercontent.com";
 
 const GoogleLoginButton: React.FC = () => {
   const { setCurrentUser } = useAuth();
