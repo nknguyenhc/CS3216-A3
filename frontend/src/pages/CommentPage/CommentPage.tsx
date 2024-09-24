@@ -1,33 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
-type Comment = {
-  id: number;
-  text: string;
-  highlight: string;
-  comment: string;
-};
-
-const mockData: Comment[] = [
-  {
-    id: 1,
-    text: "The quick brown fox jumps over the lazy dog",
-    highlight: "fox",
-    comment: "Classic sentence for typing practice.",
-  },
-  {
-    id: 2,
-    text: "In a world of uncertainty, technology provides clarity",
-    highlight: "technology",
-    comment: "Note about the importance of tech.",
-  },
-  {
-    id: 3,
-    text: "Humans have always sought to understand the cosmos",
-    highlight: "cosmos",
-    comment: "Comment on human curiosity.",
-  },
-];
+import { mockData, Comment } from "./mockData";
+import { fetchAndMatchEssay } from "./api";
 
 /*
 const pageText = `
@@ -52,6 +26,7 @@ const points = [
 const CommentPage: React.FC = () => {
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [commentPositions, setCommentPositions] = useState<{ [key: number]: number }>({});
+  const [matchedStatement, setMatchedStatement] = useState<any>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
@@ -62,11 +37,16 @@ const CommentPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const updateCommentPositions = () => {
-      if (textRef.current) {
+    const fetchAndUpdateStatement = async () => {
+
+      const fetchedMatchedStatement = await fetchAndMatchEssay(pageText);
+      setMatchedStatement(fetchedMatchedStatement);
+
+      const currentTextRef = textRef.current;
+      if (currentTextRef) {
         const newPositions: { [key: number]: number } = {};
         mockData.forEach((comment) => {
-          const element = textRef.current?.querySelector(`[data-highlight-id="${comment.id}"]`);
+          const element = currentTextRef.querySelector(`[data-highlight-id="${comment.id}"]`);
           if (element) {
             const rect = element.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -77,20 +57,23 @@ const CommentPage: React.FC = () => {
       }
     };
 
-    updateCommentPositions();
-    window.addEventListener("resize", updateCommentPositions);
-    return () => window.removeEventListener("resize", updateCommentPositions);
-  }, []);
+    fetchAndUpdateStatement();
+    window.addEventListener("resize", fetchAndUpdateStatement); // Update on resize
+
+    return () => {
+      window.removeEventListener("resize", fetchAndUpdateStatement); // Cleanup on unmount
+    };
+  }, [pageText]);
 
   const renderTextWithHighlights = () => {
     let result = [];
     let currentIndex = 0;
 
     mockData.forEach((comment) => {
-      const startIndex = pageText.indexOf(comment.highlight, currentIndex);
+      const startIndex = matchedStatement.indexOf(comment.highlight, currentIndex);
       if (startIndex !== -1) {
         if (startIndex > currentIndex) {
-          result.push(<span key={`text-${currentIndex}`}>{pageText.slice(currentIndex, startIndex)}</span>);
+          result.push(<span key={`text-${currentIndex}`}>{matchedStatement.slice(currentIndex, startIndex)}</span>);
         }
 
         result.push(
@@ -108,8 +91,8 @@ const CommentPage: React.FC = () => {
       }
     });
 
-    if (currentIndex < pageText.length) {
-      result.push(<span key={`text-${currentIndex}`}>{pageText.slice(currentIndex)}</span>);
+    if (currentIndex < matchedStatement.length) {
+      result.push(<span key={`text-${currentIndex}`}>{matchedStatement.slice(currentIndex)}</span>);
     }
 
     return result;

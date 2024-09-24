@@ -8,7 +8,7 @@ import UnsuccessPage from "./pages/UnsuccessPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Authentication from "./components/Authentication/Authentication";
 import UploadPage from "./pages/UploadPage";
-import CommentPage from "./pages/CommentPage";
+import CommentPage from "./pages/CommentPage/CommentPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
 
 const router = createBrowserRouter(

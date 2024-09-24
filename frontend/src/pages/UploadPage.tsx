@@ -1,24 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
-
-// const getCSRFToken = () => {
-//   const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
-//   return csrfCookie ? csrfCookie.split("=")[1] : null;
-// };
-
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.withCredentials = true;
-
-const client = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true,
-});
+import { client, getCSRFToken } from "../AxiosInstance/AxiosInstance";
 
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,8 +16,8 @@ const UploadPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const submitEssay = () => {
-    // const csrfToken = getCSRFToken();
-    // const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
+    const csrfToken = getCSRFToken();
+    const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
     if (!statement.trim() || !fieldOfStudy.trim()) {
       setErrorMessage("Please fill in all required fields.");
@@ -39,7 +25,6 @@ const UploadPage: React.FC = () => {
       return;
     }
 
-    /*
     client
       .post(
         `${postUrl}`,
@@ -54,23 +39,12 @@ const UploadPage: React.FC = () => {
           },
         }
       )
-      */
-    client
-      .post(
-        "https://jsonplaceholder.typicode.com/posts", // Dummy URL
-        {
-          title: title,
-          essay: statement, // Assuming you want to keep 'essay'
-          field_of_study: fieldOfStudy, // Keeping your original structure
-        }
-      )
       .then(() => {
         setErrorMessage(null);
 
-        // Navigate to CommentPage and pass the statement via state
         navigate("/essay/comment", {
           state: {
-            statement: statement, // Pass the statement as part of the state
+            statement: statement,
           },
         });
       })
