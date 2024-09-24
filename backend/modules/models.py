@@ -33,7 +33,7 @@ class PersonalStatement(models.Model):
             'essay': self.essay,
             'reparagraphed_essay': self.reparagraphed_essay,
             'created_at': self.created_at,
-            'general_comment': self.general_comments.first().comment if self.general_comments.exists() else None,
+            'general_comment': self.generalcomment_set.first().comment if self.general_comments.exists() else None,
             'comments': comments
         }
 

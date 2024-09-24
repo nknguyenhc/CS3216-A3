@@ -21,7 +21,7 @@ const SubmissionsSection: React.FC<SubmissionsSectionProps> = ({ submissions }) 
 
   const filteredSubmissions = submissions.filter((submission) =>
   ((submission.title) ? submission.title.toLowerCase().includes(title.toLowerCase())
-    : '')
+    : false)
   );
 
   const sortedSubmissions = [...filteredSubmissions].sort((a, b) => {

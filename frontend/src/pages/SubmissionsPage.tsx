@@ -40,29 +40,7 @@ const SubmissionsPage: React.FC = () => {
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([
-    {
-      id: 1,
-      title: "Personal Statement for Computer Science",
-      field_of_study: "Computer Science",
-      created_at: "2023-08-15T12:34:56Z",
-      comments: 6,
-    },
-    {
-      id: 2,
-      title: "Personal Statement for Business Administration",
-      field_of_study: "Business Administration",
-      created_at: "2023-07-10T09:15:20Z",
-      comments: 4,
-    },
-    {
-      id: 3,
-      title: "Personal Statement for Economics",
-      field_of_study: "Economics",
-      created_at: "2023-06-01T16:22:10Z",
-      comments: 8,
-    },
-  ]);
+  const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([]);
 
   useEffect(() => {
     fetchSubmissions();
