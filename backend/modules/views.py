@@ -53,7 +53,14 @@ class Essay(APIView):
         return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
-        personal_statements = PersonalStatement.objects.filter(focus=False, user=request.user)
+        try:
+            email = request.GET.get('email')
+            username = request.GET.get('username')
+            user = UserModel.objects.get(email=email, username=username)
+        except UserModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+
+        personal_statements = PersonalStatement.objects.filter(focus=False, user=user)
         response_data = [
             {
                 'id': ps.id,
@@ -106,7 +113,14 @@ class JardineEssay(APIView):
         return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
-        personal_statements = PersonalStatement.objects.filter(focus=True, user=request.user)
+        try:
+            email = request.GET.get('email')
+            username = request.GET.get('username')
+            user = UserModel.objects.get(email=email, username=username)
+        except UserModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+
+        personal_statements = PersonalStatement.objects.filter(focus=True, user=user)
         response_data = [
             {
                 'id': ps.id,

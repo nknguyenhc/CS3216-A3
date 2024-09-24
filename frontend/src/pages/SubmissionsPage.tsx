@@ -29,14 +29,8 @@ const SubmissionsPage: React.FC = () => {
     comments: number;
   }
 
-  const { currentUser } = useAuth();
+  const { token, currEmail, currUsername } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/authentication");
-    }
-  }, [currentUser, navigate]);
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -56,9 +50,14 @@ const SubmissionsPage: React.FC = () => {
 
     client
       .get(url, {
+        params: {
+          email: currEmail,
+          username: currUsername
+        },
         headers: {
           "X-CSRFToken": csrfToken,
-        },
+          "Authorization": `Bearer ${token}`
+        }
       })
       .then((response) => {
         setSubmissions(response.data);
@@ -70,6 +69,7 @@ const SubmissionsPage: React.FC = () => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
+        console.log(errorMessage);
         console.error("Fetch failed:", errorMessage);
       });
   };
