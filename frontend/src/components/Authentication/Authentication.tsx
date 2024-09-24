@@ -8,6 +8,7 @@ import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
 
 const Authentication: React.FC = () => {
   const { setCurrentUser } = useAuth();
+  const { setToken } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -43,14 +44,18 @@ const Authentication: React.FC = () => {
 
     client
       .post("/api/auth/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => {
+      .then((response) => {
+        const tokenFromResponse = response.data.token;
+        setToken(tokenFromResponse);
         setCurrentUser(true);
         navigate("/");
       })
       .catch((error) => {
-        const errorMsg = error.response.data.error.replace(/[\[\]']/g, "");
+        let errorMsg = error.response?.data?.error
+          ? error.response.data.error.replace(/[\[\]']/g, "")
+          : "Username, email, or password in use";
         setErrorMessage(errorMsg);
-        console.error("Registration failed:", error);
+        console.error("Registration failed:", error|| "Unknown error");
       });
   };
 
@@ -61,7 +66,9 @@ const Authentication: React.FC = () => {
 
     client
       .post("/api/auth/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
-      .then(() => {
+      .then((response) => {
+        const tokenFromResponse = response.data.token;
+        setToken(tokenFromResponse);
         setCurrentUser(true);
         navigate("/");
       })

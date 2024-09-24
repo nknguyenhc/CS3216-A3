@@ -1,20 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/AuthenticationContext";
-import axios from "axios";
 import { GoogleLogout } from "react-google-login";
 import { useRef } from "react";
-
-// Extract CSRF token from cookies
-const getCSRFToken = () => {
-  const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
-  return csrfCookie ? csrfCookie.split("=")[1] : null;
-};
-
-// Axios setup
-const client = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
-  withCredentials: true,
-});
+import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
 
 const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
 

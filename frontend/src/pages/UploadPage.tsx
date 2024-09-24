@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/Authentication/AuthenticationContext";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
@@ -8,6 +9,7 @@ import { client, getCSRFToken } from "../AxiosInstance/AxiosInstance";
 
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [title, setTitle] = React.useState<string>("");
@@ -16,6 +18,9 @@ const UploadPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const submitEssay = () => {
+
+    console.log("Auth token", token)
+
     const csrfToken = getCSRFToken();
     const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
@@ -36,6 +41,7 @@ const UploadPage: React.FC = () => {
         {
           headers: {
             "X-CSRFToken": csrfToken,
+            "Authorization": `Bearer ${token}`,
           },
         }
       )

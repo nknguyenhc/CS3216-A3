@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.authtoken.models import Token
 import stripe
 from django.shortcuts import redirect
 from django.contrib.auth import login, logout, authenticate
@@ -81,7 +82,9 @@ class UserRegister(APIView):
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            token, _ = Token.objects.get_or_create(
+                user=user)  # Generate token for the user
+            return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
 
         return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -114,8 +117,10 @@ class UserLogin(APIView):
                 return Response({"error": "Invalid password."}, status=status.HTTP_401_UNAUTHORIZED)
 
         login(request, user)
+        token, _ = Token.objects.get_or_create(
+            user=user)  # Generate token for the user
         serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
 
 
 class UserLogout(APIView):

@@ -10,7 +10,7 @@ jardine_orchestrator = JardineOrchestrator()
 
 
 class Essay(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def post(self, request: HttpRequest):
         data = request.data
@@ -57,7 +57,7 @@ class Essay(APIView):
 
 
 class JardineEssay(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def post(self, request: HttpRequest):
         data = request.data
@@ -104,7 +104,7 @@ class JardineEssay(APIView):
 
 
 class GetFeedback(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request: HttpRequest):
         ps_id = request.GET.get('id')
