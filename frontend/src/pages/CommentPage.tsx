@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 type Comment = {
   id: number;
@@ -28,6 +29,7 @@ const mockData: Comment[] = [
   },
 ];
 
+/*
 const pageText = `
   The quick brown fox jumps over the lazy dog, a phrase that has long been celebrated in the realm of typography and language. This whimsical sentence serves not only as a tool for testing fonts but also encapsulates the vibrant life of nature, where agility meets lethargy in the most playful manner. It reminds us of the beauty of contrast in the animal kingdom, where each creature plays its unique role in the ecosystem.
 
@@ -39,17 +41,21 @@ const pageText = `
 
   In summary, the quick brown fox symbolizes the playful dance of nature, while technology serves as our guide through an ever-evolving landscape of uncertainty. Our innate curiosity drives us to explore the cosmos, seeking knowledge and understanding in a universe filled with mysteries. Together, these elements highlight the dynamic interplay between nature, technology, and human ambition, painting a rich tapestry of life and discovery.
 `;
+*/
 
 const title = "Key Points";
 const points = [
-    "Identify areas that need more evidence or elaboration.",
-    "At its core, Game of Thrones is about the quest for the Iron Throne, which symbolizes control over the Seven Kingdoms. Themes of loyalty, betrayal, and the corrupting nature of power dominate the narrative. The story also includes mystical elements such as dragons, the undead, and ancient prophecies."
-  ];
+  "Identify areas that need more evidence or elaboration.",
+  "At its core, Game of Thrones is about the quest for the Iron Throne, which symbolizes control over the Seven Kingdoms. Themes of loyalty, betrayal, and the corrupting nature of power dominate the narrative. The story also includes mystical elements such as dragons, the undead, and ancient prophecies.",
+];
 
 const CommentPage: React.FC = () => {
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [commentPositions, setCommentPositions] = useState<{ [key: number]: number }>({});
   const textRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  const pageText = location.state?.statement || "No statement provided.";
 
   const handleHighlightClick = (id: number) => {
     setActiveComment(id === activeComment ? null : id);

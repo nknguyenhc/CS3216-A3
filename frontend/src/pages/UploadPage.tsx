@@ -39,6 +39,7 @@ const UploadPage: React.FC = () => {
       return;
     }
 
+    /*
     client
       .post(
         `${postUrl}`,
@@ -53,9 +54,25 @@ const UploadPage: React.FC = () => {
           },
         }
       )
+      */
+    client
+      .post(
+        "https://jsonplaceholder.typicode.com/posts", // Dummy URL
+        {
+          title: title,
+          essay: statement, // Assuming you want to keep 'essay'
+          field_of_study: fieldOfStudy, // Keeping your original structure
+        }
+      )
       .then(() => {
         setErrorMessage(null);
-        navigate("/essay/comment");
+
+        // Navigate to CommentPage and pass the statement via state
+        navigate("/essay/comment", {
+          state: {
+            statement: statement, // Pass the statement as part of the state
+          },
+        });
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
