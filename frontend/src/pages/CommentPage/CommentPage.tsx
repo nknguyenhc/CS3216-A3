@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { mockComments, mockEssay, Comment } from "./mockData";
+// import { useLocation } from "react-router-dom";
+import { mockComments, mockEssay } from "./mockData";
 
 const title = "Key Points";
 const points = [
@@ -12,17 +12,17 @@ const CommentPage: React.FC = () => {
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [commentPositions, setCommentPositions] = useState<{ [key: number]: number }>({});
   const textRef = useRef<HTMLDivElement>(null);
-  const location = useLocation();
+  // const location = useLocation();
 
-  const response = location.state?.response || "No response provided.";
+  // const response = location.state?.response || "No response provided.";
 
   // TODO: Remove mock data once orchestrator is fully integrated
   // const essay = response?.essay || mockEssay
   // const comments: [Comment] = response?.comments || mockComments
 
-  const essay = mockEssay
-  const comments = mockComments
-  
+  const essay = mockEssay;
+  const comments = mockComments;
+
   const handleHighlightClick = (id: number) => {
     setActiveComment(id === activeComment ? null : id);
   };

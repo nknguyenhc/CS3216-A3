@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import SubmissionsSection from "../components/Essay/Submissions/SubmissionsSection";
@@ -30,7 +30,7 @@ const SubmissionsPage: React.FC = () => {
   }
 
   const { token, currEmail, currUsername } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
@@ -52,12 +52,12 @@ const SubmissionsPage: React.FC = () => {
       .get(url, {
         params: {
           email: currEmail,
-          username: currUsername
+          username: currUsername,
         },
         headers: {
           "X-CSRFToken": csrfToken,
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then((response) => {
         setSubmissions(response.data);
