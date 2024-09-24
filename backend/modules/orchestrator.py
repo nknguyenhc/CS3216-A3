@@ -126,28 +126,29 @@ class Orchestrator:
         )
 
     def run_stub(self, personal_statement: PersonalStatement) -> OrchestratorResult:
+        personal_statement.save()
         return OrchestratorResult(
             success=True,
             essay=personal_statement.essay,
             comments=[
-                Comment(
+                Comment.objects.create(
                     comment="This is a positive comment",
                     is_good=True,
-                    argument=Argument(
+                    argument=Argument.objects.create(
                         idea=personal_statement.essay[:300],
                         personal_statement=personal_statement
                     )
                 ),
-                Comment(
+                Comment.objects.create(
                     comment="This is a negative comment",
                     is_good=False,
-                    argument=Argument(
+                    argument=Argument.objects.create(
                         idea=personal_statement.essay[-300:],
                         personal_statement=personal_statement
                     )
                 ),
             ],
-            general_comment=GeneralComment(
+            general_comment=GeneralComment.objects.create(
                 comment="This is a general comment",
                 personal_statement=personal_statement
             )
@@ -239,28 +240,29 @@ class JardineOrchestrator:
         )
     
     def run_stub(self, personal_statement: PersonalStatement) -> OrchestratorResult:
+        personal_statement.save()
         return OrchestratorResult(
             success=True,
             essay=personal_statement.essay,
             comments=[
-                Comment(
+                Comment.objects.create(
                     comment="This is a positive comment",
                     is_good=True,
-                    argument=Argument(
+                    argument=Argument.objects.create(
                         idea=personal_statement.essay[:300],
                         personal_statement=personal_statement
                     )
                 ),
-                Comment(
+                Comment.objects.create(
                     comment="This is a negative comment",
                     is_good=False,
-                    argument=Argument(
+                    argument=Argument.objects.create(
                         idea=personal_statement.essay[-300:],
                         personal_statement=personal_statement
                     )
                 ),
             ],
-            general_comment=GeneralComment(
+            general_comment=GeneralComment.objects.create(
                 comment="This is a general comment",
                 personal_statement=personal_statement
             )

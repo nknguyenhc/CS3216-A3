@@ -50,7 +50,7 @@ class Essay(APIView):
         if not result.success:
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
 
-        return JsonResponse(result.to_dict())
+        return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=False, user=request.user)
@@ -102,8 +102,8 @@ class JardineEssay(APIView):
         result = jardine_orchestrator.run_stub(personal_statement)
         if not result.success:
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
-
-        return JsonResponse(result.to_dict())
+        #print(personal_statement.to_dict())
+        return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
         personal_statements = PersonalStatement.objects.filter(focus=True, user=request.user)
@@ -121,7 +121,7 @@ class JardineEssay(APIView):
 
 
 class GetFeedback(APIView):
-
+    authentication_classes = [TokenAuthentication]
     def get(self, request: HttpRequest):
         ps_id = request.GET.get('id')
         if not ps_id:
