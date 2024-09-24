@@ -9,7 +9,7 @@ import { client, getCSRFToken } from "../AxiosInstance/AxiosInstance";
 
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
-  const { token } = useAuth();
+  const { token, currEmail, currUsername } = useAuth();
 
   const [focus, setFocus] = React.useState<string>("Jardine scholarship");
   const [title, setTitle] = React.useState<string>("");
@@ -18,9 +18,6 @@ const UploadPage: React.FC = () => {
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
   const submitEssay = () => {
-
-    console.log("Auth token", token)
-
     const csrfToken = getCSRFToken();
     const postUrl = focus === "Oxbridge" ? "api/essay/" : "api/essay/jardine/";
 
@@ -34,15 +31,15 @@ const UploadPage: React.FC = () => {
       .post(
         `${postUrl}`,
         {
-          email: "newhairhair@gmail.com",
-          username: "newhairhair",
+          email: currEmail,
+          username: currUsername,
           title: title,
           essay: statement,
           field_of_study: fieldOfStudy,
         },
         {
           headers: {
-            //"X-CSRFToken": csrfToken,
+            "X-CSRFToken": csrfToken,
             "Authorization": `Bearer ${token}`,
           },
         }

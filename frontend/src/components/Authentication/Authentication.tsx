@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
@@ -7,8 +6,7 @@ import { useAuth } from "./AuthenticationContext";
 import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
 
 const Authentication: React.FC = () => {
-  const { setCurrentUser } = useAuth();
-  const { setToken } = useAuth();
+  const { setCurrentUser, setToken, setCurrEmail, setCurrUsername } = useAuth();
   const [registrationToggle, setRegistrationToggle] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -16,21 +14,6 @@ const Authentication: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
-
-  /*
-  useEffect(() => {
-    const clientId: string = "577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com";
-
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    }
-
-    gapi.load("client:auth2", start);
-  }, []);
-  */
 
   const updateFormBtn = () => {
     setRegistrationToggle((prev) => !prev);
@@ -48,6 +31,8 @@ const Authentication: React.FC = () => {
         const tokenFromResponse = response.data.token;
         setToken(tokenFromResponse);
         setCurrentUser(true);
+        setCurrEmail(email);
+        setCurrUsername(username);
         navigate("/");
       })
       .catch((error) => {
@@ -70,6 +55,8 @@ const Authentication: React.FC = () => {
         const tokenFromResponse = response.data.token;
         setToken(tokenFromResponse);
         setCurrentUser(true);
+        setCurrEmail(email);
+        setCurrUsername(username);
         navigate("/");
       })
       .catch((error) => {

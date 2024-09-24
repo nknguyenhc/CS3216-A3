@@ -18,19 +18,8 @@ class Essay(APIView):
 
     def post(self, request: HttpRequest):
         data = request.data
-        print(data)
 
         try:
-
-            # Retrieve all AppUser objects
-            users = UserModel.objects.all()
-
-    
-            print(f"Hi Emaily: {data.get('email')}, Usernamey: {data.get('username')}")
-            # Loop through each user and print their email and username
-            for user in users:
-                print(f"Emaily: {user.email}, Usernamey: {user.username}")
-            
             user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
         except UserModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
@@ -79,9 +68,16 @@ class Essay(APIView):
 
 
 class JardineEssay(APIView):
+    authentication_classes = [TokenAuthentication]
 
     def post(self, request: HttpRequest):
         data = request.data
+
+        try:
+            user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+        except UserModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+
         essay: str = data.get('essay')
         if not essay:
             return JsonResponse({'error': 'No essay provided'}, status=400)
@@ -95,7 +91,7 @@ class JardineEssay(APIView):
             return JsonResponse({'error': 'No title provided'}, status=400)
 
         personal_statement = PersonalStatement.objects.create(
-            user=request.user,
+            user=user,
             field_of_study=field_of_study,
             essay=essay,
             title=title,
