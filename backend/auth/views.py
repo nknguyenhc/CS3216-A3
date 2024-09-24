@@ -88,7 +88,7 @@ class UserRegister(APIView):
 
         return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
 
-'''
+
 class UserLogin(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (SessionAuthentication,)
@@ -108,40 +108,6 @@ class UserLogin(APIView):
         user = authenticate(request, email=email,
                             username=username, password=password)
 
-        if user is None:
-            if not UserModel.objects.filter(email=email).exists():
-                return Response({"error": "Email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-            elif not UserModel.objects.filter(username=username).exists():
-                return Response({"error": "Username does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({"error": "Invalid password."}, status=status.HTTP_401_UNAUTHORIZED)
-
-        login(request, user)
-        token, _ = Token.objects.get_or_create(
-            user=user)  # Generate token for the user
-        serializer = UserSerializer(user)
-        return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
-'''
-
-
-class UserLogin(APIView):
-    permission_classes = (permissions.AllowAny,)
-    authentication_classes = (SessionAuthentication,)
-
-    def post(self, request):
-        data = request.data
-        
-        email = data.get('email', '').strip()
-        username = data.get('username', '').strip()
-        password = data.get('password', '').strip()
-
-        try:
-            validate_login_credentials(email, username, password)
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        user = authenticate(request, email=email, username=username, password=password)
-        
         if user is None:
             return Response({"error": "User does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
