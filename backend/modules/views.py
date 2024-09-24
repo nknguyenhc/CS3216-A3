@@ -1,6 +1,7 @@
 from django.http import HttpRequest, JsonResponse
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from .models import PersonalStatement, Comment
 from .orchestrator import Orchestrator
 from .orchestrator import JardineOrchestrator
@@ -10,10 +11,11 @@ jardine_orchestrator = JardineOrchestrator()
 
 
 class Essay(APIView):
-    #permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication] 
 
     def post(self, request: HttpRequest):
         data = request.data
+        user = data.get('user')
         essay: str = data.get('essay')
         if not essay:
             return JsonResponse({'error': 'No essay provided'}, status=400)
@@ -27,7 +29,7 @@ class Essay(APIView):
             return JsonResponse({'error': 'No title provided'}, status=400)
 
         personal_statement = PersonalStatement.objects.create(
-            user=request.user,
+            user=user,
             field_of_study=field_of_study,
             essay=essay,
             title=title,
@@ -57,7 +59,6 @@ class Essay(APIView):
 
 
 class JardineEssay(APIView):
-    #permission_classes = [IsAuthenticated]
 
     def post(self, request: HttpRequest):
         data = request.data
@@ -104,7 +105,6 @@ class JardineEssay(APIView):
 
 
 class GetFeedback(APIView):
-    #permission_classes = [IsAuthenticated]
 
     def get(self, request: HttpRequest):
         ps_id = request.GET.get('id')

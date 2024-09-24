@@ -34,13 +34,14 @@ const UploadPage: React.FC = () => {
       .post(
         `${postUrl}`,
         {
+          user: "Hi",
           title: title,
           essay: statement,
           field_of_study: fieldOfStudy,
         },
         {
           headers: {
-            "X-CSRFToken": csrfToken,
+            //"X-CSRFToken": csrfToken,
             "Authorization": `Bearer ${token}`,
           },
         }
