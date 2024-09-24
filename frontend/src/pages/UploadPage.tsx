@@ -34,7 +34,8 @@ const UploadPage: React.FC = () => {
       .post(
         `${postUrl}`,
         {
-          user: "Hi",
+          email: "newhairhair@gmail.com",
+          username: "newhairhair",
           title: title,
           essay: statement,
           field_of_study: fieldOfStudy,

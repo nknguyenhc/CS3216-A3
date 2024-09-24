@@ -19,17 +19,24 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user_obj
 
 
-
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     username = serializers.CharField()
     password = serializers.CharField()
 
     def validate(self, attrs):
+        users = UserModel.objects.all()
+        print("\n--- Current Users ---")
+        for user in users:
+            print(f"Email: {user.email}, Username: {user.username}")
+
         user = authenticate(
-            username=attrs['username'], email=attrs['email'], password=attrs['password'])
+            username=attrs['username'], email=attrs['email'], password=attrs['password']
+        )
+
         if not user:
             raise ValidationError('User not found or invalid credentials')
+
         return attrs
 
 

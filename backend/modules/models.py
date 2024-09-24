@@ -1,11 +1,16 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from auth.models import AppUser
 import json
+
 
 UserModel = get_user_model()
 
+
+
 class PersonalStatement(models.Model):
+    #user = models.ForeignKey(AppUser, on_delete=models.CASCADE, related_name='personal_statements', null=True)
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='personal_statements', null=True)
     title = models.CharField(max_length=200, null=True)
     focus = models.BooleanField(default=False)  # 0 is Oxbridge, 1 is Jardine

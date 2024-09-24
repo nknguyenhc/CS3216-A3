@@ -5,17 +5,37 @@ from rest_framework.authentication import TokenAuthentication
 from .models import PersonalStatement, Comment
 from .orchestrator import Orchestrator
 from .orchestrator import JardineOrchestrator
+from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate
 
+UserModel = get_user_model()
 orchestrator = Orchestrator()
 jardine_orchestrator = JardineOrchestrator()
 
 
 class Essay(APIView):
-    authentication_classes = [TokenAuthentication] 
+    authentication_classes = [TokenAuthentication]
 
     def post(self, request: HttpRequest):
         data = request.data
-        user = data.get('user')
+        print(data)
+
+        try:
+
+            # Retrieve all AppUser objects
+            users = UserModel.objects.all()
+
+    
+            print(f"Hi Emaily: {data.get('email')}, Usernamey: {data.get('username')}")
+            # Loop through each user and print their email and username
+            for user in users:
+                print(f"Emaily: {user.email}, Usernamey: {user.username}")
+            
+            user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+        except UserModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+
+
         essay: str = data.get('essay')
         if not essay:
             return JsonResponse({'error': 'No essay provided'}, status=400)
