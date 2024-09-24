@@ -50,7 +50,7 @@ const UploadPage: React.FC = () => {
 
         navigate("/essay/comment", {
           state: {
-            response: response,
+            response: response.data,
           },
         });
       })

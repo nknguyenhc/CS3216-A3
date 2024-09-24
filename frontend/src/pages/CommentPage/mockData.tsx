@@ -3,6 +3,7 @@ export type Comment = {
   text: string;
   highlight: string;
   comment: string;
+  is_positive: boolean;
 };
 
 export const mockComments: Comment[] = [
@@ -11,18 +12,21 @@ export const mockComments: Comment[] = [
     text: "The quick brown fox jumps over the lazy dog",
     highlight: "fox",
     comment: "Classic sentence for typing practice.",
+    is_positive: true,
   },
   {
     id: 2,
     text: "In a world of uncertainty, technology provides clarity",
     highlight: "technology",
     comment: "Note about the importance of tech.",
+    is_positive: true,
   },
   {
     id: 3,
     text: "Humans have always sought to understand the cosmos",
     highlight: "cosmos",
     comment: "Comment on human curiosity.",
+    is_positive: false,
   },
 ];
 

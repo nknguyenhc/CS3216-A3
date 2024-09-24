@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { mockComments, mockEssay } from "./mockData";
+import { mockComments, mockEssay, Comment } from "./mockData";
 
 const title = "Key Points";
 const points = [
@@ -15,8 +15,14 @@ const CommentPage: React.FC = () => {
   const location = useLocation();
 
   const response = location.state?.response || "No response provided.";
-  const essay = response?.essay || mockEssay
 
+  // TODO: Remove mock data once orchestrator is fully integrated
+  // const essay = response?.essay || mockEssay
+  // const comments: [Comment] = response?.comments || mockComments
+
+  const essay = mockEssay
+  const comments = mockComments
+  
   const handleHighlightClick = (id: number) => {
     setActiveComment(id === activeComment ? null : id);
   };
@@ -25,7 +31,7 @@ const CommentPage: React.FC = () => {
     const updateCommentPositions = () => {
       if (textRef.current) {
         const newPositions: { [key: number]: number } = {};
-        mockComments.forEach((comment) => {
+        comments.forEach((comment) => {
           const element = textRef.current?.querySelector(`[data-highlight-id="${comment.id}"]`);
           if (element) {
             const rect = element.getBoundingClientRect();
@@ -46,7 +52,7 @@ const CommentPage: React.FC = () => {
     let result = [];
     let currentIndex = 0;
 
-    mockComments.forEach((comment) => {
+    comments.forEach((comment) => {
       const startIndex = essay.indexOf(comment.highlight, currentIndex);
       if (startIndex !== -1) {
         if (startIndex > currentIndex) {
@@ -57,7 +63,7 @@ const CommentPage: React.FC = () => {
           <span
             key={`highlight-${comment.id}`}
             data-highlight-id={comment.id}
-            className={`bg-yellow-300 cursor-pointer ${activeComment === comment.id ? "bg-orange-300" : ""}`}
+            className={`cursor-pointer ${!comment.is_positive ? "text-red-500" : "text-green-500"}`}
             onClick={() => handleHighlightClick(comment.id)}
           >
             {comment.highlight}
@@ -94,7 +100,7 @@ const CommentPage: React.FC = () => {
           </div>
         </div>
         <div className="w-1/4 relative">
-          {mockComments.map((comment) => (
+          {comments.map((comment) => (
             <div
               key={comment.id}
               className={`absolute left-0 right-0 bg-gray-100 p-2 rounded-lg transition-opacity duration-300 ${
