@@ -1,10 +1,36 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { mockData, Comment } from "./mockData";
-import { fetchAndMatchEssay } from "./api";
+
+type Comment = {
+  id: number;
+  text: string;
+  highlight: string;
+  comment: string;
+};
+
+const mockData: Comment[] = [
+  {
+    id: 1,
+    text: "The quick brown fox jumps over the lazy dog",
+    highlight: "fox",
+    comment: "Classic sentence for typing practice.",
+  },
+  {
+    id: 2,
+    text: "In a world of uncertainty, technology provides clarity",
+    highlight: "technology",
+    comment: "Note about the importance of tech.",
+  },
+  {
+    id: 3,
+    text: "Humans have always sought to understand the cosmos",
+    highlight: "cosmos",
+    comment: "Comment on human curiosity.",
+  },
+];
 
 /*
-const pageText = `
+const essay = `
   The quick brown fox jumps over the lazy dog, a phrase that has long been celebrated in the realm of typography and language. This whimsical sentence serves not only as a tool for testing fonts but also encapsulates the vibrant life of nature, where agility meets lethargy in the most playful manner. It reminds us of the beauty of contrast in the animal kingdom, where each creature plays its unique role in the ecosystem.
 
   In a world of uncertainty, technology provides clarity, a beacon of hope amidst the chaos of modern life. As we navigate through rapid advancements and the overwhelming influx of information, technology acts as our compass. Innovations such as artificial intelligence and data analytics enable us to decipher complex patterns and make informed decisions. We can now analyze vast amounts of data with unparalleled speed, transforming uncertainty into actionable insights. This shift empowers individuals and businesses alike, fostering a landscape where knowledge is power and clarity reigns supreme.
@@ -26,27 +52,22 @@ const points = [
 const CommentPage: React.FC = () => {
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [commentPositions, setCommentPositions] = useState<{ [key: number]: number }>({});
-  const [matchedStatement, setMatchedStatement] = useState<any>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
-  const pageText = location.state?.statement || "No statement provided.";
+  const response = location.state?.response || "No response provided.";
+  const essay = response.essay
 
   const handleHighlightClick = (id: number) => {
     setActiveComment(id === activeComment ? null : id);
   };
 
   useEffect(() => {
-    const fetchAndUpdateStatement = async () => {
-
-      const fetchedMatchedStatement = await fetchAndMatchEssay(pageText);
-      setMatchedStatement(fetchedMatchedStatement);
-
-      const currentTextRef = textRef.current;
-      if (currentTextRef) {
+    const updateCommentPositions = () => {
+      if (textRef.current) {
         const newPositions: { [key: number]: number } = {};
         mockData.forEach((comment) => {
-          const element = currentTextRef.querySelector(`[data-highlight-id="${comment.id}"]`);
+          const element = textRef.current?.querySelector(`[data-highlight-id="${comment.id}"]`);
           if (element) {
             const rect = element.getBoundingClientRect();
             const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -57,23 +78,20 @@ const CommentPage: React.FC = () => {
       }
     };
 
-    fetchAndUpdateStatement();
-    window.addEventListener("resize", fetchAndUpdateStatement); // Update on resize
-
-    return () => {
-      window.removeEventListener("resize", fetchAndUpdateStatement); // Cleanup on unmount
-    };
-  }, [pageText]);
+    updateCommentPositions();
+    window.addEventListener("resize", updateCommentPositions);
+    return () => window.removeEventListener("resize", updateCommentPositions);
+  }, []);
 
   const renderTextWithHighlights = () => {
     let result = [];
     let currentIndex = 0;
 
     mockData.forEach((comment) => {
-      const startIndex = matchedStatement.indexOf(comment.highlight, currentIndex);
+      const startIndex = essay.indexOf(comment.highlight, currentIndex);
       if (startIndex !== -1) {
         if (startIndex > currentIndex) {
-          result.push(<span key={`text-${currentIndex}`}>{matchedStatement.slice(currentIndex, startIndex)}</span>);
+          result.push(<span key={`text-${currentIndex}`}>{essay.slice(currentIndex, startIndex)}</span>);
         }
 
         result.push(
@@ -91,8 +109,8 @@ const CommentPage: React.FC = () => {
       }
     });
 
-    if (currentIndex < matchedStatement.length) {
-      result.push(<span key={`text-${currentIndex}`}>{matchedStatement.slice(currentIndex)}</span>);
+    if (currentIndex < essay.length) {
+      result.push(<span key={`text-${currentIndex}`}>{essay.slice(currentIndex)}</span>);
     }
 
     return result;

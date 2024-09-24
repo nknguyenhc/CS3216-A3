@@ -44,12 +44,13 @@ const UploadPage: React.FC = () => {
           },
         }
       )
-      .then(() => {
+      .then((response) => {
         setErrorMessage(null);
+        console.log("response", response);
 
         navigate("/essay/comment", {
           state: {
-            statement: statement,
+            response: response,
           },
         });
       })

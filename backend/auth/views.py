@@ -143,15 +143,10 @@ class UserLogin(APIView):
         user = authenticate(request, email=email, username=username, password=password)
         
         if user is None:
-            if not UserModel.objects.filter(email=email).exists():
-                return Response({"error": "Email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-            elif not UserModel.objects.filter(username=username).exists():
-                return Response({"error": "Username does not exist."}, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                return Response({"error": "Invalid password."}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({"error": "User does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
         login(request, user)
-        token, _ = Token.objects.get_or_create(user=user)  # Generate token for the user
+        token, _ = Token.objects.get_or_create(user=user)
         serializer = UserSerializer(user)
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
 
