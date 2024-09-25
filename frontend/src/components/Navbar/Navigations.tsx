@@ -24,7 +24,13 @@ const Navigations = ({ uploadEssayRef, howItWorksRef, pricingRef, reviewsRef, fa
         onClick={() => scrollToSection(uploadEssayRef)}
         className="text-white relative text-xl w-fit block bg-gradient-to-r from-sky-600 to-sky-600 bg-[length:0%_100%] bg-left hover:bg-[length:100%_100%] hover:text-transparent transition-all duration-500 ease-out bg-clip-text after:block after:content-[''] after:absolute after:h-[3px] after:bg-sky-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left"
       >
-        Upload 
+        Upload
+      </button>
+      <button
+        onClick={() => scrollToSection(uploadEssayRef)}
+        className="text-white relative text-xl w-fit block bg-gradient-to-r from-sky-600 to-sky-600 bg-[length:0%_100%] bg-left hover:bg-[length:100%_100%] hover:text-transparent transition-all duration-500 ease-out bg-clip-text after:block after:content-[''] after:absolute after:h-[3px] after:bg-sky-600 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-left"
+      >
+        Your submissions
       </button>
       <button
         onClick={() => scrollToSection(howItWorksRef)}

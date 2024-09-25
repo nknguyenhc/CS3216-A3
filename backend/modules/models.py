@@ -19,7 +19,7 @@ class PersonalStatement(models.Model):
             {
                 'comment': comment.comment,
                 'is_good': comment.is_good,
-                'argument_id': comment.argument.id  # Optional: Add the argument ID for context
+                'id': comment.id
             }
             for comment in Comment.objects.filter(argument__personal_statement=self)
         ]

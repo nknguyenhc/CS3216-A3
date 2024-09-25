@@ -1,27 +1,74 @@
 import React, { useState, useRef, useEffect } from "react";
-// import { useLocation } from "react-router-dom";
-import { mockComments, mockEssay } from "./mockData";
+import { useParams } from "react-router-dom";
+import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
+import { useAuth } from "../../components/Authentication/AuthenticationContext";
+import Footer from "../../components/Footer/Footer";
 
-const title = "Key Points";
-const points = [
-  "Identify areas that need more evidence or elaboration.",
-  "At its core, Game of Thrones is about the quest for the Iron Throne, which symbolizes control over the Seven Kingdoms. Themes of loyalty, betrayal, and the corrupting nature of power dominate the narrative. The story also includes mystical elements such as dragons, the undead, and ancient prophecies.",
-];
+interface Comment {
+  id: number;
+  comment: string;
+  is_good: boolean;
+  highlight: string;
+}
+
+interface RouteParams {
+  [key: string]: string | undefined;
+  id: string;
+}
 
 const CommentPage: React.FC = () => {
+  const { token, currEmail, currUsername } = useAuth();
   const [activeComment, setActiveComment] = useState<number | null>(null);
   const [commentPositions, setCommentPositions] = useState<{ [key: number]: number }>({});
   const textRef = useRef<HTMLDivElement>(null);
-  // const location = useLocation();
+  const [essay, setEssay] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [fieldOfStudy, setFieldOfStudy] = useState<string>('');
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [generalComment, setGeneralComment] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { id } = useParams<RouteParams>();
+  const psId = Number(id);
 
-  // const response = location.state?.response || "No response provided.";
+  const fetchPersonalStatement = () => {
+    const csrfToken = getCSRFToken();
+    const url = "api/essay/feedback/";
 
-  // TODO: Remove mock data once orchestrator is fully integrated
-  // const essay = response?.essay || mockEssay
-  // const comments: [Comment] = response?.comments || mockComments
+    client
+      .get(url, {
+        params: {
+          email: currEmail,
+          username: currUsername,
+          id: psId
+        },
+        headers: {
+          "X-CSRFToken": csrfToken,
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        const data = response.data;
+        setEssay(data.essay);
+        setTitle(data.title);
+        setFieldOfStudy(data.field_of_study);
+        setComments(data.comments || []);
+        setGeneralComment(data.general_comment || '');
+        setErrorMessage(null);
+      })
+      .catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          const errorMsg = error.response.data.error.replace(/[\[\]']/g, "");
+          setErrorMessage(errorMsg);
+        } else {
+          setErrorMessage("An unexpected error occurred.");
+        }
+        console.log(errorMessage);
+      });
+  };
 
-  const essay = mockEssay;
-  const comments = mockComments;
+  useEffect(() => {
+    fetchPersonalStatement();
+  }, [currEmail, currUsername, psId]);
 
   const handleHighlightClick = (id: number) => {
     setActiveComment(id === activeComment ? null : id);
@@ -46,7 +93,7 @@ const CommentPage: React.FC = () => {
     updateCommentPositions();
     window.addEventListener("resize", updateCommentPositions);
     return () => window.removeEventListener("resize", updateCommentPositions);
-  }, []);
+  }, [comments]);
 
   const renderTextWithHighlights = () => {
     let result = [];
@@ -63,7 +110,7 @@ const CommentPage: React.FC = () => {
           <span
             key={`highlight-${comment.id}`}
             data-highlight-id={comment.id}
-            className={`cursor-pointer ${!comment.is_positive ? "text-red-500" : "text-green-500"}`}
+            className={`cursor-pointer ${!comment.is_good ? "text-red-500" : "text-green-500"}`}
             onClick={() => handleHighlightClick(comment.id)}
           >
             {comment.highlight}
@@ -83,50 +130,54 @@ const CommentPage: React.FC = () => {
 
   return (
     <>
-      <div className="flex max-w-7xl mx-auto p-4">
-        <div className="w-3/4 pr-4">
-          <h1 className="text-center px-16 pt-3.5 pb-3.5 max-w-full text-base font-bold text-black bg-white rounded-3xl border border-solid border-zinc-400 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] w-full">
-            Short title
+      <div className="flex flex-col items-center max-w-7xl mx-auto p-4 space-y-4">
+        <h1 className="text-4xl font-bold text-center text-black mb-16 mt-10">Review your personal statement</h1>
+        <div className="w-full flex justify-center items-center space-x-4">
+          <h1 className="text-center px-8 pt-2 pb-2 text-2xl font-bold text-black bg-white rounded-3xl border border-solid border-zinc-400 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-w-xl">
+            {title}
           </h1>
-        </div>
-      </div>
-      <div className="flex max-w-7xl mx-auto p-4">
-        <div className="w-3/4 pr-4">
-          <div
-            ref={textRef}
-            className="bg-white p-20 bg-white rounded-3xl border border-solid border-zinc-400 shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
-          >
-            <p>{renderTextWithHighlights()}</p>
+          <div className="text-center px-8 pt-2 pb-2 text-2xl font-bold text-black bg-white rounded-3xl border border-solid border-zinc-400 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] max-w-xl">
+            {fieldOfStudy}
           </div>
         </div>
-        <div className="w-1/4 relative">
-          {comments.map((comment) => (
+        <div className="flex flex-col items-center max-w-4xl mx-auto p-4 w-full space-y-8">
+          <div className="w-full max-w-3xl">
             <div
-              key={comment.id}
-              className={`absolute left-0 right-0 bg-gray-100 p-2 rounded-lg transition-opacity duration-300 ${
-                activeComment === comment.id ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
-              style={{
-                top: `${commentPositions[comment.id]}px`,
-                transform: "translateY(-300%)",
-              }}
+              ref={textRef}
+              className="bg-white p-8 rounded-3xl border border-solid border-zinc-400 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] text-left"
             >
-              <p className="text-sm">{comment.comment}</p>
+              <p className="text-lg">{renderTextWithHighlights()}</p>
             </div>
-          ))}
+          </div>
+          {generalComment && (
+            <div className="w-full max-w-3xl mt-4">
+              <h2 className="text-lg font-bold mb-2">General Comment</h2>
+              <p className="text-sm text-gray-700">{generalComment}</p>
+            </div>
+          )}
+          <div className="w-full max-w-3xl mt-4">
+            <h2 className="text-lg font-bold mb-2">Comments</h2>
+            {comments.length === 0 || comments.every(comment => activeComment !== comment.id) ? (
+              <p className="text-sm text-gray-600 italic">Click highlighted text to see comment</p>
+            ) : (
+              comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  className={`bg-gray-100 p-4 mb-4 rounded-lg transition-opacity duration-300 ${activeComment === comment.id ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                  style={{
+                    position: "relative",
+                    top: `${commentPositions[comment.id] || 0}px`,
+                  }}
+                >
+                  <p className="text-sm">{comment.comment}</p>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
-
-      <section className="mt-32 text-base font-bold text-black max-md:mt-10 max-md:max-w-full">
-        <h2 className="text-2xl">{title}</h2>
-        <ul>
-          {points.map((point, index) => (
-            <li key={index}>
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <Footer />
     </>
   );
 };

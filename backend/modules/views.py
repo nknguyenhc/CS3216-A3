@@ -137,6 +137,13 @@ class JardineEssay(APIView):
 class GetFeedback(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request: HttpRequest):
+        data = request.GET
+        print(data)    
+        try:
+            user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+        except UserModel.DoesNotExist:
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+
         ps_id = request.GET.get('id')
         if not ps_id:
             return JsonResponse({'error': 'No id parameter provided'}, status=400)
@@ -146,5 +153,8 @@ class GetFeedback(APIView):
         except PersonalStatement.DoesNotExist:
             raise JsonResponse(
                 {'error': 'Not found personal statement'}, status=404)
+
+        if personal_statement.user != user:
+            return JsonResponse({'error': 'Unauthorized to view this personal statement'}, status=403)
 
         return JsonResponse(personal_statement.to_dict())

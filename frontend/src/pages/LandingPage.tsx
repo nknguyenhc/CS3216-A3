@@ -17,7 +17,7 @@ const LandingPage = () => {
 
   useEffect(() => {
     ReactGA.event({
-      category: "Page Fuck",
+      category: "Page View",
       action: "Viewed Landing Page"
     });
   }, []);

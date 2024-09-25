@@ -1,6 +1,6 @@
 import React from "react";
 import ViewButton from "../Submissions/ViewButton";
-
+import { useNavigate } from "react-router-dom";
 interface PersonalStatement {
   id: number;
   title: string;
@@ -14,8 +14,10 @@ interface SubmissionCardProps {
 }
 
 const SubmissionCard: React.FC<SubmissionCardProps> = ({ submission }) => {
+  const navigate = useNavigate();
+
   const handleViewClick = () => {
-    console.log(`Viewing submission ID: ${submission.id}`);
+    navigate(`essay/comment/${submission.id}`);
   };
 
   return (

@@ -25,7 +25,7 @@ const router = createBrowserRouter(
       <Route path="/success" element={<SuccessPage />} />
       <Route path="/unsuccess" element={<UnsuccessPage />} />
       <Route path="/essay/upload" element={<UploadPage />} />
-      <Route path="/essay/comment" element={<CommentPage />} />
+      <Route path="/essay/comment/:id" element={<CommentPage />} />
       <Route path="/submissions" element={<SubmissionsPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>

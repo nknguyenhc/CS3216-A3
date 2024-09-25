@@ -1,6 +1,7 @@
 import GoToUploadButton from "./GoToUploadButton";
 import { useAuth } from "../Authentication/AuthenticationContext";
 import AuthButtons from "../Navbar/AuthButtons";
+import GoToSubmissionsButton from "../Essay/Submissions/GoToSubmissionsButton";
 
 const TextContent = () => {
   const { currentUser } = useAuth();
@@ -18,11 +19,14 @@ const TextContent = () => {
         </p>
 
         {currentUser ? (
-          <GoToUploadButton />
+          <div className="flex flex-row mt-4 space-x-4">
+            <GoToUploadButton />
+            <GoToSubmissionsButton />
+          </div>
         ) : (
           <>
             <p className="mt-4 text-base text-red-600 mb-5">
-              Please log in or sign up before uploading your personal statement.
+              Please log in or sign up before uploading your personal statement or viewing your past submissions.
             </p>
 
             <AuthButtons />

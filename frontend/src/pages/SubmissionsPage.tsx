@@ -36,7 +36,7 @@ const SubmissionsPage: React.FC = () => {
   const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([]);
 
   useEffect(() => {
-    ReactGA.pageview("/submissions"); // Track the page view
+    ReactGA.pageview("/submissions");
     fetchSubmissions();
   }, []);
 

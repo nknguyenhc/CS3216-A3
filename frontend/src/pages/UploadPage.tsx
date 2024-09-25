@@ -55,11 +55,8 @@ const UploadPage: React.FC = () => {
           label: focus,
         });
         setErrorMessage(null);
-        navigate("/essay/comment", {
-          state: {
-            response: response.data,
-          },
-        });
+        const personalStatementId = response.data.id;
+        navigate(`/essay/comment/${personalStatementId}`);
       })
       .catch((error) => {
         ReactGA.event({
