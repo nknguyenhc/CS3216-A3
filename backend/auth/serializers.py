@@ -16,15 +16,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             username=validated_data['username'],
         )
-
-        # Print all fields of the saved user model
-        print("User created with the following details:")
-        for field in user_obj.__dict__:
-            if not field.startswith('_'):
-                print(f"{field}: {getattr(user_obj, field)}")
-
+        token = Token.objects.create(user=user_obj)
         return user_obj
 
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        token = Token.objects.get(user=instance)
+        representation['token'] = token.key
+        return representation
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -39,6 +38,9 @@ class UserLoginSerializer(serializers.Serializer):
 
         if not user:
             raise ValidationError('User not found or invalid credentials')
+
+        token, created = Token.objects.get_or_create(user=user)
+        attrs['token'] = token.key
 
         return attrs
 
