@@ -98,7 +98,7 @@ import ReactGA from "react-ga";
 
 const AuthButtons = () => {
   const { currentUser, setCurrentUser } = useAuth();
-  const { loggedInWithGoogle, setLoggedInWithGoogle } = useAuth();
+  const { loggedInWithGoogle, setLoggedInWithGoogle, setToken, setCurrUsername, setCurrEmail } = useAuth();
   const navigate = useNavigate();
 
   const handleAuthentication = () => {
@@ -114,7 +114,12 @@ const AuthButtons = () => {
     });
     setCurrentUser(false);
     setLoggedInWithGoogle(false);
-    navigate("/");
+    setToken(null);
+    setCurrEmail(null);
+    setCurrUsername(null);
+    localStorage.removeItem('authToken');
+    navigate('/');
+    console.log('Logout successful!');
   };
 
   const handleLogout = async () => {
