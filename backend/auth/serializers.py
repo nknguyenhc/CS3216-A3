@@ -9,6 +9,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('email', 'username', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user_obj = UserModel.objects.create_user(
@@ -16,7 +17,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password'],
             username=validated_data['username'],
         )
-        token = Token.objects.create(user=user_obj)
+        Token.objects.create(user=user_obj)
         return user_obj
 
     def to_representation(self, instance):
@@ -29,20 +30,26 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     username = serializers.CharField()
-    password = serializers.CharField()
+    password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
-        user = authenticate(
-            username=attrs['username'], email=attrs['email'], password=attrs['password']
-        )
+        email = attrs.get('email')
+        username = attrs.get('username')
+        password = attrs.get('password')
+
+        user = authenticate(username=username, email=email, password=password)
 
         if not user:
-            raise ValidationError('User not found or invalid credentials')
+            raise ValidationError('Invalid username, email, or password')
 
         token, created = Token.objects.get_or_create(user=user)
-        attrs['token'] = token.key
-
-        return attrs
+        return {
+            'token': token.key,
+            'user': {
+                'email': user.email,
+                'username': user.username
+            }
+        }
 
 
 class UserSerializer(serializers.ModelSerializer):

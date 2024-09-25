@@ -73,6 +73,6 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 class FreeUploadCount(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='free_upload_counts', null=True)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, null=True)
     free_upload_count = models.IntegerField(default=0)
     # first_free_upload = user.freeuploadcount_set.first() to see number of free upload

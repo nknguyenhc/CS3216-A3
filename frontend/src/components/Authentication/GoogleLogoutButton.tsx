@@ -1,41 +1,20 @@
-/*
-import { GoogleLogout } from 'react-google-login';
-
-const clientId: string = '577083967585-ofhpvr34hgknf49vacjpkpth8n2gklub.apps.googleusercontent.com';
-
-const GoogleLogoutButton: React.FC = () => {
-
-    const onSuccess = () => {
-        console.log("Logout successfull!")
-    }
-
-    return (
-        <div id="signOutButton">
-            <GoogleLogout
-                clientId={clientId}
-                buttonText={"Logout"}
-                onLogoutSuccess={onSuccess}
-            />
-        </div>
-    )
-}
-
-export default GoogleLogoutButton;
-*/
-
 import { googleLogout } from '@react-oauth/google';
 import { useAuth } from './AuthenticationContext';
 import { useNavigate } from 'react-router-dom';
 
 const GoogleLogoutButton: React.FC = () => {
-    const { setCurrentUser, setLoggedInWithGoogle } = useAuth();
+    const { setCurrentUser, setLoggedInWithGoogle, setToken, setCurrEmail, setCurrUsername } = useAuth();
     const navigate = useNavigate();
 
     const onLogout = () => {
         setCurrentUser(false);
         setLoggedInWithGoogle(false);
-        navigate("/");
-        console.log("Logout successful!");
+        setToken(null);
+        setCurrEmail(null);
+        setCurrUsername(null);
+        localStorage.removeItem('authToken');
+        navigate('/');
+        console.log('Logout successful!');
     };
 
     const handleLogout = () => {

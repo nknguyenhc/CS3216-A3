@@ -8,9 +8,9 @@ interface AuthContextType {
   token: string | null;
   setToken: (token: string | null) => void;
   currUsername: string | null;
-  setCurrUsername: (token: string | null) => void;
+  setCurrUsername: (username: string | null) => void;
   currEmail: string | null;
-  setCurrEmail: (token: string | null) => void;
+  setCurrEmail: (email: string | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,7 +23,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [currEmail, setCurrEmail] = useState<string | null>(null);
 
   return (
-    <AuthContext.Provider value={{ currentUser, setCurrentUser, loggedInWithGoogle, setLoggedInWithGoogle, token, setToken, currUsername, setCurrUsername, currEmail, setCurrEmail }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        loggedInWithGoogle,
+        setLoggedInWithGoogle,
+        token,
+        setToken,
+        currUsername,
+        setCurrUsername,
+        currEmail,
+        setCurrEmail,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
