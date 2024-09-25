@@ -17,7 +17,7 @@ const SubmissionCard: React.FC<SubmissionCardProps> = ({ submission }) => {
   const navigate = useNavigate();
 
   const handleViewClick = () => {
-    navigate(`essay/comment/${submission.id}`);
+    navigate(`/essay/comment/${submission.id}`);
   };
 
   return (
