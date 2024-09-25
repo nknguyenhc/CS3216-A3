@@ -21,8 +21,17 @@ class Essay(APIView):
 
         try:
             user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+            
+            # TODO: Remove
+            for field, value in user.__dict__.items():
+                if not field.startswith('_'):
+                    print(f"{field}: {value}")
+
+            if data.get('token') != user.token:
+                return JsonResponse({'error': 'Invalid token provided for this user.'}, status=401)
+
         except UserModel.DoesNotExist:
-            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
+            return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=404)
 
 
         essay: str = data.get('essay')
@@ -57,6 +66,10 @@ class Essay(APIView):
             email = request.GET.get('email')
             username = request.GET.get('username')
             user = UserModel.objects.get(email=email, username=username)
+
+            if request.GET.get('token') != user.token:
+                return JsonResponse({'error': 'Invalid token provided for this user.'}, status=401)
+
         except UserModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
 
@@ -82,6 +95,10 @@ class JardineEssay(APIView):
 
         try:
             user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+
+            if data.get('token') != user.token:
+                return JsonResponse({'error': 'Invalid token provided for this user.'}, status=401)
+
         except UserModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
 
@@ -117,6 +134,10 @@ class JardineEssay(APIView):
             email = request.GET.get('email')
             username = request.GET.get('username')
             user = UserModel.objects.get(email=email, username=username)
+
+            if request.GET.get('token') != user.token:
+                return JsonResponse({'error': 'Invalid token provided for this user.'}, status=401)
+
         except UserModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
 
@@ -141,6 +162,10 @@ class GetFeedback(APIView):
         print(data)    
         try:
             user = UserModel.objects.get(email=data.get('email'), username=data.get('username'))
+
+            if data.get('token') != user.token:
+                return JsonResponse({'error': 'Invalid token provided for this user.'}, status=401)
+
         except UserModel.DoesNotExist:
             return JsonResponse({'error': 'User does not exist with the provided email and username.'}, status=500)
 

@@ -56,37 +56,22 @@ class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request):
-        data = request.data
+        serializer = UserRegisterSerializer(data=request.data)
 
-        try:
-            email = validate_email(data.get('email', ''))
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            username = validate_username(data.get('username', ''))
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            password = validate_password(data.get('password', ''))
-        except ValidationError as e:
-            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-        clean_data = {
-            'email': email,
-            'username': username,
-            'password': password,
-        }
-
-        serializer = UserRegisterSerializer(data=clean_data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             user = serializer.save()
-            token, _ = Token.objects.get_or_create(
-                user=user)  # Generate token for the user
-            return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
 
-        return Response({"error": "Registration failed"}, status=status.HTTP_400_BAD_REQUEST)
+            response = Response({
+                'token': user.free_upload_count,  # This should now work as expected
+                'user': {
+                    'email': user.email,
+                    'username': user.username
+                }
+            }, status=status.HTTP_201_CREATED)
+
+            return response
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserLogin(APIView):
@@ -109,11 +94,18 @@ class UserLogin(APIView):
                             username=username, password=password)
 
         if user is None:
-            return Response({"error": "User does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "User does not exist or credentials are incorrect."}, status=status.HTTP_400_BAD_REQUEST)
 
         login(request, user)
-        token, _ = Token.objects.get_or_create(user=user)
+
+        Token.objects.filter(user=user).delete()
+
+        token = Token.objects.create(user=user)
+        user.token = token.key
+        user.save()
+
         serializer = UserSerializer(user)
+
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
 
 

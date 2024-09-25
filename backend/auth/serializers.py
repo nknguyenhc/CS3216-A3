@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model, authenticate
+from rest_framework.authtoken.models import Token
 
 UserModel = get_user_model()
-
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,9 +14,17 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user_obj = UserModel.objects.create_user(
             email=validated_data['email'],
             password=validated_data['password'],
-            username=validated_data['username']
+            username=validated_data['username'],
         )
+
+        # Print all fields of the saved user model
+        print("User created with the following details:")
+        for field in user_obj.__dict__:
+            if not field.startswith('_'):
+                print(f"{field}: {getattr(user_obj, field)}")
+
         return user_obj
+
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -25,11 +33,6 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, attrs):
-        users = UserModel.objects.all()
-        print("\n--- Current Users ---")
-        for user in users:
-            print(f"Email: {user.email}, Username: {user.username}")
-
         user = authenticate(
             username=attrs['username'], email=attrs['email'], password=attrs['password']
         )
