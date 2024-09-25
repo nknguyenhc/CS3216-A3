@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, ChangeEvent } from "react";
+import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactGA from "react-ga";
 import AuthForm from "./AuthForm";
@@ -21,7 +21,14 @@ const Authentication: React.FC = () => {
     setErrorMessage(null);
   };
 
-  // Registration handler
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      setToken(storedToken);
+      setCurrentUser(true);
+    }
+  }, [setToken, setCurrentUser]);
+
   const submitRegistration = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const csrfToken = getCSRFToken();
@@ -30,6 +37,7 @@ const Authentication: React.FC = () => {
       .post("/api/auth/register", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then((response) => {
         const tokenFromResponse = response.data.token;
+        localStorage.setItem("authToken", tokenFromResponse);
         setToken(tokenFromResponse);
         setCurrentUser(true);
         setCurrEmail(email);
@@ -55,7 +63,6 @@ const Authentication: React.FC = () => {
       });
   };
 
-  // Login handler
   const submitLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const csrfToken = getCSRFToken();
@@ -64,6 +71,7 @@ const Authentication: React.FC = () => {
       .post("/api/auth/login", { email, username, password }, { headers: { "X-CSRFToken": csrfToken } })
       .then((response) => {
         const tokenFromResponse = response.data.token;
+        localStorage.setItem("authToken", tokenFromResponse);
         setToken(tokenFromResponse);
         setCurrentUser(true);
         setCurrEmail(email);
@@ -91,13 +99,11 @@ const Authentication: React.FC = () => {
 
   return (
     <div className="flex flex-row min-h-screen bg-gray-100 overflow-hidden">
-      {/* Left Column with Image */}
       <div
         className="flex-1 justify-center bg-cover bg-center"
         style={{ backgroundImage: `url('./assets/cover.jpeg')` }}
       ></div>
 
-      {/* Right Column with Auth Form */}
       <div className="flex-1 flex items-center justify-center bg-white">
         <div className="w-full px-8">
           <div className="flex flex-col items-center justify-center mb-5">
@@ -133,10 +139,8 @@ const Authentication: React.FC = () => {
               />
             )}
 
-            {/* Display error message */}
             {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
 
-            {/* Toggle between login and registration */}
             <div className="text-center w-full">
               {registrationToggle ? (
                 <p>
@@ -154,7 +158,6 @@ const Authentication: React.FC = () => {
                 </p>
               )}
 
-              {/* Google Auth buttons */}
               <div className="mt-5">
                 <GoogleLoginButton />
               </div>

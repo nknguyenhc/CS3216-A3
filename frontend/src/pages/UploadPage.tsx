@@ -44,7 +44,7 @@ const UploadPage: React.FC = () => {
         {
           headers: {
             "X-CSRFToken": csrfToken,
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Token ${token}`,
           },
         }
       )

@@ -43,7 +43,7 @@ const CommentPage: React.FC = () => {
         },
         headers: {
           "X-CSRFToken": csrfToken,
-          Authorization: `Bearer ${token}`,
+          Authorization: `Token ${token}`,
         },
       })
       .then((response) => {
