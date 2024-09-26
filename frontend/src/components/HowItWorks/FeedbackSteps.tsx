@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 const FeedbackSteps = forwardRef<HTMLElement, any>((_, ref) => {
   return (
     <section ref={ref} className="h-auto">
+      <h2 className="text-3xl font-black uppercase text-slate-500 text-center mt-5 mb-10">Steps</h2>
       {/* Step 1: Image on Left, Text on Right */}
       <div className="h-screen flex items-center">
         <div className="w-1/2 h-full">
