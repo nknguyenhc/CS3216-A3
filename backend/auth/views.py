@@ -42,8 +42,6 @@ class StripeCheckoutView(APIView):
 
             free_upload_count_instance = FreeUploadCount.objects.filter(user=user).first()
 
-            print("free uploading", free_upload_count_instance.free_upload_count)
-
             price_id = self.PRICE_IDS.get(plan_type)
             if price_id is None:
                 return JsonResponse({'error': 'Invalid plan type'}, status=400)
@@ -133,23 +131,16 @@ class GoogleLogin(APIView):
             return Response({'error': 'Token is required'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            print(token)
-            print(settings.GOOGLE_CLIENT_ID)
             try:
                 idinfo = id_token.verify_oauth2_token(token, requests.Request(), settings.GOOGLE_CLIENT_ID)
             except ValueError as e:
                 logger.error(f"Token verification error: {str(e)}")
                 return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-            print('asdasdasssss')
             if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
                 return Response({'error': 'Invalid token issuer'}, status=status.HTTP_403_FORBIDDEN)
-            print(idinfo)
             email = idinfo['email']
-            print(email)
             user, created = User.objects.get_or_create(email=email, defaults={'username': email})
-            print(user)
-            print(created)
             if created:
                 user.set_unusable_password()
                 user.save()
