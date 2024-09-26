@@ -3,6 +3,7 @@ from openai import OpenAI
 import logging
 from typing import List
 
+
 class GeneralCommentCrafter:
     def __init__(self,
                  more_interest_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_general_comments/interest_aspect/more_interest.txt",
@@ -14,7 +15,7 @@ class GeneralCommentCrafter:
                  had_non_specific_capability_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_general_comments/capability_aspect/had_non_specific.txt",
                  good_capability_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_general_comments/capability_aspect/good_capability.txt",
                  general_comments_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_general_comments/general_comments.txt"
-                ):
+                 ):
         self.interest_case = [""] * 4
         self.capability_case = [""] * 4
 
@@ -54,9 +55,10 @@ class GeneralCommentCrafter:
         except Exception as e:
             self.logger.exception("Failed to identify cases")
             return None
-        
+
         try:
-            comment = self._craft_general_comment(case_number_interest, case_number_capability)
+            comment = self._craft_general_comment(
+                case_number_interest, case_number_capability)
             personal_statement.save()
             general_comment = GeneralComment.objects.create(
                 comment=comment,
@@ -66,8 +68,6 @@ class GeneralCommentCrafter:
         except Exception as e:
             self.logger.exception("Failed to generate general comments")
             return None
-
-        return general_comment
 
     def _identify_interest_case(self, arguments: List[ArgumentEvaluations]) -> int:
         specific_interest = 0
@@ -87,7 +87,7 @@ class GeneralCommentCrafter:
             return 2
         else:
             return 3
-    
+
     def _identify_capability_case(self, arguments: List[ArgumentEvaluations]) -> int:
         specific_capability = 0
         non_specific_capability = 0
