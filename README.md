@@ -36,9 +36,9 @@ The easiests way to set up our project and test locally is to use Docker, with d
 
 1. In `backend` folder, copy the `example.env` and name it `.env`.
 2. Replace the secret key `{some-random-string}` with any random string.
-3. Replace OpenAI API key with your API key. You will need to obtain one from OpenAI platform.
-4. Replace Stripe API key with your API key. You will need to obtain one from Stripe API platform.
-5. Replace Google client ID with your client ID. You will need to obtain one from Google API platform.
+3. Replace OpenAI API key with your API key. You will need to obtain one from [OpenAI API platform](https://platform.openai.com).
+4. Replace Stripe API key with your API key. You will need to obtain one from [Stripe API platform](https://dashboard.stripe.com/).
+5. Replace Google client ID with your client ID. You will need to obtain one from [Google Cloud platform](https://console.cloud.google.com/apis/).
 6. In `frontend` folder, copy the `example.env` and name it `.env`.
 7. Run the folllowing command in root folder.
 
