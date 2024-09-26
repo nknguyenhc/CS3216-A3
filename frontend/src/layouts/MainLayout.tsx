@@ -19,11 +19,10 @@ const MainLayout = () => {
   };
 
   const location = useLocation();
-  const showNavBarPaths = ["/", "/submissions"];
+  const showNavBarPaths = ["/"];
 
 
-  const shouldShowNavBar = showNavBarPaths.includes(location.pathname) ||
-    location.pathname.startsWith("/essay/comment/");
+  const shouldShowNavBar = showNavBarPaths.includes(location.pathname)
 
   return (
     <div>

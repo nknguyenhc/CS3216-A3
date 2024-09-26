@@ -5,6 +5,7 @@ import FocusSection from "../components/Essay/Upload/FocusSection";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import SubmissionsSection from "../components/Essay/Submissions/SubmissionsSection";
 import Footer from "../components/Footer/Footer";
+import NoLinkNavBar from "../components/Navbar/NoLinkNavBar";
 
 const getCSRFToken = () => {
   const csrfCookie = document.cookie.split("; ").find((row) => row.startsWith("csrftoken="));
@@ -76,6 +77,7 @@ const SubmissionsPage: React.FC = () => {
 
   return (
     <div>
+      <NoLinkNavBar />
       <div className="max-w-screen-xl mx-auto px-4 py-10">
         <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">See your past submissions</h1>
         <div className="max-w-[1200px] mx-auto space-y-16">

@@ -25,7 +25,6 @@ const UploadPage: React.FC = () => {
 
   const pricingRef = useRef<HTMLDivElement>(null);
   const personalStatementRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     ReactGA.pageview("/essay/upload");
@@ -114,8 +113,8 @@ const UploadPage: React.FC = () => {
       ) : (
         <>
           <div className="max-w-screen-xl mx-auto px-4 py-10">
-            <h2 className="text-3xl font-black uppercase text-slate-500 text-center mt-20">Personal Statement</h2>
-            <div ref={personalStatementRef} className="max-w-[1200px] mx-auto space-y-16">
+            <h2 ref={personalStatementRef} className="text-3xl font-black uppercase text-slate-500 text-center mt-20">Personal Statement</h2>
+            <div className="max-w-[1200px] mx-auto space-y-16">
               <FocusSection focus={focus} setFocus={setFocus} />
               <EssayForm
                 title={title}

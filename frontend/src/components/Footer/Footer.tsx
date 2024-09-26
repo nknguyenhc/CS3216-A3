@@ -105,9 +105,6 @@ const Footer: React.FC = () => {
             </a>
           </li>
         </ul>
-
-        <div className="text-center text-xs mt-4">stellar3216@gmail.com</div>
-
         <div className="text-center text-xs mt-4">&copy; {new Date().getFullYear()} Stellar. All rights reserved.</div>
       </div>
     </footer>
