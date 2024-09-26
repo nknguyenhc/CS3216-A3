@@ -35,7 +35,7 @@ const FeedbackSteps = forwardRef<HTMLElement, any>((_, ref) => {
       <div className="h-screen flex items-center">
         <div className="w-1/2 h-full">
           <img
-            src="/assets/comments.png"
+            src="/assets/comment.png"
             alt="Specific Comments"
             className="object-contain w-full h-full"
           />
@@ -58,9 +58,9 @@ const FeedbackSteps = forwardRef<HTMLElement, any>((_, ref) => {
             statement.
           </p>
         </div>
-        <div className="w-1/2 h-full">
+        <div className="w-2/3 h-2/3">
           <img
-            src="/assets/general_comments.png"
+            src="/assets/general_comment.png"
             alt="General Comments"
             className="object-contain w-full h-full"
           />
