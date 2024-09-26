@@ -117,9 +117,17 @@ const CommentPage: React.FC = () => {
 
   const renderGeneralComment = () => {
     if (generalComment) {
-      return <p className="text-sm text-gray-700">{generalComment}</p>;
+      return (
+        <div className="bg-gray-100 p-4 mb-4 rounded-lg">
+          <p className="text-sm text-gray-700">{generalComment}</p>
+        </div>
+      );
     } else {
-      return <p className="text-sm text-gray-600 italic">No comments available.</p>;
+      return (
+        <div className="bg-gray-100 p-4 mb-4 rounded-lg">
+          <p className="text-sm text-gray-600 italic">No comments available.</p>
+        </div>
+      );
     }
   };
 
