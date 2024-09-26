@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactGA from "react-ga";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
@@ -7,6 +7,7 @@ import EssayForm from "../components/Essay/Upload/EssayForm";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";
 import { client, getCSRFToken } from "../AxiosInstance/AxiosInstance";
+import LoadingPage from "../components/LoadingPage/LoadingPage";
 
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const UploadPage: React.FC = () => {
   const [statement, setStatement] = React.useState<string>("");
   const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   useEffect(() => {
     ReactGA.pageview("/essay/upload");
@@ -30,6 +32,8 @@ const UploadPage: React.FC = () => {
       setErrorMessage("Please fill in all required fields.");
       return;
     }
+
+    setIsLoading(true);
 
     client
       .post(
@@ -72,28 +76,42 @@ const UploadPage: React.FC = () => {
           setErrorMessage("An unexpected error occurred.");
         }
         console.log(errorMessage);
+        setIsLoading(false);
       });
   };
 
   return (
-    <div>
-      <div className="max-w-screen-xl mx-auto px-4 py-10">
-        <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">Upload your personal statement</h1>
-        <div className="max-w-[1200px] mx-auto space-y-16">
-          <FocusSection focus={focus} setFocus={setFocus} />
-          <EssayForm
-            title={title}
-            setTitle={setTitle}
-            statement={statement}
-            setStatement={setStatement}
-            fieldOfStudy={fieldOfStudy}
-            setFieldOfStudy={setFieldOfStudy}
-            submitEssay={submitEssay}
-          />
-        </div>
-      </div>
-      <Pricing />
-      <Footer />
+    <div className="relative min-h-screen bg-gray-50">
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <>
+          <div className="max-w-screen-xl mx-auto px-4 py-10">
+            <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">
+              Upload your personal statement
+            </h1>
+            {errorMessage && (
+              <div className="mb-4 text-center text-red-600">
+                {errorMessage}
+              </div>
+            )}
+            <div className="max-w-[1200px] mx-auto space-y-16">
+              <FocusSection focus={focus} setFocus={setFocus} />
+              <EssayForm
+                title={title}
+                setTitle={setTitle}
+                statement={statement}
+                setStatement={setStatement}
+                fieldOfStudy={fieldOfStudy}
+                setFieldOfStudy={setFieldOfStudy}
+                submitEssay={submitEssay}
+              />
+            </div>
+          </div>
+          <Pricing />
+          <Footer />
+        </>
+      )}
     </div>
   );
 };
