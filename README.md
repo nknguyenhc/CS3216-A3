@@ -96,7 +96,7 @@ python -m modules.modules.test
 1. Under `frontend` folder, install dependencies.
 
 ```bash
-npm i
+npm i --force
 ```
 
 2. Run the React development server.
