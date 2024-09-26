@@ -42,12 +42,7 @@ def validate_login_credentials(email, username, password):
         raise ValidationError('A password is needed.')
 
     user = authenticate(username=username, email=email, password=password)
-
-    users = UserModel.objects.all()
-    print("\n--- Current Users ---")
-    for i in users:
-        print(f"Email: {i.email}, Username: {i.username}")
-
+    
     if user is None:
         raise ValidationError('Invalid email, username, or password.')
 

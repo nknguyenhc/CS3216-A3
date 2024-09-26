@@ -3,7 +3,7 @@ import { BannerLayer } from "react-scroll-parallax/dist/components/ParallaxBanne
 
 const Hero = () => {
   const background: BannerLayer = {
-    image: "./assets/hero-image.jpeg",
+    image: "/assets/hero-image.jpeg",
     opacity: [1, 0.3],
     scale: [1, 1, "easeOutCubic"],
     shouldAlwaysCompleteAnimation: true,

@@ -30,8 +30,6 @@ class UnwantedLanguageIdentifier:
 
         response_data = completion.choices[0].message.content
 
-        print(response_data)
-
         has_unwanted_language = re.search(
             r'Unwanted_Language:\s*(.*?)(?=\s*Reason:)', response_data).group(1).strip()
         has_unwanted_language_reason = re.search(r'Reason:\s*(.*)', response_data).group(1).strip()
