@@ -38,14 +38,15 @@ class Essay(APIView):
             focus=False
         )
 
-        result = orchestrator.run_stub(personal_statement)
+        result = orchestrator.run(personal_statement)
         if not result.success:
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
 
         return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
-        personal_statements = PersonalStatement.objects.filter(focus=False, user=request.user)
+        personal_statements = PersonalStatement.objects.filter(
+            focus=False, user=request.user)
         response_data = [
             {
                 'id': ps.id,
@@ -57,6 +58,7 @@ class Essay(APIView):
             for ps in personal_statements
         ]
         return JsonResponse(response_data, safe=False, status=200)
+
 
 class JardineEssay(APIView):
     authentication_classes = [TokenAuthentication]
@@ -84,14 +86,15 @@ class JardineEssay(APIView):
             focus=True
         )
 
-        result = jardine_orchestrator.run_stub(personal_statement)
+        result = jardine_orchestrator.run(personal_statement)
         if not result.success:
             return JsonResponse({'error': 'Failed to process essay'}, status=500)
-        
+
         return JsonResponse(personal_statement.to_dict())
 
     def get(self, request: HttpRequest):
-        personal_statements = PersonalStatement.objects.filter(focus=True, user=request.user)
+        personal_statements = PersonalStatement.objects.filter(
+            focus=True, user=request.user)
         response_data = [
             {
                 'id': ps.id,
@@ -104,6 +107,7 @@ class JardineEssay(APIView):
         ]
         return JsonResponse(response_data, safe=False, status=200)
 
+
 class GetFeedback(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -114,7 +118,8 @@ class GetFeedback(APIView):
             return JsonResponse({'error': 'No id parameter provided'}, status=400)
 
         try:
-            personal_statement = PersonalStatement.objects.get(id=ps_id, user=request.user)
+            personal_statement = PersonalStatement.objects.get(
+                id=ps_id, user=request.user)
         except PersonalStatement.DoesNotExist:
             return JsonResponse({'error': 'Personal statement not found or unauthorized'}, status=404)
 
