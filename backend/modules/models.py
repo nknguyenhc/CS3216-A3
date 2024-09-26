@@ -5,8 +5,10 @@ import json
 
 UserModel = get_user_model()
 
+
 class PersonalStatement(models.Model):
-    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='personal_statements', null=True)
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE,
+                             related_name='personal_statements', null=True)
     title = models.CharField(max_length=200, null=True)
     focus = models.BooleanField(default=False)  # 0 is Oxbridge, 1 is Jardine
     field_of_study = models.TextField()
@@ -41,10 +43,14 @@ class PersonalStatement(models.Model):
         return Comment.objects.filter(argument__personal_statement=self).count()
 
     def __str__(self):
-        return json.dumps(self.to_dict(), indent=4)
+        return json.dumps({
+            "essay": self.essay,
+            "reparagraphed_essay": self.reparagraphed_essay,
+        }, indent=4)
 
     def __repr__(self):
         return self.__str__()
+
 
 class Argument(models.Model):
     idea = models.TextField()
