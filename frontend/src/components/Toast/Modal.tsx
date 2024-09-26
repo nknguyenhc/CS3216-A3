@@ -11,8 +11,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, message }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg max-w-md w-full">
-        <h2 className="text-lg font-semibold text-center mb-4">Alert</h2>
+      <div className="bg-blue-custom p-6 rounded-lg max-w-md w-full">
+        <h2 className="text-lg font-semibold text-center mb-4">No Uploads Remaining</h2>
         <p className="text-center mb-6">{message}</p>
         <div className="flex justify-center">
           <button

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ReactGA from "react-ga";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
@@ -20,7 +20,9 @@ const UploadPage: React.FC = () => {
   const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
   const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false); // Modal visibility state
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const pricingRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     ReactGA.pageview("/essay/upload");
@@ -79,7 +81,7 @@ const UploadPage: React.FC = () => {
           const errorMsg = error.response.data.error.replace(/[\[\]']/g, "");
 
           if (errorMsg.toLowerCase().includes("insufficient funds")) {
-            setShowModal(true); // Show modal for insufficient funds
+            setShowModal(true);
           } else {
             setErrorMessage(errorMsg);
           }
@@ -89,6 +91,13 @@ const UploadPage: React.FC = () => {
 
         setIsLoading(false);
       });
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    if (pricingRef.current) {
+      pricingRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -101,11 +110,6 @@ const UploadPage: React.FC = () => {
             <h1 className="text-4xl font-bold text-center text-black mb-20 mt-10">
               Upload your personal statement
             </h1>
-            {errorMessage && (
-              <div className="mb-4 text-center text-red-600">
-                {errorMessage}
-              </div>
-            )}
             <div className="max-w-[1200px] mx-auto space-y-16">
               <FocusSection focus={focus} setFocus={setFocus} />
               <EssayForm
@@ -118,18 +122,27 @@ const UploadPage: React.FC = () => {
                 submitEssay={submitEssay}
               />
             </div>
+            {errorMessage && (
+              <div className="mb-4 text-center text-red-600">
+                {errorMessage}
+              </div>
+            )}
           </div>
-          <Pricing />
+
+          <div ref={pricingRef}>
+            <Pricing />
+          </div>
+
           <Footer />
         </>
       )}
-
-      {/* Modal for insufficient funds */}
+      
       <Modal
         isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        message="You have insufficient funds to upload this essay. Please add funds or try again later."
+        onClose={handleModalClose}
+        message="You have 0 uploads left. Please purchase an upload before trying again"
       />
+
     </div>
   );
 };
