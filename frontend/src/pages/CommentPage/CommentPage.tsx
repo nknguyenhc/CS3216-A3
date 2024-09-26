@@ -170,12 +170,12 @@ const CommentPage: React.FC = () => {
           </div>
           <div className="w-1/4">
             <div className="w-full mb-4">
-              <h2 className="text-lg font-bold mb-2">General Comment</h2>
-              {renderGeneralComment()}
-            </div>
-            <div className="w-full">
               <h2 className="text-lg font-bold mb-2">Comments</h2>
               {renderActiveComment()}
+            </div>
+            <div className="w-full mb-4">
+              <h2 className="text-lg font-bold mb-2">General Comment</h2>
+              {renderGeneralComment()}
             </div>
           </div>
         </div>
