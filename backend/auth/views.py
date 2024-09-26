@@ -1,8 +1,9 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 import logging
 from rest_framework.response import Response
 from rest_framework import permissions, status
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 import stripe
@@ -30,8 +31,14 @@ class StripeCheckoutView(APIView):
         'jardine': 'price_1Q0vcc09qdif5frtwu0u9UWg'
     }
 
-    def post(self, request, plan_type):
+    def post(self, request: HttpRequest, plan_type):
+        email = request.data.get('email')
+        username = request.data.get('username')
+            
         try:
+            
+            user = User.objects.get(email=email, username=username)
+
             price_id = self.PRICE_IDS.get(plan_type)
             if price_id is None:
                 return JsonResponse({'error': 'Invalid plan type'}, status=400)
