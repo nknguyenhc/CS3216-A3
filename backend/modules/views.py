@@ -34,7 +34,7 @@ class Essay(APIView):
         # Check if the user has sufficient free upload count
         free_upload_count_instance = FreeUploadCount.objects.filter(
             user=request.user).first()
-
+        
         if not free_upload_count_instance:
             return JsonResponse({'error': 'User has no free uploads associated'}, status=400)
 
@@ -96,7 +96,7 @@ class JardineEssay(APIView):
         # Check if the user has sufficient free upload count
         free_upload_count_instance = FreeUploadCount.objects.filter(
             user=request.user).first()
-
+        
         if not free_upload_count_instance:
             return JsonResponse({'error': 'User has no free uploads associated'}, status=400)
 

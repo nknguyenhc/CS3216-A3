@@ -2,7 +2,7 @@ const accordionData = [
   {
     id: "element1",
     title: "How many free attempts are provided?",
-    answer: "We provide the first 3 attempts free. Thereafter, it is $10 per attempt.",
+    answer: "The first three attempts are free. After that, each upload costs $10 for Oxbridge and $15 for Jardine.",
   },
   {
     id: "element2",
