@@ -21,7 +21,8 @@ class PersonalStatement(models.Model):
             {
                 'comment': comment.comment,
                 'is_good': comment.is_good,
-                'id': comment.id
+                'id': comment.id,
+                'text': comment.argument.idea
             }
             for comment in Comment.objects.filter(argument__personal_statement=self)
         ]
