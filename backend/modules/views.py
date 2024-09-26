@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import PersonalStatement, Comment
-from ..auth.models import FreeUploadCount
+from auth.models import FreeUploadCount
 from .orchestrator import Orchestrator
 from .orchestrator import JardineOrchestrator
 from django.contrib.auth import get_user_model
