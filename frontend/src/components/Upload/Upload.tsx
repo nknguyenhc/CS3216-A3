@@ -4,8 +4,8 @@ import ImageContent from "./ImageContent";
 
 const Upload = forwardRef<HTMLElement, any>((_, ref) => {
   return (
-    <section ref={ref} className="self-end ml-20 mr-20 mb-20 w-full max-w-[1324px] max-md:mr-2.5 max-md:max-w-full">
-      <div className="flex gap-5 max-md:flex-col">
+    <section ref={ref} className="w-full mt-20 max-w-[1324px] mx-auto px-4 sm:px-6 lg:px-20 mb-20">
+      <div className="flex flex-col lg:flex-row gap-5">
         <TextContent />
         <ImageContent />
       </div>
