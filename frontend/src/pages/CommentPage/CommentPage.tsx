@@ -91,15 +91,15 @@ const CommentPage: React.FC = () => {
             key={`highlight-${comment.id}`}
             data-highlight-id={comment.id}
             className={`cursor-pointer relative inline-block break-words max-w-full 
-              ${
-                !comment.is_good
-                  ? comment.id == activeComment
-                    ? "text-red-700"
-                    : "text-red-500"
-                  : comment.id == activeComment
-                  ? "text-green-700"
-                  : "text-green-500"
-              }`}
+    ${
+      !comment.is_good
+        ? comment.id === activeComment
+          ? "text-red-700 bg-red-200"
+          : "text-red-500"
+        : comment.id === activeComment
+        ? "text-green-700 bg-green-200"
+        : "text-green-500"
+    }`}
             onClick={() => handleHighlightClick(comment.id)}
             style={{ whiteSpace: "normal" }}
           >
