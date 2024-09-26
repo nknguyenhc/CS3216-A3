@@ -25,6 +25,14 @@ Le Huy Chau,
 - Package & deploy app on GCP
 
 ### Reyaaz
+- Completed frontend components for entire landing page.
+- Integrated frontend and backend authentication completely (including google auth) with serializer and validations.
+- Integrated Stripe payment.
+- Set up comment page for frontend.
+- Backend comments generator, specificity, idea extractor (Oxbridge) models, views, and prompts
+- Backend user and payment models
+- Routing and navigations between pages in frontend and navbars
+- Frontend styling and animations
 
 ### Chau
 
