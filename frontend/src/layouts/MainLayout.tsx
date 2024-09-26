@@ -20,6 +20,8 @@ const MainLayout = () => {
 
   const location = useLocation();
   const showNavBarPaths = ["/", "/essay/upload", "/submissions"];
+  const showCustomNavBarPaths = ["/essay/upload"];
+
 
   const shouldShowNavBar = showNavBarPaths.includes(location.pathname) ||
     location.pathname.startsWith("/essay/comment/");
