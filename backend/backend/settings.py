@@ -14,10 +14,13 @@ from pathlib import Path
 import os
 import dj_database_url
 import dotenv
-from datetime import timedelta
+import logging
 
 # Load environment variables from .env file
 dotenv.load_dotenv()
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
