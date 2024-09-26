@@ -13,6 +13,10 @@ interface EssayFormProps {
   fieldOfStudy: string;
   setFieldOfStudy: React.Dispatch<React.SetStateAction<string>>;
   submitEssay: () => void;
+  consentChecked: boolean;
+  setConsentChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  acknowledgeChecked: boolean;
+  setAcknowledgeChecked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EssayForm: React.FC<EssayFormProps> = ({
@@ -23,6 +27,10 @@ const EssayForm: React.FC<EssayFormProps> = ({
   fieldOfStudy,
   setFieldOfStudy,
   submitEssay,
+  consentChecked,
+  setConsentChecked,
+  acknowledgeChecked,
+  setAcknowledgeChecked,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -36,6 +44,28 @@ const EssayForm: React.FC<EssayFormProps> = ({
         </div>
         <PersonalStatementInput statement={statement} setStatement={setStatement} textAreaRef={textAreaRef} />
         <FormFooter statement={statement} setStatement={setStatement} textAreaRef={textAreaRef} />
+
+        <div className="mb-4">
+          <div className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              checked={consentChecked}
+              onChange={() => setConsentChecked(!consentChecked)}
+              className="mr-2"
+            />
+            <label>I consent to the use of AI and human review for feedback on my personal statement.</label>
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={acknowledgeChecked}
+              onChange={() => setAcknowledgeChecked(!acknowledgeChecked)}
+              className="mr-2"
+            />
+            <label>By uploading, you agree to our use of AI for analysis and acknowledge that human reviewers will access your statement.</label>
+          </div>
+        </div>
+
         <div className="flex justify-center">
           <SubmitButton submitEssay={submitEssay} />
         </div>

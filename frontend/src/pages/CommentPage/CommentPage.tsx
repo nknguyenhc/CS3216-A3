@@ -62,7 +62,6 @@ const CommentPage: React.FC = () => {
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
-        console.log(errorMessage);
       });
   };
 
@@ -71,7 +70,6 @@ const CommentPage: React.FC = () => {
   }, [currEmail, currUsername, psId]);
 
   const handleHighlightClick = (id: number) => {
-    console.log("Clicked highlight ID:", id);
     setActiveComment(id === activeComment ? null : id);
   };
 
@@ -91,12 +89,11 @@ const CommentPage: React.FC = () => {
             key={`highlight-${comment.id}`}
             data-highlight-id={comment.id}
             className={`cursor-pointer relative inline-block break-words max-w-full 
-              ${
-                !comment.is_good
-                  ? comment.id == activeComment
-                    ? "text-red-700"
-                    : "text-red-500"
-                  : comment.id == activeComment
+              ${!comment.is_good
+                ? comment.id == activeComment
+                  ? "text-red-700"
+                  : "text-red-500"
+                : comment.id == activeComment
                   ? "text-green-700"
                   : "text-green-500"
               }`}
@@ -132,7 +129,6 @@ const CommentPage: React.FC = () => {
     }
 
     const active = comments.find((comment) => comment.id === activeComment);
-    console.log("Active comment:", active);
 
     if (active) {
       return (
@@ -169,6 +165,9 @@ const CommentPage: React.FC = () => {
             >
               <p className="text-lg">{renderTextWithHighlights()}</p>
             </div>
+            <p className="text-sm text-gray-500 mt-2 italic">
+              AI comments are suggestions and should be reviewed critically. Your final decision matters most.
+            </p>
           </div>
           <div className="w-1/4">
             <div className="w-full mb-4">
