@@ -26,7 +26,7 @@ const CommentPage: React.FC = () => {
   const [createdAt, setCreatedAt] = useState<string>("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [generalComment, setGeneralComment] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [, setErrorMessage] = useState<string | null>(null);
   const { id } = useParams<RouteParams>();
   const psId = Number(id);
 
