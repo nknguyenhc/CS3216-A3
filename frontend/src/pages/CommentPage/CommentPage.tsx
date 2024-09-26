@@ -89,7 +89,8 @@ const CommentPage: React.FC = () => {
           <span
             key={`highlight-${comment.id}`}
             data-highlight-id={comment.id}
-            className={`cursor-pointer relative inline-block break-words max-w-full ${!comment.is_good ? "text-red-500" : "text-green-500"}`}
+            className={`cursor-pointer relative inline-block break-words max-w-full 
+              ${!comment.is_good ? (comment.id == activeComment ? "text-red-700" : "text-red-500") : (comment.id == activeComment ? "text-green-700" : "text-green-500")}`}
             onClick={() => handleHighlightClick(comment.id)}
             style={{ whiteSpace: "normal" }}
           >
@@ -169,12 +170,12 @@ const CommentPage: React.FC = () => {
           </div>
           <div className="w-1/4">
             <div className="w-full mb-4">
-              <h2 className="text-lg font-bold mb-2">General Comment</h2>
-              {renderGeneralComment()}
-            </div>
-            <div className="w-full">
               <h2 className="text-lg font-bold mb-2">Comments</h2>
               {renderActiveComment()}
+            </div>
+            <div className="w-full mb-4">
+              <h2 className="text-lg font-bold mb-2">General Comment</h2>
+              {renderGeneralComment()}
             </div>
           </div>
         </div>
