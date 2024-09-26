@@ -60,7 +60,7 @@ const FeedbackSteps = forwardRef<HTMLElement, any>((_, ref) => {
         </div>
         <div className="w-1/2 h-full">
           <img
-            src="/assets/general.png"
+            src="/assets/general_comments.png"
             alt="General Comments"
             className="object-contain w-full h-full"
           />
