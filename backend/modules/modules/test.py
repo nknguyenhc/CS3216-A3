@@ -534,4 +534,4 @@ with open("modules/modules/tests/comments/argument_evaluator.json") as f:
 #print(general_comment)
 
 relevance_comment = CommentCrafter().craft_comment(argument_evaluations)
-print(relevance_comment)       
+print("final comment", relevance_comment)       

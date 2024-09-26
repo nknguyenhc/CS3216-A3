@@ -13,10 +13,12 @@ class CommentCrafter:
                  capability_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/capability_lack.txt",
                  specificity_good_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_good.txt",
                  specificity_lack_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/specificity_lack.txt",
+                 summarise_system_prompt_path: str = "modules/modules/prompts/system/oxbridge_comments/summarise.txt",
                  relevance_user_prompt_path: str = "modules/modules/prompts/user/relevance.txt",
                  interest_user_prompt_path: str = "modules/modules/prompts/user/interest.txt",
                  specificity_user_prompt_path: str = "modules/modules/prompts/user/specificity.txt",
                  capability_user_prompt_path: str = "modules/modules/prompts/user/capability.txt",
+                 summarise_user_prompt_path: str = "modules/modules/prompts/user/summarise.txt",
                  ):
 
         self.relevance_good_system_prompt = self.load_prompt(
@@ -35,6 +37,9 @@ class CommentCrafter:
             specificity_good_system_prompt_path)
         self.specificity_lack_system_prompt = self.load_prompt(
             specificity_lack_system_prompt_path)
+        self.summarise_system_prompt = self.load_prompt(
+            summarise_system_prompt_path)
+        
         self.relevance_user_prompt = self.load_prompt(
             relevance_user_prompt_path)
         self.interest_user_prompt = self.load_prompt(interest_user_prompt_path)
@@ -42,6 +47,9 @@ class CommentCrafter:
             specificity_user_prompt_path)
         self.capability_user_prompt = self.load_prompt(
             capability_user_prompt_path)
+        self.summarise_user_prompt = self.load_prompt(
+            summarise_user_prompt_path)
+        
 
         self.logger = logging.getLogger("CommentCrafter")
 
@@ -153,9 +161,16 @@ class CommentCrafter:
             )
             bad_comment += output
 
-        return self.save_comment_to_db(argument.argument, bad_comment, good_comment)
+        final_output = create_completion(
+                self.summarise_system_prompt,
+                self.summarise_user_prompt.format(
+                    comment=good_comment+bad_comment
+                )
+            )
 
-    def save_comment_to_db(self, argument: Argument, bad_comment: str, good_comment: str) -> Comment | None:
+        return self.save_comment_to_db(argument.argument, final_output, bad_comment, good_comment)
+
+    def save_comment_to_db(self, argument: Argument, final_output: str, bad_comment: str, good_comment: str) -> Comment | None:
         if not argument or (not bad_comment and not good_comment):
             self.logger.error(
                 f"All fields must be provided:\n{argument=}, \n{bad_comment=},\n{good_comment=}")
@@ -166,7 +181,7 @@ class CommentCrafter:
             argument.save()
 
             return Comment.objects.create(
-                comment=good_comment + bad_comment,
+                comment=final_output,
                 is_good=True if bad_comment == "" else False,
                 argument=argument
             )
