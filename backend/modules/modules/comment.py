@@ -1,6 +1,6 @@
 from modules.models import Argument, ArgumentEvaluations, Comment
 from openai import OpenAI
-import re
+import logging
 
 
 class CommentCrafter:
@@ -43,6 +43,8 @@ class CommentCrafter:
         self.capability_user_prompt = self.load_prompt(
             capability_user_prompt_path)
 
+        self.logger = logging.getLogger("CommentCrafter")
+
     def load_prompt(self, path: str) -> str:
         with open(path, "r") as f:
             return f.read()
@@ -79,7 +81,7 @@ class CommentCrafter:
             return self.save_comment_to_db(output, argument.argument, bad_comment, good_comment)
 
         interest_or_capable = argument.interest.has_interest or argument.capability.is_capable
-        
+
         if argument.interest.has_interest:
             output = create_completion(
                 self.interest_good_system_prompt.format(
@@ -108,7 +110,7 @@ class CommentCrafter:
                     explanation=argument.argument.explanation
                 )
             )
-            good_comment +=  output
+            good_comment += output
 
         if interest_or_capable and not argument.specificity.is_specific:
             output = create_completion(
@@ -153,9 +155,11 @@ class CommentCrafter:
 
         return self.save_comment_to_db(argument.argument, bad_comment, good_comment)
 
-    def save_comment_to_db(self, argument: Argument, bad_comment: str, good_comment: str) -> Comment:
+    def save_comment_to_db(self, argument: Argument, bad_comment: str, good_comment: str) -> Comment | None:
         if not argument or (not bad_comment and not good_comment):
-            raise ValueError("All fields must be provided")
+            self.logger.error(
+                f"All fields must be provided:\n{argument=}, \n{bad_comment=},\n{good_comment=}")
+            return None
 
         try:
             argument.personal_statement.save()
@@ -168,4 +172,5 @@ class CommentCrafter:
             )
 
         except Exception as e:
-            raise Exception("Failed to save comment") from e
+            self.logger.exception("Failed to save comment to database")
+            return None

@@ -1,12 +1,15 @@
 from modules.models import PersonalStatement, Argument
 from openai import OpenAI
 import re
+import logging
 
 
 class IdeaExtractor:
     def __init__(self, idea_system_prompt_path: str = "modules/modules/prompts/system/idea.txt"):
         with open(idea_system_prompt_path, "r") as f:
             self.idea_system_prompt = f.read()
+
+        self.logger = logging.getLogger("IdeaExtractor")
 
     def extract(self, personal_statement: PersonalStatement) -> list[Argument] | None:
         client = OpenAI()
@@ -44,14 +47,17 @@ class IdeaExtractor:
                     personal_statement, idea, evidence, explanation
                 )
 
-                arguments.append(argument)
+                if argument is not None:
+                    arguments.append(argument)
 
         return arguments
 
     def save_argument_to_db(self, personal_statement: PersonalStatement,
                             idea: str, evidence: str, explanation: str) -> Argument:
         if not idea or not evidence or not explanation:
-            raise ValueError("All fields must be provided")
+            self.logger.exception(
+                f"All fields must be provided\n{idea=}\n{evidence=}\n{explanation=}")
+            return None
 
         try:
             personal_statement.save()
@@ -63,4 +69,5 @@ class IdeaExtractor:
             )
             return argument
         except Exception as e:
-            raise Exception("Failed to save argument") from e
+            self.logger.exception("Failed to save argument to database")
+            return None

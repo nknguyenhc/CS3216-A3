@@ -24,7 +24,7 @@ class JardineCommentCrafter:
 
         self.logger = logging.getLogger("JardineCommentCrafter")
 
-    def craft_comment(self, argument: JardineArgumentEvaluations) -> Comment:
+    def craft_comment(self, argument: JardineArgumentEvaluations) -> Comment | None:
         try:
             if self._is_bad_argument(argument):
                 return self._craft_bad_comment(argument)
@@ -46,100 +46,132 @@ class JardineCommentCrafter:
     def _is_argument_specific(self, argument: JardineArgumentEvaluations) -> bool:
         return argument.specificity.is_specific
 
-    def _craft_bad_comment(self, argument: JardineArgumentEvaluations) -> Comment:
+    def _craft_bad_comment(self, argument: JardineArgumentEvaluations) -> Comment | None:
         self.logger.info("Crafting bad comment")
-        client = OpenAI()
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": self.bad_comment_prompt.format(
-                    field_of_study=argument.argument.personal_statement.field_of_study,
-                    no_capability_reason=argument.capability.is_capable_reason,
-                    no_aspiration_reason=argument.aspiration.reason_has_aspiration,
-                    no_leadership_reason=argument.leadership.reason_has_leadership,
-                    no_contribution_to_community_reason=argument.contribution_to_community.reason_has_contribution_to_community,
-                    no_potential_to_contribute_to_community_reason=argument.contribution_to_community.reason_will_contribute_to_community,
-                )},
-                {"role": "user", "content": self.argument_prompt.format(
-                    idea=argument.argument.idea,
-                    evidence=argument.argument.evidence,
-                    explanation=argument.argument.explanation,
-                )},
-            ],
-        )
-        return Comment.objects.create(
-            comment=completion.choices[0].message.content,
-            is_good=False,
-            argument=argument.argument,
-        )
+        try:
+            client = OpenAI()
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": self.bad_comment_prompt.format(
+                        field_of_study=argument.argument.personal_statement.field_of_study,
+                        no_capability_reason=argument.capability.is_capable_reason,
+                        no_aspiration_reason=argument.aspiration.reason_has_aspiration,
+                        no_leadership_reason=argument.leadership.reason_has_leadership,
+                        no_contribution_to_community_reason=argument.contribution_to_community.reason_has_contribution_to_community,
+                        no_potential_to_contribute_to_community_reason=argument.contribution_to_community.reason_will_contribute_to_community,
+                    )},
+                    {"role": "user", "content": self.argument_prompt.format(
+                        idea=argument.argument.idea,
+                        evidence=argument.argument.evidence,
+                        explanation=argument.argument.explanation,
+                    )},
+                ],
+            )
+            response = completion.choices[0].message.content
+        except Exception as e:
+            self.logger.exception("Failed to craft bad comment")
+            return None
 
-    def _craft_comment_improve_specificity(self, argument: JardineArgumentEvaluations) -> Comment:
+        try:
+            return Comment.objects.create(
+                comment=response,
+                is_good=False,
+                argument=argument.argument,
+            )
+        except Exception as e:
+            self.logger.exception("Failed to save bad comment to database")
+            return None
+
+    def _craft_comment_improve_specificity(self, argument: JardineArgumentEvaluations) -> Comment | None:
         self.logger.info("Crafting comment to improve specificity")
-        client = OpenAI()
-        reasons = ""
-        if argument.capability.is_capable:
-            reasons += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
-        if argument.aspiration.has_aspiration:
-            reasons += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
-        if argument.leadership.has_leadership:
-            reasons += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
-        if argument.contribution_to_community.has_contribution_to_community:
-            reasons += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
-        if argument.contribution_to_community.will_contribute_to_community:
-            reasons += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
+        try:
+            client = OpenAI()
+            reasons = ""
+            if argument.capability.is_capable:
+                reasons += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
+            if argument.aspiration.has_aspiration:
+                reasons += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
+            if argument.leadership.has_leadership:
+                reasons += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
+            if argument.contribution_to_community.has_contribution_to_community:
+                reasons += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
+            if argument.contribution_to_community.will_contribute_to_community:
+                reasons += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
 
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": self.improve_specificity_prompt.format(
-                    field_of_study=argument.argument.personal_statement.field_of_study,
-                    reasons=reasons,
-                    no_specificity_reason=argument.specificity.reason,
-                )},
-                {"role": "user", "content": self.argument_prompt.format(
-                    idea=argument.argument.idea,
-                    evidence=argument.argument.evidence,
-                    explanation=argument.argument.explanation,
-                )},
-            ]
-        )
-        return Comment.objects.create(
-            comment=completion.choices[0].message.content,
-            is_good=False,
-            argument=argument.argument,
-        )
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": self.improve_specificity_prompt.format(
+                        field_of_study=argument.argument.personal_statement.field_of_study,
+                        reasons=reasons,
+                        no_specificity_reason=argument.specificity.reason,
+                    )},
+                    {"role": "user", "content": self.argument_prompt.format(
+                        idea=argument.argument.idea,
+                        evidence=argument.argument.evidence,
+                        explanation=argument.argument.explanation,
+                    )},
+                ]
+            )
+            response = completion.choices[0].message.content
+        except Exception as e:
+            self.logger.exception(
+                "Failed to craft comment to improve specificity")
+            return None
 
-    def _craft_good_comment(self, argument: JardineArgumentEvaluations) -> Comment:
+        try:
+            return Comment.objects.create(
+                comment=response,
+                is_good=False,
+                argument=argument.argument,
+            )
+        except Exception as e:
+            self.logger.exception(
+                "Failed to save comment to improve specificity to database")
+            return None
+
+    def _craft_good_comment(self, argument: JardineArgumentEvaluations) -> Comment | None:
         self.logger.info("Crafting good comment")
-        client = OpenAI()
-        reasons = f"\n<specificity_reason>{argument.specificity.reason}</specificity_reason>\n"
-        if argument.capability.is_capable:
-            reasons += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
-        if argument.aspiration.has_aspiration:
-            reasons += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
-        if argument.leadership.has_leadership:
-            reasons += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
-        if argument.contribution_to_community.has_contribution_to_community:
-            reasons += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
-        if argument.contribution_to_community.will_contribute_to_community:
-            reasons += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
+        try:
+            client = OpenAI()
+            reasons = f"\n<specificity_reason>{argument.specificity.reason}</specificity_reason>\n"
+            if argument.capability.is_capable:
+                reasons += f"\n<capability_reason>{argument.capability.is_capable_reason}</capability_reason>\n"
+            if argument.aspiration.has_aspiration:
+                reasons += f"\n<aspiration_reason>{argument.aspiration.reason_has_aspiration}</aspiration_reason>\n"
+            if argument.leadership.has_leadership:
+                reasons += f"\n<leadership_reason>{argument.leadership.reason_has_leadership}</leadership_reason>\n"
+            if argument.contribution_to_community.has_contribution_to_community:
+                reasons += f"\n<contribution_to_community_reason>{argument.contribution_to_community.reason_has_contribution_to_community}</contribution_to_community_reason>\n"
+            if argument.contribution_to_community.will_contribute_to_community:
+                reasons += f"\n<potential_to_contribute_to_community_reason>{argument.contribution_to_community.reason_will_contribute_to_community}</potential_to_contribute_to_community_reason>\n"
 
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": self.good_comment_prompt.format(
-                    field_of_study=argument.argument.personal_statement.field_of_study,
-                    reasons=reasons,
-                )},
-                {"role": "user", "content": self.argument_prompt.format(
-                    idea=argument.argument.idea,
-                    evidence=argument.argument.evidence,
-                    explanation=argument.argument.explanation,
-                )},
-            ]
-        )
-        return Comment.objects.create(
-            comment=completion.choices[0].message.content,
-            is_good=True,
-            argument=argument.argument,
-        )
+            completion = client.chat.completions.create(
+                model="gpt-4o",
+                messages=[
+                    {"role": "system", "content": self.good_comment_prompt.format(
+                        field_of_study=argument.argument.personal_statement.field_of_study,
+                        reasons=reasons,
+                    )},
+                    {"role": "user", "content": self.argument_prompt.format(
+                        idea=argument.argument.idea,
+                        evidence=argument.argument.evidence,
+                        explanation=argument.argument.explanation,
+                    )},
+                ]
+            )
+            response = completion.choices[0].message.content
+        except Exception as e:
+            self.logger.exception("Failed to craft good comment")
+            return None
+
+        try:
+            return Comment.objects.create(
+                comment=response,
+                is_good=True,
+                argument=argument.argument,
+            )
+        except Exception as e:
+            self.logger.exception("Failed to save good comment to database")
+            return None

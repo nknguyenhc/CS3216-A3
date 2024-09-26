@@ -36,7 +36,7 @@ class JardineGeneralCommentCrafter:
             return None
 
         try:
-            return GeneralComment(
+            return GeneralComment.objects.create(
                 comment=general_comment,
                 personal_statement=personal_statement
             )
