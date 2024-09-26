@@ -35,7 +35,7 @@ const FeedbackSteps = forwardRef<HTMLElement, any>((_, ref) => {
       <div className="h-screen flex items-center">
         <div className="w-1/2 h-full">
           <img
-            src="/assets/personal_statement.png"
+            src="/assets/comments.png"
             alt="Specific Comments"
             className="object-contain w-full h-full"
           />
