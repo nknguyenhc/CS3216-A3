@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto flex flex-col items-center">
         {/* Contact Us Section */}
         <div className="w-full max-w-md mb-4 text-center">
-        <h2 className="text-white text-3xl font-black uppercase text-slate-500 text-center mb-5">Contact Us</h2>
+          <h2 className="text-white text-3xl font-black uppercase text-slate-500 text-center mb-5">Contact Us</h2>
           <p className="mb-4">We’d love to hear from you! Reach out to us:</p>
           <form onSubmit={sendEmail}>
             <input
@@ -72,19 +72,13 @@ const Footer: React.FC = () => {
 
         <ul className="flex space-x-8 mb-4">
           <li>
-            <a
-              className="flex flex-col items-center hover:text-blue-500 transition duration-300"
-              aria-label="Facebook"
-            >
+            <a className="flex flex-col items-center hover:text-blue-500 transition duration-300" aria-label="Facebook">
               <FaFacebook size={30} />
               <span className="text-xs">Facebook</span>
             </a>
           </li>
           <li>
-            <a
-              className="flex flex-col items-center hover:text-blue-400 transition duration-300"
-              aria-label="Twitter"
-            >
+            <a className="flex flex-col items-center hover:text-blue-400 transition duration-300" aria-label="Twitter">
               <FaTwitter size={30} />
               <span className="text-xs">Twitter</span>
             </a>
@@ -100,7 +94,10 @@ const Footer: React.FC = () => {
           </li>
           <li>
             <a
-              className="flex flex-col items-center hover:text-red-600 transition duration-300"
+              onClick={() =>
+                window.open("mailto:stellar3216@gmail.com?subject=Your Subject Here&body=Your Message Here", "_blank")
+              }
+              className="flex flex-col items-center hover:text-red-600 transition duration-300 cursor-pointer"
               aria-label="Google Plus"
             >
               <FaGooglePlusG size={30} />
@@ -109,9 +106,9 @@ const Footer: React.FC = () => {
           </li>
         </ul>
 
-        <div className="text-center text-xs mt-4">
-          &copy; {new Date().getFullYear()} Stellar. All rights reserved.
-        </div>
+        <div className="text-center text-xs mt-4">stellar3216@gmail.com</div>
+
+        <div className="text-center text-xs mt-4">&copy; {new Date().getFullYear()} Stellar. All rights reserved.</div>
       </div>
     </footer>
   );

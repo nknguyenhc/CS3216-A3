@@ -9,20 +9,23 @@ import Footer from "../components/Footer/Footer";
 import { client, getCSRFToken } from "../AxiosInstance/AxiosInstance";
 import LoadingPage from "../components/LoadingPage/LoadingPage";
 import Modal from "../components/Toast/Modal";
+import UploadPageNavbar from "../components/Navbar/UploadPageNavBar";
 
 const UploadPage: React.FC = () => {
   const navigate = useNavigate();
   const { token, currEmail, currUsername } = useAuth();
 
-  const [focus, setFocus] = React.useState<string>("Jardine scholarship");
-  const [title, setTitle] = React.useState<string>("");
-  const [statement, setStatement] = React.useState<string>("");
-  const [fieldOfStudy, setFieldOfStudy] = React.useState<string>("");
-  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [focus, setFocus] = useState<string>("Jardine scholarship");
+  const [title, setTitle] = useState<string>("");
+  const [statement, setStatement] = useState<string>("");
+  const [fieldOfStudy, setFieldOfStudy] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const pricingRef = useRef<HTMLDivElement>(null);
+  const personalStatementRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     ReactGA.pageview("/essay/upload");
@@ -102,13 +105,17 @@ const UploadPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-blue-custom">
+      <UploadPageNavbar
+        personalStatementRef={personalStatementRef}
+        pricingRef={pricingRef}
+      />
       {isLoading ? (
         <LoadingPage />
       ) : (
         <>
           <div className="max-w-screen-xl mx-auto px-4 py-10">
             <h2 className="text-3xl font-black uppercase text-slate-500 text-center mt-20">Personal Statement</h2>
-            <div className="max-w-[1200px] mx-auto space-y-16">
+            <div ref={personalStatementRef} className="max-w-[1200px] mx-auto space-y-16">
               <FocusSection focus={focus} setFocus={setFocus} />
               <EssayForm
                 title={title}
@@ -131,7 +138,7 @@ const UploadPage: React.FC = () => {
             <Pricing />
           </div>
 
-          <Footer />
+          <Footer/>
         </>
       )}
 
@@ -140,7 +147,6 @@ const UploadPage: React.FC = () => {
         onClose={handleModalClose}
         message="You have 0 uploads left. Please purchase an upload before trying again"
       />
-
     </div>
   );
 };
