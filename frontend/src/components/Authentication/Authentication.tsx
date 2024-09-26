@@ -101,14 +101,14 @@ const Authentication: React.FC = () => {
     <div className="flex flex-row min-h-screen bg-gray-100 overflow-hidden">
       <div
         className="flex-1 justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url('./assets/cover.jpeg')` }}
+        style={{ backgroundImage: `url('/assets/cover.jpeg')` }}
       ></div>
 
       <div className="flex-1 flex items-center justify-center bg-white">
         <div className="w-full px-8">
           <div className="flex flex-col items-center justify-center mb-5">
             <img
-              src="./assets/logo-no-background.png"
+              src="/assets/logo-no-background.png"
               alt="Description of image"
               className="w-1/2 md:w-1/3 lg:w-1/4 h-auto object-cover"
             />
