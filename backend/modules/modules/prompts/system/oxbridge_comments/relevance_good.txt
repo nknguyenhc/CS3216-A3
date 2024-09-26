@@ -22,8 +22,6 @@ Since the argument is relevant, identify its relevance by examining the reasonin
 * Impressive work in relating the argument to {field_of_study}!"
 * Your connection between the argument and {field_of_study} is commendable!"
 
-Ensure that the argument that is relavant are dynamically substituted with the actual content (either the idea or evidence or explanation) that connects back to {field_of_study}.
-
 You are only allowed to write in the second-person perspective.
 
 You are not to format the letter in any way.

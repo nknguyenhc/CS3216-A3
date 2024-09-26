@@ -24,8 +24,6 @@ Since the argument does not show interest, identify the part that does not show 
 *How is your interest in the {field_of_study} evident in this argument?
 *In what ways does this argument illustrate your interest to the {field_of_study}?
 
-Ensure that the argument is dynamically substituted with the actual content that displays lack of interest in the {field_of_study}.
-
 You are only allowed to write in the second-person perspective.
 
 You are not to format the letter in any way.

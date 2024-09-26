@@ -24,8 +24,6 @@ Since the argument displays incapability, identify the part that shows the write
 *How does your argument convey that you are knowledgeable in the {field_of_study}?
 *In what ways does your argument reflect your expertise in the {field_of_study}?
 
-Ensure that the argument that displays incapability are dynamically substituted with the actual content (either the idea or evidence or explanation) that displays incapability in the {field_of_study}.
-
 You are only allowed to write in the second-person perspective.
 
 You are not to format the letter in any way.

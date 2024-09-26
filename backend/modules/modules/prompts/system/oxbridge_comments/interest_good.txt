@@ -23,8 +23,6 @@ Since the argument shows interest, identify the part that shows interest by exam
 *You’ve effectively shown your interest in the {field_of_study} in this argument—well done!
 *Fantastic job on expressing your enthusiasm for the {field_of_study} through your argument!
 
-Ensure that the argument that displays interest are dynamically substituted with the actual content (either the idea or evidence or explanation) that displays interest in the {field_of_study}.
-
 You are only allowed to write in the second-person perspective.
 
 You are not to format the letter in any way.
