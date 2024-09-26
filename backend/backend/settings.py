@@ -96,6 +96,7 @@ REST_FRAMEWORK = {
 
 # Change when converting to prod
 SITE_URL = os.environ.get("SITE_URL")
+FRONTEND_SITE_URL = os.environ.get("FRONTEND_SITE_URL")
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
