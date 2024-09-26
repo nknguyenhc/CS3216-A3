@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from .models import PersonalStatement, Comment
+from ..auth.models import FreeUploadCount
 from .orchestrator import Orchestrator
 from .orchestrator import JardineOrchestrator
 from django.contrib.auth import get_user_model
@@ -29,6 +30,20 @@ class Essay(APIView):
             return JsonResponse({'error': 'No field of study provided'}, status=400)
         if not title:
             return JsonResponse({'error': 'No title provided'}, status=400)
+
+        # Check if the user has sufficient free upload count
+        free_upload_count_instance = FreeUploadCount.objects.filter(
+            user=request.user).first()
+
+        if not free_upload_count_instance:
+            return JsonResponse({'error': 'User has no free uploads associated'}, status=400)
+
+        if free_upload_count_instance.free_upload_count <= 0:
+            return JsonResponse({'error': 'Insufficient funds'}, status=400)
+
+        # Decrement the free upload count
+        free_upload_count_instance.free_upload_count -= 1
+        free_upload_count_instance.save()
 
         personal_statement = PersonalStatement.objects.create(
             user=request.user,
@@ -77,6 +92,20 @@ class JardineEssay(APIView):
             return JsonResponse({'error': 'No field of study provided'}, status=400)
         if not title:
             return JsonResponse({'error': 'No title provided'}, status=400)
+        
+        # Check if the user has sufficient free upload count
+        free_upload_count_instance = FreeUploadCount.objects.filter(
+            user=request.user).first()
+
+        if not free_upload_count_instance:
+            return JsonResponse({'error': 'User has no free uploads associated'}, status=400)
+
+        if free_upload_count_instance.free_upload_count <= 0:
+            return JsonResponse({'error': 'Insufficient funds'}, status=400)
+
+        # Decrement the free upload count
+        free_upload_count_instance.free_upload_count -= 1
+        free_upload_count_instance.save()
 
         personal_statement = PersonalStatement.objects.create(
             user=request.user,

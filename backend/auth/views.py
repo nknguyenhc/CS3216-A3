@@ -17,6 +17,7 @@ from django.conf import settings
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from django.contrib.auth import get_user_model
+from .models import FreeUploadCount
 
 User = get_user_model()
 
@@ -39,6 +40,10 @@ class StripeCheckoutView(APIView):
             
             user = User.objects.get(email=email, username=username)
 
+            free_upload_count_instance = FreeUploadCount.objects.filter(user=user).first()
+
+            print("free uploading", free_upload_count_instance.free_upload_count)
+
             price_id = self.PRICE_IDS.get(plan_type)
             if price_id is None:
                 return JsonResponse({'error': 'Invalid plan type'}, status=400)
@@ -50,6 +55,10 @@ class StripeCheckoutView(APIView):
                 success_url=f'{settings.SITE_URL}/success',
                 cancel_url=f'{settings.SITE_URL}/unsuccess',
             )
+
+            free_upload_count_instance.free_upload_count += 1
+            free_upload_count_instance.save() 
+
             return redirect(checkout_session.url, code=303)
         except Exception as e:
             logger.error(f"Stripe Checkout Error: {str(e)}", exc_info=True)
@@ -63,6 +72,7 @@ class UserRegister(APIView):
         if serializer.is_valid():
             user = serializer.save()
             token, created = Token.objects.get_or_create(user=user)
+            FreeUploadCount.objects.create(user=user, free_upload_count=3)
             response = Response({
                 'token': token.key,
                 'user': {
