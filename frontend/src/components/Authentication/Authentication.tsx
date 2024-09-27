@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FormEvent, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import AuthForm from "./AuthForm";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "./AuthenticationContext";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRefs } from "../context/RefsContext";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import Upload from "../components/Upload/Upload";
 import Pricing from "../components/Pricing/Pricing";
 import Footer from "../components/Footer/Footer";

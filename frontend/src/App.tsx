@@ -12,10 +12,10 @@ import Authentication from "./components/Authentication/Authentication";
 import UploadPage from "./pages/UploadPage";
 import CommentPage from "./pages/CommentPage/CommentPage";
 import SubmissionsPage from "./pages/SubmissionsPage";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const trackingId = import.meta.env.VITE_GOOGLE_ANALYTICS_ID;
-ReactGA.initialize(trackingId || "G-96YKP5BQ1S", { debug: true });
+ReactGA.initialize(trackingId || "G-96YKP5BQ1S");
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,7 +34,7 @@ const router = createBrowserRouter(
 
 const App = () => {
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
 
   return (

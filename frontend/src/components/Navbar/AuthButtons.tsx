@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Authentication/AuthenticationContext";
 import { googleLogout } from "@react-oauth/google";
 import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 
 const AuthButtons = () => {
   const { currentUser, setCurrentUser } = useAuth();

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import SubmissionsSection from "../components/Essay/Submissions/SubmissionsSection";
@@ -37,7 +37,7 @@ const SubmissionsPage: React.FC = () => {
   const [submissions, setSubmissions] = React.useState<Array<PersonalStatement>>([]);
 
   useEffect(() => {
-    ReactGA.pageview("/submissions");
+    ReactGA.send({ hitType: "pageview", page: "/submissions" });
     fetchSubmissions();
   }, []);
 

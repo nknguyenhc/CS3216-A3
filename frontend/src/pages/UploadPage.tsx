@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useAuth } from "../components/Authentication/AuthenticationContext";
 import FocusSection from "../components/Essay/Upload/FocusSection";
 import EssayForm from "../components/Essay/Upload/EssayForm";
@@ -29,7 +29,7 @@ const UploadPage: React.FC = () => {
   const personalStatementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    ReactGA.pageview("/essay/upload");
+    ReactGA.send({ hitType: "pageview", page: "/essay/upload" });
   }, []);
 
   const submitEssay = () => {
