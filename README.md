@@ -23,8 +23,10 @@ Le Huy Chau, A0276221L
 - Devise architecture of the evaluation of essays
 - Prompt-engineer some Oxbridge modules & all Jardine modules
 - Package & deploy app on GCP
+- Prepare marketing materials
 
 ### Reyaaz
+
 - Completed frontend components for entire landing page.
 - Integrated frontend and backend authentication completely (including google auth) with serializer and validations.
 - Integrated Stripe payment.
@@ -35,6 +37,7 @@ Le Huy Chau, A0276221L
 - Frontend styling and animations
 
 ### Chau
+
 - Completed the upload page and animations for loading page
 - Completed the viewing submissions page
 - Integrating backend to the comment page
@@ -45,6 +48,7 @@ Le Huy Chau, A0276221L
 - Integrating Google analytics
 
 ## References
+
 - The loading animation is from Lotties Flies (https://lottiefiles.com/free-animation/scanning-documents-n7QCmSeVH4?color-palette=true)
 - This design was inspired by the Figma community file 'Diagram Essay UX UI' by (https://www.figma.com/community/file/1190554750988397612/diagram-essay-ux-ui)
 
