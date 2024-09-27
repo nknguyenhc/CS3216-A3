@@ -11,7 +11,7 @@ Nguyen Khoi Nguyen, A0258715W
 
 Muhammad Reyaaz Bin Abdul Basheer,
 
-Le Huy Chau,
+Le Huy Chau, A0276221L
 
 ## Contributions
 
