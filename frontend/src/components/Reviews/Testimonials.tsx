@@ -2,7 +2,7 @@ const testimonials = [
   {
     id: 1,
     name: "Ava Johnson",
-    role: "Freelance React Developer",
+    role: "Economics Student at Oxford",
     image: "/assets/testimonials/female-1.jpeg",
     review: "“Thanks to this platform, I finally got accepted into Oxford! It streamlined my application process.”",
     rating: 5,
@@ -10,7 +10,7 @@ const testimonials = [
   {
     id: 2,
     name: "Robin Thompson",
-    role: "Web Designer",
+    role: "Physics Student at Cambridge",
     image: "/assets/testimonials/female-2.jpeg",
     review: "“The service was fantastic! I couldn't have asked for better guidance for my Cambridge application.”",
     rating: 5,
@@ -18,7 +18,7 @@ const testimonials = [
   {
     id: 3,
     name: "Sophia Lee",
-    role: "Project Manager",
+    role: "Jardine Scholar at Oxford",
     image: "/assets/testimonials/female-3.jpeg",
     review: "“I love how easy it was to get started. Thanks to this platform, I secured the Jardine Scholarship!”",
     rating: 5,
@@ -26,7 +26,7 @@ const testimonials = [
   {
     id: 4,
     name: "Ethan Clark",
-    role: "Software Engineer",
+    role: "Computer Science Student at Oxford",
     image: "/assets/testimonials/man-1.jpeg",
     review: "“Great value for money! This service helped me prepare my application for Oxford effectively.”",
     rating: 5,
@@ -34,15 +34,15 @@ const testimonials = [
   {
     id: 5,
     name: "Liam Harris",
-    role: "UX Designer",
+    role: "Physics Student at Cambridge",
     image: "/assets/testimonials/man-2.jpeg",
-    review: "“Absolutely brilliant service. I couldn't have prepared better for my Cambridge interview.”",
+    review: "“Absolutely brilliant service. I couldn't have prepared better for my Cambridge application.”",
     rating: 5,
   },
   {
     id: 6,
     name: "Noah Robinson",
-    role: "Marketing Specialist",
+    role: "Jardine Scholar at Cambridge",
     image: "/assets/testimonials/man-3.jpeg",
     review:
       "“I’ve seen a huge improvement in my workflow, allowing me to focus on my Jardine Scholarship application!”",
@@ -51,7 +51,7 @@ const testimonials = [
   {
     id: 7,
     name: "Isabelle Martinez",
-    role: "Content Writer",
+    role: "English Literature Student at Oxford",
     image: "/assets/testimonials/female-4.jpeg",
     review: "“The interface is user-friendly and intuitive. It really helped me in my Oxford application.”",
     rating: 5,
@@ -59,7 +59,7 @@ const testimonials = [
   {
     id: 8,
     name: "Chloe Wilson",
-    role: "Data Analyst",
+    role: "Philosophy Student at Cambridge",
     image: "/assets/testimonials/female-5.jpeg",
     review:
       "“It has everything I need to manage my projects efficiently, especially for my Cambridge scholarship application.”",
@@ -68,7 +68,7 @@ const testimonials = [
   {
     id: 9,
     name: "Grace Taylor",
-    role: "Product Designer",
+    role: "Jardine Scholar at Oxford",
     image: "/assets/testimonials/female-6.jpeg",
     review:
       "“Highly effective tools that have made my application process for the Jardine Scholarship so much easier!”",
