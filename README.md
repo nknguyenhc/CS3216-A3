@@ -45,8 +45,8 @@ Le Huy Chau, A0276221L
 - Integrating Google analytics
 
 ## References
-- The loading animation is from Lotties Flies (https://lottiefiles.com/free-animation/scanning-documents-n7QCmSeVH4?color-palette=true).
-- This design was inspired by the Figma community file 'Diagram Essay UX UI' by (https://www.figma.com/community/file/1190554750988397612/diagram-essay-ux-ui).
+- The loading animation is from Lotties Flies (https://lottiefiles.com/free-animation/scanning-documents-n7QCmSeVH4?color-palette=true)
+- This design was inspired by the Figma community file 'Diagram Essay UX UI' by (https://www.figma.com/community/file/1190554750988397612/diagram-essay-ux-ui)
 
 ## Setup instruction
 
