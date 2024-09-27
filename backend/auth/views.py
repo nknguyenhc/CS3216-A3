@@ -144,6 +144,7 @@ class GoogleLogin(APIView):
             if created:
                 user.set_unusable_password()
                 user.save()
+                FreeUploadCount.objects.create(user=user, free_upload_count=3)
 
             token, _ = Token.objects.get_or_create(user=user)
             return Response({
