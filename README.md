@@ -35,8 +35,18 @@ Le Huy Chau, A0276221L
 - Frontend styling and animations
 
 ### Chau
+- Completed the upload page and animations for loading page
+- Completed the viewing submissions page
+- Integrating backend to the comment page
+- Backend general comments generator, relevance, reparagraph, interest (Oxbridge) models, views and prompts
+- Backend authentication for google authentication and token authentication
+- Backend personal statement model for upload and result after run orchestrator
+- Backend endpoint for view past submissions, upload essay
+- Integrating Google analytics
 
 ## References
+- The loading animation is from Lotties Flies (https://lottiefiles.com/free-animation/scanning-documents-n7QCmSeVH4?color-palette=true).
+- This design was inspired by the Figma community file 'Diagram Essay UX UI' by (https://www.figma.com/community/file/1190554750988397612/diagram-essay-ux-ui).
 
 ## Setup instruction
 
