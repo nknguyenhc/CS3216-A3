@@ -22,7 +22,6 @@ from .models import FreeUploadCount
 User = get_user_model()
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
 
 stripe.api_key = os.getenv("STRIPE_API_KEY")
 
