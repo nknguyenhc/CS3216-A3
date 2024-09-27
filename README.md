@@ -9,7 +9,7 @@
 
 Nguyen Khoi Nguyen, A0258715W
 
-Muhammad Reyaaz Bin Abdul Basheer,
+Muhammad Reyaaz Bin Abdul Basheer, A0218022W
 
 Le Huy Chau, A0276221L
 
