@@ -5,7 +5,7 @@ import { client, getCSRFToken } from "../../AxiosInstance/AxiosInstance";
 import ReactGA from "react-ga4";
 
 const AuthButtons = () => {
-  const { currentUser, setCurrentUser } = useAuth();
+  const { token, currentUser, setCurrentUser } = useAuth();
   const { loggedInWithGoogle, setLoggedInWithGoogle, setToken, setCurrUsername, setCurrEmail } = useAuth();
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const AuthButtons = () => {
       const csrfToken = getCSRFToken();
 
       try {
-        await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken } });
+        await client.post("/api/auth/logout", {}, { headers: { "X-CSRFToken": csrfToken, Authorization: `Token ${token}`, } });
         ReactGA.event({
           category: "User",
           action: "Logout Successful",

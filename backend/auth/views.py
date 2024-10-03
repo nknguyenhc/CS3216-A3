@@ -104,11 +104,12 @@ class UserLogin(APIView):
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_200_OK)
 
 class UserLogout(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
     authentication_classes = [TokenAuthentication]
 
     def post(self, request):
-        request.auth.delete()
+        if request.auth:
+            request.auth.delete()
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
