@@ -82,17 +82,11 @@ class Orchestrator:
         self.logger.debug(f"{evaluations=}")
         filtered_evaluations = [
             evaluation for evaluation in evaluations if evaluation is not None]
-        if len(filtered_evaluations) == 0 and len(evaluations) > 0:
-            # Fail if all evaluations fail
-            return OrchestratorResult(success=False)
 
         comments = [self.comment_crafter.craft_comment(
             evaluation) for evaluation in filtered_evaluations]
         self.logger.debug(f"{comments=}")
         comments = [comment for comment in comments if comment is not None]
-        if len(comments) == 0 and len(filtered_evaluations) > 0:
-            # Fail if all comments fail
-            return OrchestratorResult(success=False)
 
         general_comment = self.general_comment_crafter.craft_general_comment(
             personal_statement, filtered_evaluations)
@@ -189,17 +183,11 @@ class JardineOrchestrator:
         self.logger.debug(f"{evaluations=}")
         filtered_evaluations = [
             evaluation for evaluation in evaluations if evaluation is not None]
-        if len(filtered_evaluations) == 0 and len(evaluations) > 0:
-            # Fail if all evaluations fail
-            return OrchestratorResult(success=False)
 
         comments = [self.comment_crafter.craft_comment(
             evaluation) for evaluation in filtered_evaluations]
         self.logger.debug(f"{comments=}")
         comments = [comment for comment in comments if comment is not None]
-        if len(comments) == 0 and len(filtered_evaluations) > 0:
-            # Fail if all comments fail
-            return OrchestratorResult(success=False)
 
         general_comment = self.general_comment_crafter.craft_general_comment(
             personal_statement, filtered_evaluations)
@@ -238,7 +226,7 @@ class JardineOrchestrator:
             aspiration=aspiration,
             contribution_to_community=contribution_to_community
         )
-    
+
     def run_stub(self, personal_statement: PersonalStatement) -> OrchestratorResult:
         personal_statement.save()
         return OrchestratorResult(
