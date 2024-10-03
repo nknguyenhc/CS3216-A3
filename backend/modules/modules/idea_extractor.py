@@ -13,44 +13,58 @@ class IdeaExtractor:
 
     def extract(self, personal_statement: PersonalStatement) -> list[Argument] | None:
         client = OpenAI()
-        paragraphs = personal_statement.reparagraphed_essay.split("\n")
+        paragraphs = (
+            personal_statement.reparagraphed_essay
+            if personal_statement.reparagraphed_essay
+            else personal_statement.essay
+        ).split("\n")
         arguments = []
 
         for paragraph in paragraphs:
             if paragraph.strip():
-                completion = client.chat.completions.create(
-                    model="gpt-4",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": self.idea_system_prompt.format(
-                                field_of_study=personal_statement.field_of_study
-                            )
-                        },
-                        {
-                            "role": "user",
-                            "content": paragraph
-                        }
-                    ]
-                )
-
-                response_data = completion.choices[0].message.content
-
-                idea = re.search(r'Idea:\s*(.*?)(?=\s*Evidence:)',
-                                 response_data).group(1).strip()
-                evidence = re.search(
-                    r'Evidence:\s*(.*?)(?=\s*Explanation:)', response_data).group(1).strip()
-                explanation = re.search(
-                    r'Explanation:\s*(.*)', response_data).group(1).strip()
-
-                argument = self.save_argument_to_db(
-                    personal_statement, idea, evidence, explanation
-                )
+                try:
+                    argument = self._get_argument_from_paragraph(
+                        client, personal_statement, paragraph)
+                except Exception as e:
+                    self.logger.exception(
+                        f"Failed to extract argument from paragraph\n{paragraph=}\n{e=}")
+                    argument = None
 
                 if argument is not None:
                     arguments.append(argument)
 
         return arguments
+
+    def _get_argument_from_paragraph(self, client: OpenAI, personal_statement: PersonalStatement, paragraph: str) -> Argument | None:
+        completion = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {
+                    "role": "system",
+                    "content": self.idea_system_prompt.format(
+                        field_of_study=personal_statement.field_of_study
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": paragraph
+                }
+            ]
+        )
+
+        response_data = completion.choices[0].message.content
+
+        idea = re.search(r'Idea:\s*(.*?)(?=\s*Evidence:)',
+                         response_data).group(1).strip()
+        evidence = re.search(
+            r'Evidence:\s*(.*?)(?=\s*Explanation:)', response_data).group(1).strip()
+        explanation = re.search(
+            r'Explanation:\s*(.*)', response_data).group(1).strip()
+
+        argument = self.save_argument_to_db(
+            personal_statement, idea, evidence, explanation
+        )
+        return argument
 
     def save_argument_to_db(self, personal_statement: PersonalStatement,
                             idea: str, evidence: str, explanation: str) -> Argument:
